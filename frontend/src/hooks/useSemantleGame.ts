@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/hooks/useSemantleGame.ts
 import { useState, useEffect } from "react";
+import { API_URL } from "../config";
 
 /**
  * Helper: Compute cosine similarity between two numeric vectors.
@@ -34,7 +35,7 @@ export default function useSemantleGame() {
   useEffect(() => {
     async function loadDictionary() {
       try {
-        const res = await fetch("http://localhost:3000/cached");
+        const res = await fetch(`${API_URL}/cached`);
         if (!res.ok) throw new Error("Failed to load dictionary");
         const data = await res.json();
         setDictionary(data.words || []);
@@ -67,7 +68,8 @@ export default function useSemantleGame() {
       setTargetWord(chosenWord);
 
       // Fetch embedding for the chosen word
-      const res = await fetch("http://localhost:3000/embed", {
+      // const res = await fetch("http://localhost:3000/embed", {
+      const res = await fetch(`${API_URL}/embed`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ word: chosenWord }),
@@ -99,7 +101,7 @@ export default function useSemantleGame() {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/embed", {
+      const res = await fetch(`${API_URL}/embed`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ word }),

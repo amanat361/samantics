@@ -3,12 +3,12 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile.api
-    # Load environment variables from an env file (for internal use only)
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"    # Not "3000:3000" - expose doesn't use port mapping syntax
     env_file:
       - ./api/.env
-    # No ports mapping here – backend remains internal
+    networks:
+      - app-network
 
   frontend:
     build:
@@ -16,6 +16,14 @@ services:
       dockerfile: Dockerfile.frontend
     ports:
       - "5173:5173"
-    # If needed, you can also pass additional environment variables here
     environment:
       - PORT=5173
+      - VITE_API_URL=http://backend:3000  # Point to backend service
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    driver: bridge
