@@ -1,0 +1,11 @@
+{
+  "name": "create-embeddings",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.2.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

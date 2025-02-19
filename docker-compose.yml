@@ -1,0 +1,21 @@
+services:
+  backend:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.api
+    # Load environment variables from an env file (for internal use only)
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./api/.env
+    # No ports mapping here – backend remains internal
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5173:5173"
+    # If needed, you can also pass additional environment variables here
+    environment:
+      - PORT=5173

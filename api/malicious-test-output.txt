@@ -1,0 +1,49 @@
+=== Starting Malicious Tests ===
+
+[Sending number instead of string for 'word']
+Endpoint: /embed
+Payload: {"word":123}
+Status: 500
+Response: {"error":"Invalid input: word must be a string."}
+
+[Sending an empty (whitespace-only) string for 'word']
+Endpoint: /embed
+Payload: {"word":"   "}
+Status: 500
+Response: {"error":"Invalid input: word cannot be empty."}
+
+[Missing 'word' key in payload for /embed]
+Endpoint: /embed
+Payload: {}
+Status: 500
+Response: {"error":"Invalid input: word must be a string."}
+
+[Sending a string instead of an array for 'words' in /embedBatch]
+Endpoint: /embedBatch
+Payload: {"words":"hello"}
+Status: 500
+Response: {"error":"Invalid input: expected an array of words."}
+
+[Array containing a non-string element for 'words' in /embedBatch]
+Endpoint: /embedBatch
+Payload: {"words":["hello",456,"world"]}
+Status: 500
+Response: {"error":"Invalid input: word must be a string."}
+
+[Missing vector 'b' in /similarity]
+Endpoint: /similarity
+Payload: {"a":[1,2,3]}
+Status: 500
+Response: {"error":"Both a and b must be arrays of numbers."}
+
+[Non-numeric value in vector 'a' for /similarity]
+Endpoint: /similarity
+Payload: {"a":[1,2,"three"],"b":[1,2,3]}
+Status: 500
+Response: {"error":"Both arrays must contain only numbers."}
+
+[Vectors of different lengths in /similarity]
+Endpoint: /similarity
+Payload: {"a":[1,2,3],"b":[1,2]}
+Status: 500
+Response: {"error":"Vectors must be of the same length to compute cosine similarity."}

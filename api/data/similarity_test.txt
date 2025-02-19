@@ -1,0 +1,130 @@
+
+Most similar to "except":
+1. unless (0.793)
+2. exceptions (0.753)
+3. although (0.744)
+4. exception (0.741)
+5. besides (0.741)
+6. otherwise (0.741)
+7. aside (0.718)
+8. especially (0.713)
+9. whereas (0.696)
+10. unlike (0.694)
+
+
+Most similar to "blank":
+1. empty (0.756)
+2. incomplete (0.690)
+3. nothing (0.656)
+4. classification (0.654)
+5. absent (0.617)
+6. bored (0.607)
+7. complete (0.606)
+8. cluster (0.605)
+9. black (0.593)
+10. prompt (0.592)
+
+
+Most similar to "principles":
+1. principle (0.932)
+2. philosophy (0.679)
+3. guidelines (0.678)
+4. concepts (0.675)
+5. fundamentals (0.672)
+6. basics (0.665)
+7. beliefs (0.648)
+8. basis (0.636)
+9. classification (0.634)
+10. qualities (0.633)
+
+
+Most similar to "executive":
+1. executives (0.907)
+2. administrative (0.661)
+3. employee (0.647)
+4. presidential (0.646)
+5. professional (0.638)
+6. enterprises (0.635)
+7. officials (0.633)
+8. enterprise (0.632)
+9. entrepreneur (0.630)
+10. employer (0.627)
+
+
+Most similar to "chose":
+1. choose (0.889)
+2. chosen (0.872)
+3. choosing (0.872)
+4. choice (0.836)
+5. selected (0.819)
+6. choices (0.799)
+7. selecting (0.786)
+8. decided (0.784)
+9. decide (0.779)
+10. select (0.767)
+
+
+Most similar to "legends":
+1. legend (0.927)
+2. legendary (0.783)
+3. famous (0.686)
+4. celebrities (0.667)
+5. celebrity (0.657)
+6. heroes (0.656)
+7. biographies (0.631)
+8. classics (0.611)
+9. players (0.607)
+10. champions (0.606)
+
+
+Most similar to "acdbentity":
+1. classification (0.654)
+2. designation (0.621)
+3. according (0.619)
+4. characterization (0.614)
+5. cluster (0.614)
+6. recognition (0.612)
+7. statement (0.612)
+8. distinction (0.611)
+9. characteristic (0.606)
+10. stating (0.601)
+
+
+Most similar to "holding":
+1. holds (0.957)
+2. holders (0.799)
+3. holder (0.788)
+4. holdings (0.722)
+5. handling (0.719)
+6. holdem (0.718)
+7. keeping (0.686)
+8. classification (0.673)
+9. binding (0.668)
+10. retained (0.666)
+
+
+Most similar to "weights":
+1. weight (0.890)
+2. weighted (0.833)
+3. pounds (0.771)
+4. pound (0.690)
+5. strength (0.677)
+6. workout (0.673)
+7. fitness (0.665)
+8. exercises (0.665)
+9. muscles (0.644)
+10. heavy (0.644)
+
+
+Most similar to "violations":
+1. violation (0.942)
+2. enforcement (0.756)
+3. penalties (0.712)
+4. infringement (0.705)
+5. compliance (0.703)
+6. penalty (0.690)
+7. classification (0.649)
+8. breaking (0.646)
+9. inspections (0.646)
+10. arrest (0.641)
+

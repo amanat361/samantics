@@ -1,0 +1,37 @@
+Loaded dictionary with 7700 words.
+
+--- Embedding Known Words ---
+Embedded word "substitute" in 0.25ms from cache.
+Embedded word "referral" in 0.01ms from cache.
+Embedded word "chips" in 0.01ms from cache.
+Embedded word "signatures" in 0.01ms from cache.
+Embedded word "incident" in 0.01ms from cache.
+Embedded word "programme" in 0.01ms from cache.
+Embedded word "assistant" in 0.01ms from cache.
+Embedded word "levels" in 0.04ms from cache.
+Embedded word "hayes" in 0.01ms from cache.
+Embedded word "sectors" in 0.04ms from cache.
+
+--- Similarity Report ---
+Target word: "skills".
+Total cached words: 7788
+Top 5 words similar to "skills":
+1. skill - similarity: 0.9426
+2. abilities - similarity: 0.7703
+3. skilled - similarity: 0.7697
+4. ability - similarity: 0.7587
+5. training - similarity: 0.6948
+
+--- Embedding Unknown Words ---
+First call (likely via API):
+Embedded unknown word "qwertyuiop" in 0.02ms from cache.
+Embedded unknown word "asdfghjkl" in 0.00ms from cache.
+Embedded unknown word "zxcvbnm" in 0.00ms from cache.
+Embedded unknown word "plmoknijb" in 0.00ms from cache.
+Embedded unknown word "qazwsxedc" in 0.00ms from cache.
+Second call (should hit cache):
+Embedded unknown word "qwertyuiop" again in 0.01ms from cache.
+Embedded unknown word "asdfghjkl" again in 0.00ms from cache.
+Embedded unknown word "zxcvbnm" again in 0.00ms from cache.
+Embedded unknown word "plmoknijb" again in 0.00ms from cache.
+Embedded unknown word "qazwsxedc" again in 0.00ms from cache.
