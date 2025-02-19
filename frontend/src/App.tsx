@@ -28,7 +28,7 @@ function App() {
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     if (!inputValue.trim()) return;
-    guessWord(inputValue.trim());
+    guessWord(inputValue.trim().toLowerCase());
     setInputValue("");
   }
 

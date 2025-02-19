@@ -18,7 +18,7 @@ services:
       - "5173:5173"
     environment:
       - PORT=5173
-      - VITE_API_URL=http://localhost:3005  # Point to mapped port
+      - VITE_API_URL=https://semantle-backend.qwertea.dev  # Point to mapped port
     networks:
       - app-network
     depends_on:
