@@ -22,6 +22,9 @@ function validateWord(word: unknown): string {
   if (trimmed.length === 0) {
     throw new Error("Invalid input: word cannot be empty.");
   }
+  if (!trimmed.match(/^[a-zA-Z ]+$/)) {
+    throw new Error("Invalid input: word can only contain letters and spaces.");
+  }
   return trimmed;
 }
 
