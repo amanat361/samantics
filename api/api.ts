@@ -88,6 +88,26 @@ const server = serve({
         });
       }
 
+      // Endpoint: POST /guess
+      if (pathname === "/guess" && request.method === "POST") {
+        const { word, target } = await request.json();
+        const validWord = validateWord(word);
+        const validTarget = validateWord(target);
+
+        // Get both embeddings and compare
+        const wordEmbed = await embed(validWord);
+        const targetEmbed = await embed(validTarget);
+
+        const similarity = cosineSimilarity(
+          wordEmbed.embedding,
+          targetEmbed.embedding
+        );
+
+        return new Response(JSON.stringify({ similarity }), {
+          headers: withCors({ "Content-Type": "application/json" }),
+        });
+      }
+
       // Endpoint: POST /embed
       if (pathname === "/embed" && request.method === "POST") {
         const { word } = await request.json();
