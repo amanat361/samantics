@@ -3,8 +3,8 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile.api
-    expose:
-      - "3000"    # Not "3000:3000" - expose doesn't use port mapping syntax
+    ports:
+      - "3005:3000"  # Map to a different host port
     env_file:
       - ./api/.env
     networks:
@@ -18,7 +18,7 @@ services:
       - "5173:5173"
     environment:
       - PORT=5173
-      - VITE_API_URL=http://backend:3000  # Point to backend service
+      - VITE_API_URL=http://localhost:3005  # Point to mapped port
     networks:
       - app-network
     depends_on:
