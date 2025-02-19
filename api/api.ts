@@ -1,6 +1,13 @@
 // api.ts
 import { serve } from "bun";
-import { embed, embedBatch, seedEmbeddings, getWords } from "./embeddings";
+import {
+  embed,
+  embedBatch,
+  seedEmbeddings,
+  getWords,
+  getRandomTargetWord,
+  getTargetWords,
+} from "./embeddings";
 
 // --- Helper Functions for Input Validation ---
 
@@ -105,6 +112,22 @@ const server = serve({
           }),
           { headers: withCors({ "Content-Type": "application/json" }) }
         );
+      }
+
+      // Endpoint: GET /target
+      if (pathname === "/target" && request.method === "GET") {
+        const targetWord = getRandomTargetWord();
+        return new Response(JSON.stringify({ targetWord }), {
+          headers: withCors({ "Content-Type": "application/json" }),
+        });
+      }
+
+      // Endpoint: GET /target-words
+      if (pathname === "/target-words" && request.method === "GET") {
+        const targetWords = getTargetWords();
+        return new Response(JSON.stringify({ targetWords }), {
+          headers: withCors({ "Content-Type": "application/json" }),
+        });
       }
 
       // Endpoint: GET /cached

@@ -10,6 +10,7 @@ interface EmbeddingCache {
 class EmbeddingManager {
   private cache: Map<string, number[]> = new Map();
   private cacheFile = "data/embeddings.json";
+  private targetWords: string[] = [];
   private readonly OLLAMA_URL: string;
   private readonly headers: HeadersInit;
 
@@ -22,6 +23,7 @@ class EmbeddingManager {
     };
 
     this.loadCache();
+    this.loadTargetWords();
   }
 
   private loadCache() {
@@ -37,6 +39,19 @@ class EmbeddingManager {
       console.warn(
         "No embeddings cache found. Call seedEmbeddings() to precompute common words."
       );
+    }
+  }
+
+  private loadTargetWords() {
+    try {
+      this.targetWords = readFileSync("data/target-words.txt", "utf-8")
+        .split("\n")
+        .filter(Boolean)
+        .map((w) => w.trim());
+      console.log(`Loaded ${this.targetWords.length} target words`);
+    } catch (e) {
+      console.warn("No target-words.txt found");
+      this.targetWords = [];
     }
   }
 
@@ -129,6 +144,22 @@ class EmbeddingManager {
     return Array.from(this.cache.keys());
   }
 
+  getRandomTargetWord(): string {
+    if (this.targetWords.length === 0) {
+      throw new Error("No target words loaded");
+    }
+    return this.targetWords[
+      Math.floor(Math.random() * this.targetWords.length)
+    ];
+  }
+
+  getTargetWords(): string[] {
+    if (this.targetWords.length === 0) {
+      throw new Error("No target words loaded");
+    }
+    return this.targetWords;
+  }
+
   async seedEmbeddings() {
     try {
       const words = readFileSync("data/words.txt", "utf-8")
@@ -161,3 +192,5 @@ export const embed = (word: string) => manager.embed(word);
 export const embedBatch = (words: string[]) => manager.embedBatch(words);
 export const seedEmbeddings = () => manager.seedEmbeddings();
 export const getWords = () => manager.getWords();
+export const getRandomTargetWord = () => manager.getRandomTargetWord();
+export const getTargetWords = () => manager.getTargetWords();
