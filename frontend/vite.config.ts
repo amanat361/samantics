@@ -10,4 +10,9 @@ export default defineConfig({
     host: true,
     allowedHosts: ["semantle.qwertea.dev", "play.qwertea.dev"],
   },
+  preview: {
+    port: 5173,
+    host: true,
+    allowedHosts: ["semantle.qwertea.dev", "play.qwertea.dev"],
+  }
 });

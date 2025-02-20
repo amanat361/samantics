@@ -8,8 +8,11 @@ RUN bun install
 # Copy frontend source
 COPY . .
 
-# Expose port 5173 for Vite dev server
+# Build the frontend
+RUN bun run build
+
+# Expose port 5173 to maintain compatibility
 EXPOSE 5173
 
-# Run Vite dev server
-CMD ["bun", "run", "dev"]
+# Run Vite preview server on port 5173
+CMD ["bun", "run", "preview", "--host", "--port", "5173"]
