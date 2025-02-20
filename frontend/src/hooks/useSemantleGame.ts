@@ -63,8 +63,12 @@ export default function useSemantleGame() {
 
     try {
       // Random word from dictionary
-      const randIndex = Math.floor(Math.random() * dictionary.length);
-      const chosenWord = dictionary[randIndex];
+      // const randIndex = Math.floor(Math.random() * dictionary.length);
+      // const chosenWord = dictionary[randIndex];
+      const target_res = await fetch(`${API_URL}/target`);
+      if (!target_res.ok) throw new Error("Failed to load target word");
+      const target_json = await target_res.json();
+      const chosenWord = target_json.targetWord;
       setTargetWord(chosenWord);
 
       // Fetch embedding for the chosen word
