@@ -98,7 +98,7 @@ function getDailyWord(): string {
 const server = serve({
   port: 3000,
   development: true,
-  async fetch(request) {
+  async fetch(request: Request) {
     try {
       const { pathname } = new URL(request.url);
 
@@ -163,8 +163,8 @@ const server = serve({
       if (pathname === "/daily" && request.method === "GET") {
         const dailyWord = getDailyWord();
 
-        // Calculate days since 2/19/2025
-        const startDate = new Date("2025-02-19T00:00:00-08:00"); // Pacific time
+        // Calculate days since 2/20/2025
+        const startDate = new Date("2025-02-20T00:00:00-08:00"); // Pacific time
         const today = new Date().toLocaleDateString("en-US", {
           timeZone: "America/Los_Angeles",
         });
