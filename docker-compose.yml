@@ -9,6 +9,8 @@ services:
       - ./api/.env
     networks:
       - app-network
+    environment:
+      - TZ=America/Los_Angeles
 
   frontend:
     build:
