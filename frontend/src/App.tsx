@@ -4,7 +4,6 @@ import useSemantleGame from "./hooks/useSemantleGame";
 
 function App() {
   const {
-    dictionary,
     targetWord,
     guesses,
     error,
@@ -12,18 +11,17 @@ function App() {
     revealed,
     startNewGame,
     guessWord,
+    guessRandomWord,
     setRevealed,
   } = useSemantleGame();
 
   const [inputValue, setInputValue] = useState("");
 
-  // Start a new game once dictionary is loaded
+  // Start a new game on mount
   useEffect(() => {
-    if (dictionary.length > 0) {
-      startNewGame();
-    }
+    startNewGame();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dictionary]);
+  }, []);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
@@ -35,10 +33,16 @@ function App() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 space-y-4">
-        <h1 className="text-2xl font-bold">Semantle</h1>
-
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold">Guess the Secret Word</h1>
+          <p className="text-gray-600">
+            Try to guess the secret word! After each guess, you'll see how
+            similar your word is to the target word based on their meanings. The
+            higher the percentage, the closer you are. Use the Random Hint
+            button if you need help getting started.
+          </p>
+        </div>
         {error && <p className="text-red-600">Error: {error}</p>}
-
         <div className="flex space-x-2">
           <button
             onClick={startNewGame}
@@ -47,29 +51,34 @@ function App() {
             New Game
           </button>
           {!revealed && !gameOver && (
-            <button
-              onClick={() => setRevealed(true)}
-              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
-            >
-              Reveal Word
-            </button>
+            <>
+              <button
+                onClick={() => setRevealed(true)}
+                className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+              >
+                Reveal Word
+              </button>
+              <button
+                onClick={guessRandomWord}
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+              >
+                Random Hint
+              </button>
+            </>
           )}
         </div>
-
         {/* If the game is over, show a message */}
         {gameOver && (
           <p className="text-green-600 font-semibold">
             Congratulations! You guessed it in {guesses.length} guesses.
           </p>
         )}
-
         {/* Show the target word if game is over or user clicks reveal */}
         {(revealed || gameOver) && (
           <p className="text-gray-500">
             Target word: <strong>{targetWord}</strong>
           </p>
         )}
-
         {/* Guess Form - disabled if gameOver */}
         {!gameOver && (
           <form onSubmit={handleGuess} className="flex space-x-2">
@@ -89,8 +98,36 @@ function App() {
           </form>
         )}
 
+        {/* Show last guess above the list */}
+        {guesses.length > 0 && (
+          <>
+            <div className="space-y-2">
+              <p className="text-gray-600">Last guess:</p>
+              <div
+                className="p-2 rounded text-white"
+                style={{
+                  backgroundColor: interpolateColor(
+                    guesses[guesses.length - 1].similarity
+                  ),
+                }}
+              >
+                {guesses[guesses.length - 1].word} -{" "}
+                {(guesses[guesses.length - 1].similarity * 100).toFixed(2)}%
+              </div>
+            </div>
+            <hr className="border-gray-200 my-4" />
+          </>
+        )}
+
         {/* Display guesses, sorted by best similarity first */}
         <GuessList guesses={guesses} />
+
+        {/* add a little made with love message centered at the bottom */}
+        <div className="text-center text-gray-500 text-xs">
+          Made with <span role="img" aria-label="love">
+            ❤️
+          </span> by <a href="https://saminamanat.com" className="underline">Sam</a>
+        </div>
       </div>
     </div>
   );

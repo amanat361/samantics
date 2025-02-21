@@ -1,19 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/hooks/useSemantleGame.ts
 import { useState, useEffect } from "react";
 import { API_URL } from "../config";
-
-/**
- * Helper: Compute cosine similarity between two numeric vectors.
- */
-function cosineSimilarity(a: number[], b: number[]): number {
-  if (a.length !== b.length) return 0;
-  const dot = a.reduce((sum, aVal, i) => sum + aVal * b[i], 0);
-  const normA = Math.sqrt(a.reduce((sum, x) => sum + x * x, 0));
-  const normB = Math.sqrt(b.reduce((sum, x) => sum + x * x, 0));
-  if (normA === 0 || normB === 0) return 0;
-  return dot / (normA * normB);
-}
 
 interface Guess {
   word: string;
@@ -21,82 +8,55 @@ interface Guess {
 }
 
 export default function useSemantleGame() {
-  const [dictionary, setDictionary] = useState<string[]>([]);
+  const [targetWords, setTargetWords] = useState<string[]>([]);
   const [targetWord, setTargetWord] = useState("");
-  const [targetEmbedding, setTargetEmbedding] = useState<number[] | null>(null);
   const [guesses, setGuesses] = useState<Guess[]>([]);
   const [error, setError] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
   /**
-   * 1) Load dictionary from /cached on mount.
+   * Load target words on mount
    */
   useEffect(() => {
-    async function loadDictionary() {
+    async function loadTargetWords() {
       try {
-        const res = await fetch(`${API_URL}/cached`);
-        if (!res.ok) throw new Error("Failed to load dictionary");
+        const res = await fetch(`${API_URL}/target-words`);
+        if (!res.ok) throw new Error("Failed to load target words");
         const data = await res.json();
-        setDictionary(data.words || []);
+        setTargetWords(data.targetWords || []);
       } catch (err: any) {
         setError(err.message);
       }
     }
-    loadDictionary();
+    loadTargetWords();
   }, []);
 
   /**
-   * 2) Start a new game:
-   *    - Pick a random word from the dictionary
-   *    - Fetch/Store its embedding
+   * Start a new game by fetching a random target word
    */
   async function startNewGame() {
-    if (dictionary.length === 0) {
-      setError("Dictionary not loaded yet.");
-      return;
-    }
     setError("");
     setGuesses([]);
     setGameOver(false);
     setRevealed(false);
 
     try {
-      // Random word from dictionary
-      // const randIndex = Math.floor(Math.random() * dictionary.length);
-      // const chosenWord = dictionary[randIndex];
-      const target_res = await fetch(`${API_URL}/target`);
-      if (!target_res.ok) throw new Error("Failed to load target word");
-      const target_json = await target_res.json();
-      const chosenWord = target_json.targetWord;
-      setTargetWord(chosenWord);
-
-      // Fetch embedding for the chosen word
-      // const res = await fetch("http://localhost:3000/embed", {
-      const res = await fetch(`${API_URL}/embed`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ word: chosenWord }),
-      });
+      const res = await fetch(`${API_URL}/target`);
+      if (!res.ok) throw new Error("Failed to load target word");
       const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to embed target word");
-      }
-      setTargetEmbedding(data.embedding || null);
+      setTargetWord(data.targetWord);
     } catch (err: any) {
       setError(err.message);
     }
   }
 
   /**
-   * 3) Guess a word:
-   *    - Embed the guess
-   *    - Compute similarity locally
-   *    - Check if it's correct (similarity ~1.0)
+   * Guess a specific word
    */
   async function guessWord(word: string) {
-    if (!targetEmbedding) {
-      setError("No target word embedding. Start a new game first!");
+    if (!targetWord) {
+      setError("No target word. Start a new game first!");
       return;
     }
     if (gameOver) {
@@ -105,25 +65,20 @@ export default function useSemantleGame() {
     }
 
     try {
-      const res = await fetch(`${API_URL}/embed`, {
+      const res = await fetch(`${API_URL}/guess`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ word }),
+        body: JSON.stringify({ word, target: targetWord }),
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to embed guess");
+        throw new Error(data.error || "Failed to make guess");
       }
 
-      const guessEmbedding = data.embedding as number[];
-      const similarity = cosineSimilarity(guessEmbedding, targetEmbedding);
-
-      // Add to guess list
-      const newGuess = { word, similarity };
+      const newGuess = { word, similarity: data.similarity };
       setGuesses((prev) => [...prev, newGuess]);
 
-      // If similarity is super high, consider it a correct guess
-      if (similarity > 0.99) {
+      if (data.similarity > 0.99) {
         setGameOver(true);
       }
     } catch (err: any) {
@@ -131,8 +86,29 @@ export default function useSemantleGame() {
     }
   }
 
+  /**
+   * Guess a random word from the target words list,
+   * excluding the answer and previously guessed words
+   */
+  async function guessRandomWord() {
+    if (!targetWord || gameOver) return;
+
+    const guessedWords = new Set(guesses.map((g) => g.word));
+    const availableWords = targetWords.filter(
+      (word) => word !== targetWord && !guessedWords.has(word)
+    );
+
+    if (availableWords.length === 0) {
+      setError("No more available words to guess!");
+      return;
+    }
+
+    const randomWord =
+      availableWords[Math.floor(Math.random() * availableWords.length)];
+    await guessWord(randomWord);
+  }
+
   return {
-    dictionary,
     targetWord,
     guesses,
     error,
@@ -140,6 +116,7 @@ export default function useSemantleGame() {
     revealed,
     startNewGame,
     guessWord,
-    setRevealed, // let components toggle "revealed"
+    guessRandomWord,
+    setRevealed,
   };
 }
