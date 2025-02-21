@@ -71,6 +71,28 @@ function withCors(baseHeaders: HeadersInit = {}): HeadersInit {
   };
 }
 
+/**
+ * Gets a deterministic word based on the current date in Pacific time.
+ */
+function getDailyWord(): string {
+  // Get current date in Pacific time
+  const date = new Date().toLocaleDateString('en-US', {
+    timeZone: 'America/Los_Angeles'
+  });
+  
+  // Create a simple hash of the date string
+  const hash = date.split('').reduce((acc, char) => {
+    return ((acc << 5) - acc) + char.charCodeAt(0) | 0;
+  }, 0);
+
+  // Get all possible target words
+  const targetWords = getTargetWords();
+  
+  // Use the hash to select a word (using absolute value in case of negative hash)
+  const index = Math.abs(hash) % targetWords.length;
+  return targetWords[index];
+}
+
 // --- Bun API Server ---
 
 const server = serve({
@@ -134,6 +156,32 @@ const server = serve({
             newWords: result.newWords,
           }),
           { headers: withCors({ "Content-Type": "application/json" }) }
+        );
+      }
+
+      // Endpoint: GET /daily
+      if (pathname === "/daily" && request.method === "GET") {
+        const dailyWord = getDailyWord();
+
+        // Calculate days since 2/19/2025
+        const startDate = new Date("2025-02-19T00:00:00-08:00"); // Pacific time
+        const today = new Date().toLocaleDateString("en-US", {
+          timeZone: "America/Los_Angeles",
+        });
+        const todayDate = new Date(today);
+        const dayNumber =
+          Math.floor(
+            (todayDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+          ) + 1;
+
+        return new Response(
+          JSON.stringify({
+            targetWord: dailyWord,
+            dayNumber,
+          }),
+          {
+            headers: withCors({ "Content-Type": "application/json" }),
+          }
         );
       }
 

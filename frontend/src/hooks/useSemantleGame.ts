@@ -8,6 +8,7 @@ interface Guess {
 }
 
 export default function useSemantleGame() {
+  const [dayNumber, setDayNumber] = useState(-1);
   const [targetWords, setTargetWords] = useState<string[]>([]);
   const [targetWord, setTargetWord] = useState("");
   const [guesses, setGuesses] = useState<Guess[]>([]);
@@ -19,6 +20,17 @@ export default function useSemantleGame() {
    * Load target words on mount
    */
   useEffect(() => {
+    async function loadDailyWord() {
+      try {
+        const res = await fetch(`${API_URL}/daily`);
+        if (!res.ok) throw new Error("Failed to load daily word");
+        const data = await res.json();
+        setTargetWord(data.targetWord);
+        setDayNumber(data.dayNumber);
+      } catch (err: any) {
+        setError(err.message);
+      }
+    }
     async function loadTargetWords() {
       try {
         const res = await fetch(`${API_URL}/target-words`);
@@ -29,6 +41,7 @@ export default function useSemantleGame() {
         setError(err.message);
       }
     }
+    loadDailyWord();
     loadTargetWords();
   }, []);
 
@@ -46,6 +59,7 @@ export default function useSemantleGame() {
       if (!res.ok) throw new Error("Failed to load target word");
       const data = await res.json();
       setTargetWord(data.targetWord);
+      setDayNumber(0);
     } catch (err: any) {
       setError(err.message);
     }
@@ -56,7 +70,7 @@ export default function useSemantleGame() {
    */
   async function guessWord(word: string) {
     setError("");
-    
+
     if (!targetWord) {
       setError("No target word. Start a new game first!");
       return;
@@ -111,6 +125,7 @@ export default function useSemantleGame() {
   }
 
   return {
+    dayNumber,
     targetWord,
     guesses,
     error,

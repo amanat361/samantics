@@ -1,9 +1,10 @@
 // src/App.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
 
 function App() {
   const {
+    dayNumber,
     targetWord,
     guesses,
     error,
@@ -17,12 +18,6 @@ function App() {
 
   const [inputValue, setInputValue] = useState("");
 
-  // Start a new game on mount
-  useEffect(() => {
-    startNewGame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     if (!inputValue.trim()) return;
@@ -34,7 +29,20 @@ function App() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 space-y-4">
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold">Guess the Secret Word</h1>
+          <div>
+            <h1 className="text-2xl font-bold">Guess the Secret Word</h1>
+            {dayNumber > 0 ? (
+              <p className="text-gray-600">
+                You're playing the daily word for day {dayNumber}!
+              </p>
+            ) : dayNumber === 0 ? (
+              <p className="text-gray-600">
+                You're playing a new game with a random word!
+              </p>
+            ) : (
+              <p className="text-gray-600">Loading...</p>
+            )}
+          </div>
           <p className="text-gray-600">
             Try to guess the secret word! After each guess, you'll see how
             similar your word is to the target word based on their meanings. The
@@ -125,9 +133,14 @@ function App() {
 
         {/* add a little made with love message centered at the bottom */}
         <div className="text-center text-gray-500 text-xs">
-          Made with <span role="img" aria-label="love">
+          Made with{" "}
+          <span role="img" aria-label="love">
             ❤️
-          </span> by <a href="https://saminamanat.com" className="underline">Sam</a>
+          </span>{" "}
+          by{" "}
+          <a href="https://saminamanat.com" className="underline">
+            Sam
+          </a>
         </div>
       </div>
     </div>
