@@ -83,6 +83,7 @@ function App() {
         {!gameOver && (
           <form onSubmit={handleGuess} className="flex space-x-2">
             <input
+              autoFocus
               type="text"
               placeholder="Guess a word"
               value={inputValue}

@@ -55,6 +55,8 @@ export default function useSemantleGame() {
    * Guess a specific word
    */
   async function guessWord(word: string) {
+    setError("");
+    
     if (!targetWord) {
       setError("No target word. Start a new game first!");
       return;
