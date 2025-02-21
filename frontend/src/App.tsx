@@ -17,6 +17,7 @@ function App() {
   } = useSemantleGame();
 
   const [inputValue, setInputValue] = useState("");
+  const [showInstructions, setShowInstructions] = useState(false);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
@@ -46,16 +47,40 @@ function App() {
           </p>
         </div>
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 space-y-4">
-          <div className="space-y-2">
+          <div className="space-y-2 flex justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold">Guess the Secret Word</h1>
+              <div className="space-y-2">
+                <button
+                  onClick={() => setShowInstructions(!showInstructions)}
+                  className="w-full flex items-center justify-between text-left px-2 py-1 hover:bg-gray-50 rounded"
+                >
+                  <span className="font-medium">How to Play</span>
+                  <svg
+                    className={`w-5 h-5 transform transition-transform ${
+                      showInstructions ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </button>
+              </div>
+
+              {showInstructions && (
+                <p className="text-gray-600 px-2 py-2 bg-gray-50 rounded">
+                  Try to guess the secret word! After each guess, you'll see how
+                  similar your word is to the target word based on their
+                  meanings. The higher the percentage, the closer you are. Use
+                  the Random Hint button if you need help getting started.
+                </p>
+              )}
             </div>
-            <p className="text-gray-600">
-              Try to guess the secret word! After each guess, you'll see how
-              similar your word is to the target word based on their meanings.
-              The higher the percentage, the closer you are. Use the Random Hint
-              button if you need help getting started.
-            </p>
           </div>
           {error && <p className="text-red-600">Error: {error}</p>}
           <div className="flex space-x-2">
