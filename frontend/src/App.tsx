@@ -39,49 +39,44 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="w-full bg-white rounded-lg shadow-md p-2 space-y-4">
-          <p className="text-lg text-center">
+    <div className="min-h-screen flex justify-center bg-gray-100 p-4">
+      <div className="flex flex-col space-y-4">
+        <div className="w-full bg-zinc-800 rounded-lg shadow-md p-2 space-y-4">
+          <p className="text-lg text-center text-white">
             <DayNumber />
           </p>
         </div>
-        <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6 space-y-4">
-          <div className="space-y-2 flex justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold">Guess the Secret Word</h1>
-              <div className="space-y-2">
-                <button
-                  onClick={() => setShowInstructions(!showInstructions)}
-                  className="w-full flex items-center justify-between text-left px-2 py-1 hover:bg-gray-50 rounded"
-                >
-                  <span className="font-medium">How to Play</span>
-                  <svg
-                    className={`w-5 h-5 transform transition-transform ${
-                      showInstructions ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
-              </div>
-
-              {showInstructions && (
-                <p className="text-gray-600 px-2 py-2 bg-gray-50 rounded">
-                  Try to guess the secret word! After each guess, you'll see how
-                  similar your word is to the target word based on their
-                  meanings. The higher the percentage, the closer you are. Use
-                  the Random Hint button if you need help getting started.
-                </p>
-              )}
-            </div>
+        <div className="max-w-xl lg:min-w-xl w-full bg-white rounded-lg shadow-md p-6 space-y-4">
+          <div className="flex flex-col lg:flex-row justify-between gap-4 items-start">
+            <h1 className="text-2xl font-bold">Guess the Secret Word</h1>
+            <button
+              onClick={() => setShowInstructions(!showInstructions)}
+              className="flex items-center justify-between px-1 lg:px-2 py-1 hover:bg-gray-50 rounded"
+            >
+              <span className="font-sm mr-2">{showInstructions ? "Hide" : "Show"} Instructions</span>
+              <svg
+                className={`w-5 h-5 transform transition-transform ${
+                  showInstructions ? "rotate-180" : ""
+                }`}
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
           </div>
+          {showInstructions && (
+            <p className="text-gray-600 px-2 py-2 bg-gray-50 rounded">
+              <strong>Instructions: </strong>Try to guess the secret word! After each guess, you'll see how
+              similar your word is to the target word based on their meanings.
+              The higher the percentage, the closer you are. Use the Random Hint
+              button if you need help getting started.
+            </p>
+          )}
           {error && <p className="text-red-600">Error: {error}</p>}
           <div className="flex space-x-2">
             <button
