@@ -131,6 +131,12 @@ class EmbeddingManager {
     // Calculate similarities with all words
     const similarities = await Promise.all(
       this.allWords.map(async (targetWord) => {
+        
+        // If it's the same word, set similarity to exactly 1.
+        if (targetWord === word) {
+          return { word: targetWord, similarity: 1 };
+        }
+        
         const { embedding: targetEmbedding } = this.cache.has(targetWord)
           ? { embedding: this.cache.get(targetWord)! }
           : await this.embed(targetWord);
