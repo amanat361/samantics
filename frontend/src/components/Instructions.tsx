@@ -1,0 +1,114 @@
+// src/components/Instructions.tsx
+import React from "react";
+import { LightbulbIcon, ShuffleIcon, SquarePlusIcon } from "lucide-react";
+import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
+
+const Instructions: React.FC = () => {
+  return (
+    <div className="text-gray-700 px-6 py-6 bg-gray-50 rounded space-y-6">
+      {/* Core Objective */}
+      <div className="space-y-2">
+        <h2 className="text-xl font-bold">How to Play 👋</h2>
+        <p>
+          Your goal is to guess the secret word! After each guess, you'll see a
+          similarity percentage that tells you how close your guess is. Higher
+          is better! The game is <strong>meant to be hard</strong> so don't give
+          up!
+        </p>
+      </div>
+
+      {/* New Game */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-[#00afb9] flex items-center gap-2">
+          <SquarePlusIcon className="w-5 h-5" />
+          New Game
+        </h3>
+        <p>
+          Click the <strong>New Game</strong> button to start a fresh game. This
+          resets your guesses and loads a new secret word. This is{" "}
+          <strong>not</strong> the daily word. Check the top of the screen to
+          see what you're guessing.
+        </p>
+      </div>
+
+      {/* Hint Feature */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
+          <LightbulbIcon className="w-5 h-5" />
+          Hint
+        </h3>
+        <p>
+          You have <strong>5 hints</strong> per game. When you click the{" "}
+          <strong>Use Hint</strong> button, you’ll be given a clue from the
+          similar words list:
+        </p>
+        <ul className="list-inside list-disc space-y-1">
+          <li>
+            <i>The first hint selects a random word from the bottom 20%.</i>
+          </li>
+          <li>
+            <i>Each subsequent hint moves up 20% in the ranking.</i>
+          </li>
+        </ul>
+        <p>
+          Hints will never reveal the secret word or repeat a word you’ve
+          already guessed.
+        </p>
+      </div>
+
+      {/* Random Guess */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-[#9f86c0] flex items-center gap-2">
+          <ShuffleIcon className="w-5 h-5" />
+          Random Guess
+        </h3>
+        <p>
+          If you're stuck, click the <strong>Random Guess</strong> button for a
+          suggestion from the available words.
+        </p>
+      </div>
+
+      {/* Reveal Answer */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
+          <CheckCircleIcon className="w-5 h-5" />
+          Reveal Answer
+        </h3>
+        <p>
+          Once you run out of hints, the <strong>Use Hint</strong> button
+          switches to <strong>Show Answer</strong>. Click it to reveal the
+          secret word. Don't be lazy!
+        </p>
+      </div>
+
+      {/* Share Feature */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
+          <ShareIcon className="w-5 h-5" />
+          Share
+        </h3>
+        <p>
+          After you win, use the <strong>Share</strong> button to share your
+          results with friends. Show off your awesome skills.
+        </p>
+      </div>
+
+      {/* Strategy Explanation */}
+      <div className="space-y-1 border-t border-gray-200 pt-4">
+        <h3 className="text-lg font-semibold">Strategy Tips</h3>
+        <p>
+          Keep in mind that your guesses don’t have to be exact synonyms. For
+          instance, if your guess “jacket” is very close, it doesn't necessarily
+          mean the answer is “coat” or “sweater” – it could be something in the
+          same semantic space, like “closet.”
+        </p>
+        <p>
+          Think about words related in context and usage, not just similar in
+          meaning.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Instructions;

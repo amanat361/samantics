@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
 import {
-  PlusCircleIcon,
   CheckCircleIcon,
-  LightBulbIcon,
   ShareIcon,
 } from "@heroicons/react/16/solid";
+import { LightbulbIcon, ShuffleIcon, SquarePlusIcon } from "lucide-react";
+import Instructions from "./components/Instructions";
 
 function App() {
   const {
@@ -114,14 +114,7 @@ function App() {
               </svg>
             </button>
           </div>
-          {showInstructions && (
-            <p className="text-gray-600 px-2 py-2 bg-gray-50 rounded">
-              <strong>Instructions: </strong>Try to guess the secret word! After
-              each guess, you'll see how similar your word is to the target word
-              based on their meanings. The higher the percentage, the closer you
-              are. Use the Hint button if you need help getting started.
-            </p>
-          )}
+          {showInstructions && <Instructions />}
           {error && <p className="text-red-600">Error: {error}</p>}
           <div className="flex sm:space-x-2 items-center sm:flex-row flex-col w-full max-sm:space-y-2">
             <button
@@ -129,7 +122,7 @@ function App() {
               className="w-full px-2 py-1.5 bg-[#00afb9] text-white rounded hover:bg-[#0081a7] transition flex items-center justify-center gap-2"
             >
               <span className="max-sm:mr-6.5">New Game</span>
-              <PlusCircleIcon className="w-4 h-4" />
+              <SquarePlusIcon className="w-4 h-4" />
             </button>
             {gameOver && (
               <button
@@ -148,9 +141,10 @@ function App() {
                     className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
                   >
                     <span className="max-sm:mr-2.5">
-                      Hint ({remainingHints})
+                      Use Hint: <strong>{remainingHints} left</strong>
                     </span>
-                    <LightBulbIcon className="w-4 h-4" />
+                    {/* <LightBulbIcon className="w-4 h-4" /> */}
+                    <LightbulbIcon className="w-4 h-4" />
                   </button>
                 ) : (
                   <button
@@ -166,7 +160,7 @@ function App() {
                   className="w-full px-2 py-1.5 bg-[#9f86c0] text-white rounded hover:bg-[#5e548e] transition flex items-center justify-center gap-2"
                 >
                   <span>Random Guess</span>
-                  <LightBulbIcon className="w-4 h-4" />
+                  <ShuffleIcon className="w-4 h-4" />
                 </button>
               </>
             )}
