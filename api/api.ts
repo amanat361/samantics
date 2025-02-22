@@ -8,6 +8,7 @@ import {
   getRandomTargetWord,
   getTargetWords,
   getTopSimilarWords,
+  computeCosineSimilarity,
 } from "./embeddings";
 
 // --- Helper Functions for Input Validation ---
@@ -38,32 +39,6 @@ function validateWords(words: unknown): string[] {
   }
   return words.map((w) => validateWord(w));
 }
-
-/**
- * Compute cosine similarity between two numeric vectors.
- */
-function cosineSimilarity(a: number[], b: number[]): number {
-  if (a.length !== b.length) {
-    throw new Error("Vectors must be of the same length to compute cosine similarity.");
-  }
-  const dotProduct = a.reduce((sum, aVal, i) => sum + aVal * b[i], 0);
-  const normA = Math.sqrt(a.reduce((sum, aVal) => sum + aVal * aVal, 0));
-  const normB = Math.sqrt(b.reduce((sum, bVal) => sum + bVal * bVal, 0));
-  if (normA === 0 || normB === 0) {
-    throw new Error("Cannot compute similarity for zero-vector(s).");
-  }
-  let similarity = dotProduct / (normA * normB);
-  
-  // Round the similarity to mitigate floating-point precision issues.
-  similarity = Number(similarity.toFixed(15));
-  
-  // Clamp the similarity to ensure it remains within [-1, 1].
-  if (similarity > 1) similarity = 1;
-  if (similarity < -1) similarity = -1;
-  
-  return similarity;
-}
-
 
 // --- CORS Helpers ---
 
@@ -129,7 +104,7 @@ const server = serve({
         const wordEmbed = await embed(validWord);
         const targetEmbed = await embed(validTarget);
 
-        const similarity = cosineSimilarity(
+        const similarity = computeCosineSimilarity(
           wordEmbed.embedding,
           targetEmbed.embedding
         );
@@ -250,7 +225,7 @@ const server = serve({
         ) {
           throw new Error("Both arrays must contain only numbers.");
         }
-        const similarity = cosineSimilarity(a, b);
+        const similarity = computeCosineSimilarity(a, b);
         return new Response(JSON.stringify({ similarity }), {
           headers: withCors({ "Content-Type": "application/json" }),
         });

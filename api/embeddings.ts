@@ -228,19 +228,34 @@ class EmbeddingManager {
     return data.embeddings;
   }
 
-  private computeCosineSimilarity(a: number[], b: number[]): number {
+  /**
+   * Compute cosine similarity between two numeric vectors.
+   */
+  computeCosineSimilarity(a: number[], b: number[]): number {
+    if (a.length !== b.length) {
+      throw new Error(
+        "Vectors must be of the same length to compute cosine similarity."
+      );
+    }
     const dotProduct = a.reduce((sum, aVal, i) => sum + aVal * b[i], 0);
     const normA = Math.sqrt(a.reduce((sum, aVal) => sum + aVal * aVal, 0));
     const normB = Math.sqrt(b.reduce((sum, bVal) => sum + bVal * bVal, 0));
-
+    if (normA === 0 || normB === 0) {
+      throw new Error("Cannot compute similarity for zero-vector(s).");
+    }
     let similarity = dotProduct / (normA * normB);
 
-    // Round to a fixed number of decimals to mitigate floating-point precision issues.
-    similarity = Number(similarity.toFixed(15));
+    // Use a small epsilon to detect near-boundary values
+    const epsilon = 1e-12;
+    if (similarity > 1 && similarity - 1 < epsilon) {
+      similarity = 1;
+    }
+    if (similarity < -1 && -1 - similarity < epsilon) {
+      similarity = -1;
+    }
 
-    // Clamp the result to ensure it never exceeds 1 or is less than -1.
-    if (similarity > 1) similarity = 1;
-    if (similarity < -1) similarity = -1;
+    // Alternatively, a direct clamp ensures the returned value is in [-1,1]
+    similarity = Math.min(1, Math.max(-1, similarity));
 
     return similarity;
   }
@@ -346,3 +361,5 @@ export const getTopSimilarWords = (word: string, limit: number) =>
   manager.getTopSimilarWords(word, limit);
 export const buildFullSimilarityGraph = () =>
   manager.buildFullSimilarityGraph();
+export const computeCosineSimilarity = (a: number[], b: number[]) =>
+  manager.computeCosineSimilarity(a, b);
