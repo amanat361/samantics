@@ -1,0 +1,110 @@
+=== Benchmark Results ===
+Date: 2025-02-22T22:40:10.766Z
+API URL: http://localhost:3000
+Base iterations per test: 100
+
+Results:
+
+GET /daily-game (first call):
+  Average: 22.01ms
+  Min: 22.01ms
+  Max: 22.01ms
+  Total: 22.01ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+GET /daily-game (cached):
+  Average: 0.48ms
+  Min: 0.27ms
+  Max: 2.37ms
+  Total: 47.89ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+GET /random-game (different targets):
+  Average: 0.24ms
+  Min: 0.13ms
+  Max: 1.31ms
+  Total: 24.00ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /similar (first call for "about"):
+  Average: 101.66ms
+  Min: 101.66ms
+  Max: 101.66ms
+  Total: 101.66ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /similar (cached for "about"):
+  Average: 0.22ms
+  Min: 0.12ms
+  Max: 2.05ms
+  Total: 22.12ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /guess (cached words):
+  Average: 0.17ms
+  Min: 0.10ms
+  Max: 1.46ms
+  Total: 16.79ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+10 concurrent similar requests:
+  Average: 66.92ms
+  Min: 0.67ms
+  Max: 660.54ms
+  Total: 669.24ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+=== Results Interpretation ===
+Response Times:
+  Excellent: < 100ms average
+  Good: < 300ms average
+  Concerning: > 500ms average
+  Problem: > 1000ms average
+
+Success Rates:
+  Expected: 100% HTTP success rate
+  Expected: 100% valid data rate
+  Investigate if either rate < 100%
+
+Caching Effectiveness:
+  Expected: Cached calls 10-100x faster than first calls
+  Expected: Consistent times for cached data (low max/min variance)
+
+Concurrent Performance:
+  Good: Average concurrent time < 2x single request time
+  Investigate if concurrent times > 5x single request time

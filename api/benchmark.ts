@@ -2,8 +2,8 @@ import { writeFileSync } from "fs";
 import { performance } from "perf_hooks";
 
 // Node 18+ has a built-in fetch. If using an earlier version, consider installing a fetch polyfill.
-const API_URL = "http://semantle-backend.qwertea.dev";
-// const API_URL = "http://localhost:3000";
+// const API_URL = "http://semantle-backend.qwertea.dev";
+const API_URL = "http://localhost:3000";
 const ITERATIONS = 100;
 const CONCURRENT_REQUESTS = 10;
 
