@@ -1,7 +1,9 @@
-// benchmark.ts
 import { writeFileSync } from "fs";
+import { performance } from "perf_hooks";
 
+// Node 18+ has a built-in fetch. If using an earlier version, consider installing a fetch polyfill.
 const API_URL = "http://semantle-backend.qwertea.dev";
+// const API_URL = "http://localhost:3000";
 const ITERATIONS = 100;
 const CONCURRENT_REQUESTS = 10;
 
@@ -11,7 +13,105 @@ interface BenchmarkResult {
   minMs: number;
   maxMs: number;
   totalMs: number;
-  successRate: number;
+  httpSuccessRate: number;
+  validDataRate: number;
+  errors: {
+    network: number;
+    invalidData: number;
+    invalidRange: number;
+  };
+  details: string[];
+}
+
+// Validation helpers
+function isValidSimilarity(similarity: number): boolean {
+  return typeof similarity === "number" && similarity >= -1 && similarity <= 1;
+}
+
+function isValidWord(word: string): boolean {
+  return (
+    typeof word === "string" && word.length > 0 && /^[a-zA-Z ]+$/.test(word)
+  );
+}
+
+function isValidSimilarWord(obj: any): boolean {
+  return obj && isValidWord(obj.word) && isValidSimilarity(obj.similarity);
+}
+
+async function validateResponse(
+  response: any,
+  endpoint: string
+): Promise<{ valid: boolean; details: string[] }> {
+  const details: string[] = [];
+
+  switch (endpoint) {
+    case "daily-game": {
+      if (!isValidWord(response.targetWord)) {
+        details.push("Invalid or missing targetWord");
+      }
+      if (!Array.isArray(response.targetWords)) {
+        details.push("targetWords is not an array");
+      } else if (!response.targetWords.every(isValidWord)) {
+        details.push("Some targetWords are invalid");
+      }
+      if (!Array.isArray(response.similarWords)) {
+        details.push("similarWords is not an array");
+      } else if (!response.similarWords.every(isValidSimilarWord)) {
+        details.push("Some similarWords entries are invalid");
+      }
+      if (typeof response.dayNumber !== "number" || response.dayNumber < 1) {
+        details.push("Invalid dayNumber");
+      }
+      return { valid: details.length === 0, details };
+    }
+    case "random-game": {
+      if (!isValidWord(response.targetWord)) {
+        details.push("Invalid or missing targetWord");
+      }
+      if (!Array.isArray(response.targetWords)) {
+        details.push("targetWords is not an array");
+      } else if (!response.targetWords.every(isValidWord)) {
+        details.push("Some targetWords are invalid");
+      }
+      if (!Array.isArray(response.similarWords)) {
+        details.push("similarWords is not an array");
+      } else if (!response.similarWords.every(isValidSimilarWord)) {
+        details.push("Some similarWords entries are invalid");
+      }
+      return { valid: details.length === 0, details };
+    }
+    case "similar": {
+      if (!Array.isArray(response.similarWords)) {
+        details.push("similarWords is not an array");
+        return { valid: false, details };
+      }
+      const invalidEntries = response.similarWords.filter(
+        (s: any) => !isValidSimilarWord(s)
+      );
+      if (invalidEntries.length > 0) {
+        details.push(
+          `${invalidEntries.length} invalid similarity entries found`
+        );
+      }
+      // Check if similarities are properly ordered (descending)
+      const similarities = response.similarWords.map((s: any) => s.similarity);
+      for (let i = 1; i < similarities.length; i++) {
+        if (similarities[i] > similarities[i - 1]) {
+          details.push("Similarities not properly sorted (desc)");
+          break;
+        }
+      }
+      return { valid: details.length === 0, details };
+    }
+    case "guess": {
+      if (!isValidSimilarity(response.similarity)) {
+        details.push("Invalid similarity value");
+      }
+      return { valid: details.length === 0, details };
+    }
+    default:
+      return { valid: false, details: ["Unknown endpoint"] };
+  }
 }
 
 async function time(fn: () => Promise<any>): Promise<number> {
@@ -23,18 +123,38 @@ async function time(fn: () => Promise<any>): Promise<number> {
 async function benchmarkEndpoint(
   name: string,
   fn: () => Promise<any>,
+  endpoint: string,
   iterations: number
 ): Promise<BenchmarkResult> {
   const times: number[] = [];
-  let successes = 0;
+  let httpSuccesses = 0;
+  let validData = 0;
+  const errors = {
+    network: 0,
+    invalidData: 0,
+    invalidRange: 0,
+  };
+  const details: string[] = [];
 
   for (let i = 0; i < iterations; i++) {
     try {
-      const ms = await time(fn);
+      let response: any;
+      const ms = await time(async () => {
+        response = await fn();
+      });
       times.push(ms);
-      successes++;
-    } catch (e) {
-      console.error(`Error in ${name}:`, e);
+      httpSuccesses++;
+
+      const validation = await validateResponse(response, endpoint);
+      if (validation.valid) {
+        validData++;
+      } else {
+        errors.invalidData++;
+        details.push(`Iteration ${i + 1}: ${validation.details.join(", ")}`);
+      }
+    } catch (e: any) {
+      errors.network++;
+      details.push(`Iteration ${i + 1}: Network error - ${e.message}`);
     }
   }
 
@@ -44,7 +164,10 @@ async function benchmarkEndpoint(
     minMs: Math.min(...times),
     maxMs: Math.max(...times),
     totalMs: times.reduce((a, b) => a + b, 0),
-    successRate: (successes / iterations) * 100,
+    httpSuccessRate: (httpSuccesses / iterations) * 100,
+    validDataRate: (validData / iterations) * 100,
+    errors,
+    details,
   };
 }
 
@@ -55,12 +178,21 @@ async function runBenchmarks() {
 
   // Get test data
   console.log("Getting test data...");
-  const { targetWords } = await fetch(`${API_URL}/target-words`).then((r) =>
-    r.json()
-  );
-  const { words: allWords } = await fetch(`${API_URL}/cached`).then((r) =>
-    r.json()
-  );
+  let targetWords: string[] = [];
+  let allWords: string[] = [];
+
+  try {
+    const targetResponse = await fetch(`${API_URL}/target-words`);
+    const targetJson = await targetResponse.json();
+    targetWords = targetJson.targetWords;
+
+    const wordsResponse = await fetch(`${API_URL}/cached`);
+    const wordsJson = await wordsResponse.json();
+    allWords = wordsJson.words;
+  } catch (e) {
+    console.error("Failed to get test data:", e);
+    return;
+  }
 
   const testWords = allWords.slice(0, 10);
   const testTargets = targetWords.slice(0, 5);
@@ -71,8 +203,9 @@ async function runBenchmarks() {
       "GET /daily-game (first call)",
       async () => {
         const response = await fetch(`${API_URL}/daily-game`);
-        await response.json();
+        return await response.json();
       },
+      "daily-game",
       1
     )
   );
@@ -82,8 +215,9 @@ async function runBenchmarks() {
       "GET /daily-game (cached)",
       async () => {
         const response = await fetch(`${API_URL}/daily-game`);
-        await response.json();
+        return await response.json();
       },
+      "daily-game",
       ITERATIONS
     )
   );
@@ -94,8 +228,9 @@ async function runBenchmarks() {
       "GET /random-game (different targets)",
       async () => {
         const response = await fetch(`${API_URL}/random-game`);
-        await response.json();
+        return await response.json();
       },
+      "random-game",
       ITERATIONS
     )
   );
@@ -111,8 +246,9 @@ async function runBenchmarks() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ word: testWord, limit: 100 }),
         });
-        await response.json();
+        return await response.json();
       },
+      "similar",
       1
     )
   );
@@ -126,13 +262,14 @@ async function runBenchmarks() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ word: testWord, limit: 100 }),
         });
-        await response.json();
+        return await response.json();
       },
+      "similar",
       ITERATIONS
     )
   );
 
-  // Test guess endpoint with different combinations
+  // Test /guess endpoint with different combinations
   results.push(
     await benchmarkEndpoint(
       "POST /guess (cached words)",
@@ -145,8 +282,9 @@ async function runBenchmarks() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ word: guess, target }),
         });
-        await response.json();
+        return await response.json();
       },
+      "guess",
       ITERATIONS
     )
   );
@@ -156,16 +294,18 @@ async function runBenchmarks() {
     await benchmarkEndpoint(
       `${CONCURRENT_REQUESTS} concurrent similar requests`,
       async () => {
-        const promises = testWords.slice(0, CONCURRENT_REQUESTS).map((word: string) =>
+        const promises = testWords.slice(0, CONCURRENT_REQUESTS).map((word) =>
           fetch(`${API_URL}/similar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ word, limit: 100 }),
           }).then((r) => r.json())
         );
-        await Promise.all(promises);
+        const res = await Promise.all(promises);
+        return res[0]; // Return first result for validation
       },
-      ITERATIONS / 10
+      "similar",
+      Math.floor(ITERATIONS / 10)
     )
   );
 
@@ -182,15 +322,64 @@ async function runBenchmarks() {
     output.push(`  Min: ${result.minMs.toFixed(2)}ms`);
     output.push(`  Max: ${result.maxMs.toFixed(2)}ms`);
     output.push(`  Total: ${result.totalMs.toFixed(2)}ms`);
-    output.push(`  Success Rate: ${result.successRate.toFixed(1)}%`);
+    output.push(`  HTTP Success Rate: ${result.httpSuccessRate.toFixed(1)}%`);
+    output.push(`  Valid Data Rate: ${result.validDataRate.toFixed(1)}%`);
+    output.push(`  Errors:`);
+    output.push(`    Network: ${result.errors.network}`);
+    output.push(`    Invalid Data: ${result.errors.invalidData}`);
+    output.push(`    Invalid Range: ${result.errors.invalidRange}`);
+
+    if (result.details.length > 0) {
+      output.push("\n  Error Details:");
+      result.details.forEach((detail) => {
+        output.push(`    - ${detail}`);
+      });
+    }
   });
 
-  // Save results
+  // Add interpretation guide
+  output.push("\n=== Results Interpretation ===");
+  output.push("Response Times:");
+  output.push("  Excellent: < 100ms average");
+  output.push("  Good: < 300ms average");
+  output.push("  Concerning: > 500ms average");
+  output.push("  Problem: > 1000ms average");
+
+  output.push("\nSuccess Rates:");
+  output.push("  Expected: 100% HTTP success rate");
+  output.push("  Expected: 100% valid data rate");
+  output.push("  Investigate if either rate < 100%");
+
+  output.push("\nCaching Effectiveness:");
+  output.push("  Expected: Cached calls 10-100x faster than first calls");
+  output.push(
+    "  Expected: Consistent times for cached data (low max/min variance)"
+  );
+
+  output.push("\nConcurrent Performance:");
+  output.push("  Good: Average concurrent time < 2x single request time");
+  output.push("  Investigate if concurrent times > 5x single request time");
+
+  // Save results to a timestamped file
   const filename = `benchmarks/benchmark-results-${new Date()
     .toISOString()
     .replace(/[:.]/g, "-")}.txt`;
   writeFileSync(filename, output.join("\n"));
   console.log(`Benchmarks complete! Results saved to ${filename}`);
+
+  // Log immediate concerns
+  const problems = results.filter(
+    (r) => r.validDataRate < 100 || r.averageMs > 1000 || r.errors.network > 0
+  );
+
+  if (problems.length > 0) {
+    console.error("\n⚠️ Issues requiring attention:");
+    problems.forEach((p) => {
+      console.error(`- ${p.name}: ${p.details.join(", ")}`);
+    });
+  } else {
+    console.log("\n✅ All benchmarks passed expected thresholds!");
+  }
 }
 
-runBenchmarks().catch(console.error);
+runBenchmarks().catch((err) => console.error(err));

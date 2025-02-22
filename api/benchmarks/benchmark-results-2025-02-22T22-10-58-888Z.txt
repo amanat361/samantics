@@ -1,0 +1,138 @@
+=== Benchmark Results ===
+Date: 2025-02-22T22:10:58.888Z
+API URL: http://semantle-backend.qwertea.dev
+Base iterations per test: 100
+
+Results:
+
+GET /daily-game (first call):
+  Average: 76.18ms
+  Min: 76.18ms
+  Max: 76.18ms
+  Total: 76.18ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+GET /daily-game (cached):
+  Average: 93.73ms
+  Min: 74.44ms
+  Max: 119.59ms
+  Total: 9373.32ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+GET /random-game (different targets):
+  Average: 92.70ms
+  Min: 71.31ms
+  Max: 131.94ms
+  Total: 9269.90ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 74.0%
+  Errors:
+    Network: 0
+    Invalid Data: 26
+    Invalid Range: 0
+
+  Error Details:
+    - Iteration 2: Some similarWords entries are invalid
+    - Iteration 3: Some similarWords entries are invalid
+    - Iteration 9: Some similarWords entries are invalid
+    - Iteration 12: Some similarWords entries are invalid
+    - Iteration 14: Some similarWords entries are invalid
+    - Iteration 15: Some similarWords entries are invalid
+    - Iteration 21: Some similarWords entries are invalid
+    - Iteration 24: Some similarWords entries are invalid
+    - Iteration 25: Some similarWords entries are invalid
+    - Iteration 31: Some similarWords entries are invalid
+    - Iteration 35: Some similarWords entries are invalid
+    - Iteration 37: Some similarWords entries are invalid
+    - Iteration 44: Some similarWords entries are invalid
+    - Iteration 48: Some similarWords entries are invalid
+    - Iteration 50: Some similarWords entries are invalid
+    - Iteration 51: Some similarWords entries are invalid
+    - Iteration 53: Some similarWords entries are invalid
+    - Iteration 63: Some similarWords entries are invalid
+    - Iteration 66: Some similarWords entries are invalid
+    - Iteration 68: Some similarWords entries are invalid
+    - Iteration 82: Some similarWords entries are invalid
+    - Iteration 84: Some similarWords entries are invalid
+    - Iteration 86: Some similarWords entries are invalid
+    - Iteration 94: Some similarWords entries are invalid
+    - Iteration 99: Some similarWords entries are invalid
+    - Iteration 100: Some similarWords entries are invalid
+
+POST /similar (first call for "about"):
+  Average: 82.40ms
+  Min: 82.40ms
+  Max: 82.40ms
+  Total: 82.40ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /similar (cached for "about"):
+  Average: 87.85ms
+  Min: 70.36ms
+  Max: 171.27ms
+  Total: 8785.30ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /guess (cached words):
+  Average: 87.39ms
+  Min: 65.20ms
+  Max: 137.66ms
+  Total: 8738.58ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+10 concurrent similar requests:
+  Average: 120.41ms
+  Min: 85.25ms
+  Max: 242.49ms
+  Total: 1204.13ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+=== Results Interpretation ===
+Response Times:
+  Excellent: < 100ms average
+  Good: < 300ms average
+  Concerning: > 500ms average
+  Problem: > 1000ms average
+
+Success Rates:
+  Expected: 100% HTTP success rate
+  Expected: 100% valid data rate
+  Investigate if either rate < 100%
+
+Caching Effectiveness:
+  Expected: Cached calls 10-100x faster than first calls
+  Expected: Consistent times for cached data (low max/min variance)
+
+Concurrent Performance:
+  Good: Average concurrent time < 2x single request time
+  Investigate if concurrent times > 5x single request time

@@ -1,0 +1,55 @@
+=== Benchmark Results ===
+Date: 2025-02-22T22:05:55.210Z
+API URL: http://semantle-backend.qwertea.dev
+Base iterations per test: 100
+
+Results:
+
+GET /daily-game (first call):
+  Average: 85.49ms
+  Min: 85.49ms
+  Max: 85.49ms
+  Total: 85.49ms
+  Success Rate: 100.0%
+
+GET /daily-game (cached):
+  Average: 95.92ms
+  Min: 70.44ms
+  Max: 202.37ms
+  Total: 9591.67ms
+  Success Rate: 100.0%
+
+GET /random-game (different targets):
+  Average: 91.52ms
+  Min: 71.98ms
+  Max: 204.18ms
+  Total: 9152.47ms
+  Success Rate: 100.0%
+
+POST /similar (first call for "about"):
+  Average: 91.97ms
+  Min: 91.97ms
+  Max: 91.97ms
+  Total: 91.97ms
+  Success Rate: 100.0%
+
+POST /similar (cached for "about"):
+  Average: 95.02ms
+  Min: 73.79ms
+  Max: 258.53ms
+  Total: 9501.58ms
+  Success Rate: 100.0%
+
+POST /guess (cached words):
+  Average: 87.93ms
+  Min: 63.05ms
+  Max: 212.66ms
+  Total: 8792.84ms
+  Success Rate: 100.0%
+
+10 concurrent similar requests:
+  Average: 110.40ms
+  Min: 88.98ms
+  Max: 186.40ms
+  Total: 1103.96ms
+  Success Rate: 100.0%

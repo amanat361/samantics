@@ -232,7 +232,17 @@ class EmbeddingManager {
     const dotProduct = a.reduce((sum, aVal, i) => sum + aVal * b[i], 0);
     const normA = Math.sqrt(a.reduce((sum, aVal) => sum + aVal * aVal, 0));
     const normB = Math.sqrt(b.reduce((sum, bVal) => sum + bVal * bVal, 0));
-    return dotProduct / (normA * normB);
+
+    let similarity = dotProduct / (normA * normB);
+
+    // Round to a fixed number of decimals to mitigate floating-point precision issues.
+    similarity = Number(similarity.toFixed(15));
+
+    // Clamp the result to ensure it never exceeds 1 or is less than -1.
+    if (similarity > 1) similarity = 1;
+    if (similarity < -1) similarity = -1;
+
+    return similarity;
   }
 
   async embed(
