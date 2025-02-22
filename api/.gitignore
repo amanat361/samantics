@@ -173,3 +173,6 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# The similarity graph is too large to be tracked in the repo
+data/similarityGraph.json
