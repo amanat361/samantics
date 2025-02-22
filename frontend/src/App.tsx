@@ -1,7 +1,12 @@
 // src/App.tsx
 import React, { useState } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
-import { PlusCircleIcon, CheckCircleIcon, LightBulbIcon } from "@heroicons/react/16/solid";
+import {
+  PlusCircleIcon,
+  CheckCircleIcon,
+  LightBulbIcon,
+  ShareIcon,
+} from "@heroicons/react/16/solid";
 // import { QuestionMarkCircleIcon } from "@heroicons/react/16/solid";
 
 function App() {
@@ -28,13 +33,42 @@ function App() {
     setInputValue("");
   }
 
+  function copyToClipboard(text: string) {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        // You could add a toast notification here if you want
+        alert("Results copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  }
+
+  async function handleShare() {
+    const shareUrl = "https://play.qwertea.dev";
+    const shareMessage = `It took me ${guesses.length} guesses to figure out Day #${dayNumber}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Samantics", text: shareMessage, url: shareUrl });
+      } catch (err) {
+        console.error("Failed to share: ", err);
+        copyToClipboard(shareMessage);
+      }
+    } else {
+      copyToClipboard(shareMessage);
+    }
+  }
+
   function DayNumber() {
     return dayNumber > 0 ? (
       <span>
         You're guessing the word for <strong>Day #{dayNumber}!</strong>
       </span>
     ) : dayNumber === 0 ? (
-      <span>You're guessing a <strong>random</strong> word!</span>
+      <span>
+        You're guessing a <strong>random</strong> word!
+      </span>
     ) : (
       <span>Loading...</span>
     );
@@ -93,6 +127,15 @@ function App() {
               <span className="max-sm:mr-6.5">New Game</span>
               <PlusCircleIcon className="w-4 h-4" />
             </button>
+            {gameOver && (
+              <button
+                onClick={() => handleShare()}
+                className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
+              >
+                <span className="max-sm:mr-2.5">Share</span>
+                <ShareIcon className="w-4 h-4" />
+              </button>
+            )}
             {!revealed && !gameOver && (
               <>
                 <button
@@ -158,7 +201,10 @@ function App() {
                   }}
                 >
                   {guesses[guesses.length - 1].word} -{" "}
-                  {(getWeight(guesses[guesses.length - 1].similarity) * 100).toFixed(2)}%
+                  {(
+                    getWeight(guesses[guesses.length - 1].similarity) * 100
+                  ).toFixed(2)}
+                  %
                 </div>
               </div>
               <hr className="border-gray-200 my-4" />
