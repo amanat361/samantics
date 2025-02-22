@@ -47,7 +47,8 @@ function App() {
 
   async function handleShare() {
     const shareUrl = "https://play.qwertea.dev";
-    const shareMessage = `It took me ${guesses.length} guesses to figure out Day #${dayNumber}`;
+    const guessText = guesses.length === 1 ? "guess" : "guesses";
+    const shareMessage = `It took me ${guesses.length} ${guessText} to figure out Day #${dayNumber}`;
     if (navigator.share) {
       try {
         await navigator.share({ title: "Samantics", text: shareMessage, url: shareUrl });
