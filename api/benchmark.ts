@@ -1,7 +1,7 @@
 // benchmark.ts
 import { writeFileSync } from "fs";
 
-const API_URL = "https://semantle-backend.qwertea.dev";
+const API_URL = "http://semantle-backend.qwertea.dev";
 const ITERATIONS = 100;
 const CONCURRENT_REQUESTS = 10;
 
@@ -48,45 +48,98 @@ async function benchmarkEndpoint(
   };
 }
 
-async function getTargets(count: number): Promise<string[]> {
-  const targets: string[] = [];
-  for (let i = 0; i < count; i++) {
-    const response = await fetch(`${API_URL}/target`);
-    const { targetWord } = await response.json();
-    targets.push(targetWord);
-  }
-  return targets;
-}
-
 async function runBenchmarks() {
   console.log("Starting benchmarks...");
   const results: BenchmarkResult[] = [];
   const output: string[] = [];
 
-  // Get some target words for testing
-  console.log("Getting target words...");
-  const targets = await getTargets(5);
-  const guessWords = ["hello", "world", "test", "benchmark", "computer"];
+  // Get test data
+  console.log("Getting test data...");
+  const { targetWords } = await fetch(`${API_URL}/target-words`).then((r) =>
+    r.json()
+  );
+  const { words: allWords } = await fetch(`${API_URL}/cached`).then((r) =>
+    r.json()
+  );
 
-  // Benchmark /target endpoint
+  const testWords = allWords.slice(0, 10);
+  const testTargets = targetWords.slice(0, 5);
+
+  // Test /daily-game (should be cached after first call)
   results.push(
     await benchmarkEndpoint(
-      "GET /target",
+      "GET /daily-game (first call)",
       async () => {
-        const response = await fetch(`${API_URL}/target`);
+        const response = await fetch(`${API_URL}/daily-game`);
+        await response.json();
+      },
+      1
+    )
+  );
+
+  results.push(
+    await benchmarkEndpoint(
+      "GET /daily-game (cached)",
+      async () => {
+        const response = await fetch(`${API_URL}/daily-game`);
         await response.json();
       },
       ITERATIONS
     )
   );
 
-  // Benchmark new /guess endpoint
+  // Test /random-game with different targets
   results.push(
     await benchmarkEndpoint(
-      "POST /guess (new method)",
+      "GET /random-game (different targets)",
       async () => {
-        const target = targets[Math.floor(Math.random() * targets.length)];
-        const guess = guessWords[Math.floor(Math.random() * guessWords.length)];
+        const response = await fetch(`${API_URL}/random-game`);
+        await response.json();
+      },
+      ITERATIONS
+    )
+  );
+
+  // Test /similar endpoint with caching
+  const testWord = testWords[0];
+  results.push(
+    await benchmarkEndpoint(
+      `POST /similar (first call for "${testWord}")`,
+      async () => {
+        const response = await fetch(`${API_URL}/similar`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ word: testWord, limit: 100 }),
+        });
+        await response.json();
+      },
+      1
+    )
+  );
+
+  results.push(
+    await benchmarkEndpoint(
+      `POST /similar (cached for "${testWord}")`,
+      async () => {
+        const response = await fetch(`${API_URL}/similar`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ word: testWord, limit: 100 }),
+        });
+        await response.json();
+      },
+      ITERATIONS
+    )
+  );
+
+  // Test guess endpoint with different combinations
+  results.push(
+    await benchmarkEndpoint(
+      "POST /guess (cached words)",
+      async () => {
+        const target =
+          testTargets[Math.floor(Math.random() * testTargets.length)];
+        const guess = testWords[Math.floor(Math.random() * testWords.length)];
         const response = await fetch(`${API_URL}/guess`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -98,59 +151,18 @@ async function runBenchmarks() {
     )
   );
 
-  // Benchmark old method (separate embed + similarity calls)
+  // Test concurrent requests
   results.push(
     await benchmarkEndpoint(
-      "Old method (embed + similarity)",
+      `${CONCURRENT_REQUESTS} concurrent similar requests`,
       async () => {
-        const target = targets[Math.floor(Math.random() * targets.length)];
-        const guess = guessWords[Math.floor(Math.random() * guessWords.length)];
-
-        // Get embeddings
-        const [guessEmbed, targetEmbed] = await Promise.all([
-          fetch(`${API_URL}/embed`, {
+        const promises = testWords.slice(0, CONCURRENT_REQUESTS).map((word: string) =>
+          fetch(`${API_URL}/similar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ word: guess }),
-          }).then((r) => r.json()),
-          fetch(`${API_URL}/embed`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ word: target }),
-          }).then((r) => r.json()),
-        ]);
-
-        // Get similarity
-        await fetch(`${API_URL}/similarity`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            a: guessEmbed.embedding,
-            b: targetEmbed.embedding,
-          }),
-        }).then((r) => r.json());
-      },
-      ITERATIONS
-    )
-  );
-
-  // Benchmark concurrent guesses
-  results.push(
-    await benchmarkEndpoint(
-      `${CONCURRENT_REQUESTS} concurrent guesses`,
-      async () => {
-        const target = targets[Math.floor(Math.random() * targets.length)];
-        const promises = Array(CONCURRENT_REQUESTS)
-          .fill(0)
-          .map(() => {
-            const guess =
-              guessWords[Math.floor(Math.random() * guessWords.length)];
-            return fetch(`${API_URL}/guess`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ word: guess, target }),
-            }).then((r) => r.json());
-          });
+            body: JSON.stringify({ word, limit: 100 }),
+          }).then((r) => r.json())
+        );
         await Promise.all(promises);
       },
       ITERATIONS / 10
@@ -160,7 +172,8 @@ async function runBenchmarks() {
   // Format results
   output.push("=== Benchmark Results ===");
   output.push(`Date: ${new Date().toISOString()}`);
-  output.push(`Iterations per test: ${ITERATIONS}`);
+  output.push(`API URL: ${API_URL}`);
+  output.push(`Base iterations per test: ${ITERATIONS}`);
   output.push("\nResults:");
 
   results.forEach((result) => {
@@ -173,8 +186,11 @@ async function runBenchmarks() {
   });
 
   // Save results
-  writeFileSync("benchmark-results.txt", output.join("\n"));
-  console.log("Benchmarks complete! Results saved to benchmark-results.txt");
+  const filename = `benchmarks/benchmark-results-${new Date()
+    .toISOString()
+    .replace(/[:.]/g, "-")}.txt`;
+  writeFileSync(filename, output.join("\n"));
+  console.log(`Benchmarks complete! Results saved to ${filename}`);
 }
 
 runBenchmarks().catch(console.error);

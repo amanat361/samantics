@@ -7,9 +7,19 @@ interface EmbeddingCache {
   created: string;
 }
 
+interface SimilarityGraph {
+  [word: string]: {
+    word: string;
+    similarity: number;
+  }[];
+}
+
 class EmbeddingManager {
   private cache: Map<string, number[]> = new Map();
+  private similarityGraph: SimilarityGraph = {};
   private cacheFile = "data/embeddings.json";
+  private graphFile = "data/similarityGraph.json";
+  private allWords: string[] = [];
   private targetWords: string[] = [];
   private readonly OLLAMA_URL: string;
   private readonly headers: HeadersInit;
@@ -24,6 +34,31 @@ class EmbeddingManager {
 
     this.loadCache();
     this.loadTargetWords();
+    this.loadAllWords();
+    this.loadSimilarityGraph();
+    this.initializeIfNeeded();
+  }
+
+  private async initializeIfNeeded() {
+    const needsSeeding = this.cache.size < this.allWords.length;
+    const needsGraph =
+      Object.keys(this.similarityGraph).length < this.targetWords.length;
+
+    if (needsSeeding || needsGraph) {
+      console.log("Initializing missing data...");
+
+      if (needsSeeding) {
+        console.log("Embeddings cache incomplete. Running seedEmbeddings...");
+        await this.seedEmbeddings();
+      }
+
+      if (needsGraph) {
+        console.log("Similarity graph incomplete. Building graph...");
+        await this.buildFullSimilarityGraph();
+      }
+
+      console.log("Initialization complete!");
+    }
   }
 
   private loadCache() {
@@ -40,6 +75,105 @@ class EmbeddingManager {
         "No embeddings cache found. Call seedEmbeddings() to precompute common words."
       );
     }
+  }
+
+  private loadAllWords() {
+    try {
+      this.allWords = readFileSync("data/words.txt", "utf-8")
+        .split("\n")
+        .filter(Boolean)
+        .map((w) => w.trim());
+      console.log(`Loaded ${this.allWords.length} words`);
+    } catch (e) {
+      console.warn("No words.txt found");
+      this.allWords = [];
+    }
+  }
+
+  private loadSimilarityGraph() {
+    try {
+      this.similarityGraph = JSON.parse(readFileSync(this.graphFile, "utf-8"));
+      console.log(
+        `Loaded similarity graph for ${
+          Object.keys(this.similarityGraph).length
+        } words`
+      );
+    } catch (e) {
+      console.warn("No similarity graph found. Will build as needed.");
+      this.similarityGraph = {};
+    }
+  }
+
+  private saveSimilarityGraph() {
+    writeFileSync(this.graphFile, JSON.stringify(this.similarityGraph));
+  }
+
+  async getTopSimilarWords(
+    word: string,
+    limit: number = 100
+  ): Promise<{ word: string; similarity: number }[]> {
+    // Check if we have pre-computed similarities
+    if (this.similarityGraph[word]) {
+      const cached = this.similarityGraph[word];
+      // If we have enough cached results, return them
+      if (cached.length >= limit) {
+        return cached.slice(0, limit);
+      }
+      // If we need more results, recompute
+      console.log(
+        `Need more similarities for ${word} (cached: ${cached.length}, requested: ${limit})`
+      );
+    }
+
+    // Get embedding for input word
+    const { embedding } = await this.embed(word);
+
+    // Calculate similarities with all words
+    const similarities = await Promise.all(
+      this.allWords.map(async (targetWord) => {
+        const { embedding: targetEmbedding } = this.cache.has(targetWord)
+          ? { embedding: this.cache.get(targetWord)! }
+          : await this.embed(targetWord);
+
+        return {
+          word: targetWord,
+          similarity: this.computeCosineSimilarity(embedding, targetEmbedding),
+        };
+      })
+    );
+
+    // Sort by similarity
+    similarities.sort((a, b) => b.similarity - a.similarity);
+
+    // Store all results (or at least more than currently requested)
+    const topResults = similarities.slice(0, Math.max(limit, 100)); // Store at least 100 results
+
+    // Cache the results
+    this.similarityGraph[word] = topResults;
+    this.saveSimilarityGraph();
+
+    return topResults.slice(0, limit);
+  }
+
+  // Optional: Method to precompute similarities for all target words
+  async buildFullSimilarityGraph() {
+    const words = this.targetWords;
+
+    console.log("Building full similarity graph...");
+    const total = words.length;
+    let completed = 0;
+
+    for (const word of words) {
+      if (!this.similarityGraph[word]) {
+        console.log(
+          `Computing similarities for: ${word} (${++completed}/${total})`
+        );
+        await this.getTopSimilarWords(word);
+      } else {
+        completed++;
+      }
+    }
+    console.log("Similarity graph building complete!");
   }
 
   private loadTargetWords() {
@@ -92,6 +226,13 @@ class EmbeddingManager {
     }
 
     return data.embeddings;
+  }
+
+  private computeCosineSimilarity(a: number[], b: number[]): number {
+    const dotProduct = a.reduce((sum, aVal, i) => sum + aVal * b[i], 0);
+    const normA = Math.sqrt(a.reduce((sum, aVal) => sum + aVal * aVal, 0));
+    const normB = Math.sqrt(b.reduce((sum, bVal) => sum + bVal * bVal, 0));
+    return dotProduct / (normA * normB);
   }
 
   async embed(
@@ -162,10 +303,7 @@ class EmbeddingManager {
 
   async seedEmbeddings() {
     try {
-      const words = readFileSync("data/words.txt", "utf-8")
-        .split("\n")
-        .filter(Boolean)
-        .map((w) => w.trim());
+      const words = this.allWords;
 
       const BATCH_SIZE = 1000;
       for (let i = 0; i < words.length; i += BATCH_SIZE) {
@@ -194,3 +332,7 @@ export const seedEmbeddings = () => manager.seedEmbeddings();
 export const getWords = () => manager.getWords();
 export const getRandomTargetWord = () => manager.getRandomTargetWord();
 export const getTargetWords = () => manager.getTargetWords();
+export const getTopSimilarWords = (word: string, limit: number) =>
+  manager.getTopSimilarWords(word, limit);
+export const buildFullSimilarityGraph = () =>
+  manager.buildFullSimilarityGraph();

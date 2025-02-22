@@ -1,0 +1,55 @@
+=== Benchmark Results ===
+Date: 2025-02-22T21:59:58.383Z
+API URL: http://localhost:3000
+Base iterations per test: 100
+
+Results:
+
+GET /daily-game (first call):
+  Average: 0.47ms
+  Min: 0.47ms
+  Max: 0.47ms
+  Total: 0.47ms
+  Success Rate: 100.0%
+
+GET /daily-game (cached):
+  Average: 0.15ms
+  Min: 0.08ms
+  Max: 1.85ms
+  Total: 15.27ms
+  Success Rate: 100.0%
+
+GET /random-game (different targets):
+  Average: 0.10ms
+  Min: 0.08ms
+  Max: 0.32ms
+  Total: 9.62ms
+  Success Rate: 100.0%
+
+POST /similar (first call for "about"):
+  Average: 62.33ms
+  Min: 62.33ms
+  Max: 62.33ms
+  Total: 62.33ms
+  Success Rate: 100.0%
+
+POST /similar (cached for "about"):
+  Average: 0.20ms
+  Min: 0.11ms
+  Max: 1.57ms
+  Total: 19.69ms
+  Success Rate: 100.0%
+
+POST /guess (cached words):
+  Average: 0.16ms
+  Min: 0.10ms
+  Max: 1.11ms
+  Total: 15.73ms
+  Success Rate: 100.0%
+
+10 concurrent similar requests:
+  Average: 51.91ms
+  Min: 0.41ms
+  Max: 510.87ms
+  Total: 519.15ms
+  Success Rate: 100.0%

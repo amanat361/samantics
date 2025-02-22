@@ -7,6 +7,7 @@ import {
   getWords,
   getRandomTargetWord,
   getTargetWords,
+  getTopSimilarWords,
 } from "./embeddings";
 
 // --- Helper Functions for Input Validation ---
@@ -209,6 +210,17 @@ const server = serve({
         });
       }
 
+      // Endpoint: POST /similar
+      if (pathname === "/similar" && request.method === "POST") {
+        const { word, limit = 10 } = await request.json();
+        const validWord = validateWord(word);
+        const similarWords = await getTopSimilarWords(validWord, limit);
+
+        return new Response(JSON.stringify({ similarWords }), {
+          headers: withCors({ "Content-Type": "application/json" }),
+        });
+      }
+
       // Endpoint: POST /seed
       if (pathname === "/seed" && request.method === "POST") {
         await seedEmbeddings();
@@ -234,6 +246,54 @@ const server = serve({
         return new Response(JSON.stringify({ similarity }), {
           headers: withCors({ "Content-Type": "application/json" }),
         });
+      }
+
+      // Endpoint: GET /daily-game
+      if (pathname === "/daily-game" && request.method === "GET") {
+        const dailyWord = getDailyWord();
+        const targetWords = getTargetWords();
+        const similarWords = await getTopSimilarWords(dailyWord, 100);
+
+        // Calculate days since 2/20/2025
+        const startDate = new Date("2025-02-20T00:00:00-08:00");
+        const today = new Date().toLocaleDateString("en-US", {
+          timeZone: "America/Los_Angeles",
+        });
+        const todayDate = new Date(today);
+        const dayNumber =
+          Math.floor(
+            (todayDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+          ) + 1;
+
+        return new Response(
+          JSON.stringify({
+            targetWord: dailyWord,
+            targetWords,
+            similarWords,
+            dayNumber,
+          }),
+          {
+            headers: withCors({ "Content-Type": "application/json" }),
+          }
+        );
+      }
+
+      // Endpoint: GET /random-game
+      if (pathname === "/random-game" && request.method === "GET") {
+        const targetWord = getRandomTargetWord();
+        const targetWords = getTargetWords();
+        const similarWords = await getTopSimilarWords(targetWord, 100);
+
+        return new Response(
+          JSON.stringify({
+            targetWord,
+            targetWords,
+            similarWords,
+          }),
+          {
+            headers: withCors({ "Content-Type": "application/json" }),
+          }
+        );
       }
 
       // Fallback for unknown routes
