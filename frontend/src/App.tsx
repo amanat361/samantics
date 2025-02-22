@@ -7,7 +7,6 @@ import {
   LightBulbIcon,
   ShareIcon,
 } from "@heroicons/react/16/solid";
-// import { QuestionMarkCircleIcon } from "@heroicons/react/16/solid";
 
 function App() {
   const {
@@ -17,9 +16,11 @@ function App() {
     error,
     gameOver,
     revealed,
+    remainingHints,
     startNewGame,
     guessWord,
     guessRandomWord,
+    consumeHint,
     setRevealed,
   } = useSemantleGame();
 
@@ -37,7 +38,6 @@ function App() {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        // You could add a toast notification here if you want
         alert("Results copied to clipboard!");
       })
       .catch((err) => {
@@ -51,7 +51,11 @@ function App() {
     const shareMessage = `It took me ${guesses.length} ${guessText} to figure out Day #${dayNumber}`;
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Samantics", text: shareMessage, url: shareUrl });
+        await navigator.share({
+          title: "Samantics",
+          text: shareMessage,
+          url: shareUrl,
+        });
       } catch (err) {
         console.error("Failed to share: ", err);
         copyToClipboard(shareMessage);
@@ -92,7 +96,6 @@ function App() {
               onClick={() => setShowInstructions(!showInstructions)}
               className="flex items-center justify-between px-1 lg:px-2 py-1 hover:bg-gray-50 rounded"
             >
-              {/* <QuestionMarkCircleIcon className="w-4 h-4 mr-2" /> */}
               <span className="font-sm mr-2">
                 {showInstructions ? "Hide" : "Show"} Instructions
               </span>
@@ -116,7 +119,7 @@ function App() {
               <strong>Instructions: </strong>Try to guess the secret word! After
               each guess, you'll see how similar your word is to the target word
               based on their meanings. The higher the percentage, the closer you
-              are. Use the Random Hint button if you need help getting started.
+              are. Use the Hint button if you need help getting started.
             </p>
           )}
           {error && <p className="text-red-600">Error: {error}</p>}
@@ -139,13 +142,25 @@ function App() {
             )}
             {!revealed && !gameOver && (
               <>
-                <button
-                  onClick={() => setRevealed(true)}
-                  className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
-                >
-                  <span className="max-sm:mr-2.5">Show Answer</span>
-                  <CheckCircleIcon className="w-4 h-4" />
-                </button>
+                {remainingHints > 0 ? (
+                  <button
+                    onClick={consumeHint}
+                    className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
+                  >
+                    <span className="max-sm:mr-2.5">
+                      Hint ({remainingHints})
+                    </span>
+                    <LightBulbIcon className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setRevealed(true)}
+                    className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
+                  >
+                    <span className="max-sm:mr-2.5">Show Answer</span>
+                    <CheckCircleIcon className="w-4 h-4" />
+                  </button>
+                )}
                 <button
                   onClick={guessRandomWord}
                   className="w-full px-2 py-1.5 bg-[#9f86c0] text-white rounded hover:bg-[#5e548e] transition flex items-center justify-center gap-2"
@@ -156,19 +171,16 @@ function App() {
               </>
             )}
           </div>
-          {/* If the game is over, show a message */}
           {gameOver && (
             <p className="text-green-600 font-semibold">
               Congratulations! You guessed it in {guesses.length} guesses.
             </p>
           )}
-          {/* Show the target word if game is over or user clicks reveal */}
           {(revealed || gameOver) && (
             <p className="text-gray-500">
               Target word: <strong>{targetWord}</strong>
             </p>
           )}
-          {/* Guess Form - disabled if gameOver */}
           {!gameOver && (
             <form onSubmit={handleGuess} className="flex space-x-2">
               <input
@@ -187,8 +199,6 @@ function App() {
               </button>
             </form>
           )}
-
-          {/* Show last guess above the list */}
           {guesses.length > 0 && (
             <>
               <div className="space-y-2">
@@ -211,11 +221,7 @@ function App() {
               <hr className="border-gray-200 my-4" />
             </>
           )}
-
-          {/* Display guesses, sorted by best similarity first */}
           <GuessList guesses={guesses} />
-
-          {/* add a little made with love message centered at the bottom */}
           <div className="text-center text-gray-500 text-xs">
             Made with{" "}
             <span role="img" aria-label="love">
@@ -237,9 +243,7 @@ interface Guess {
   similarity: number;
 }
 
-// A sub-component for listing guesses
 function GuessList({ guesses }: { guesses: Guess[] }) {
-  // Sort guesses by descending similarity
   const sorted = [...guesses].sort((a, b) => b.similarity - a.similarity);
 
   return (
@@ -262,25 +266,19 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
 
 function getWeight(sim: number): number {
   if (sim < 0.35) {
-    // Map 0-0.35 to 0-0.2
     return (sim / 0.35) * 0.2;
   } else if (sim > 0.55) {
-    // Map 0.55-1.0 to 0.8-1.0
     return 0.8 + ((sim - 0.55) / 0.45) * 0.2;
   } else {
-    // Map 0.35-0.55 to 0.2-0.8
     return 0.2 + ((sim - 0.35) / 0.2) * 0.6;
   }
 }
 
 function interpolateColor(sim: number): string {
   const weight = getWeight(sim);
-
-  // More vibrant OKLCH interpolation
-  const lightness = 55 + weight * 15; // Wider lightness range from 55-70%
-  const chroma = 0.3 - weight * 0.05; // More saturated, from 0.30-0.25
-  const hue = 15 + weight * 140; // Wider hue range from warm red (15) to green (155)
-
+  const lightness = 55 + weight * 15;
+  const chroma = 0.3 - weight * 0.05;
+  const hue = 15 + weight * 140;
   return `oklch(${lightness}% ${chroma} ${hue})`;
 }
 

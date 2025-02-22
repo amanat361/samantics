@@ -1,0 +1,110 @@
+=== Benchmark Results ===
+Date: 2025-02-22T22:51:37.804Z
+API URL: http://semantle-backend.qwertea.dev
+Base iterations per test: 100
+
+Results:
+
+GET /daily-game (first call):
+  Average: 127.71ms
+  Min: 127.71ms
+  Max: 127.71ms
+  Total: 127.71ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+GET /daily-game (cached):
+  Average: 108.37ms
+  Min: 74.08ms
+  Max: 470.43ms
+  Total: 10837.33ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+GET /random-game (different targets):
+  Average: 102.57ms
+  Min: 74.18ms
+  Max: 237.16ms
+  Total: 10257.08ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /similar (first call for "about"):
+  Average: 189.85ms
+  Min: 189.85ms
+  Max: 189.85ms
+  Total: 189.85ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /similar (cached for "about"):
+  Average: 100.06ms
+  Min: 76.14ms
+  Max: 141.69ms
+  Total: 10005.51ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+POST /guess (cached words):
+  Average: 89.68ms
+  Min: 65.37ms
+  Max: 195.77ms
+  Total: 8967.65ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+10 concurrent similar requests:
+  Average: 243.90ms
+  Min: 103.16ms
+  Max: 1384.94ms
+  Total: 2438.96ms
+  HTTP Success Rate: 100.0%
+  Valid Data Rate: 100.0%
+  Errors:
+    Network: 0
+    Invalid Data: 0
+    Invalid Range: 0
+
+=== Results Interpretation ===
+Response Times:
+  Excellent: < 100ms average
+  Good: < 300ms average
+  Concerning: > 500ms average
+  Problem: > 1000ms average
+
+Success Rates:
+  Expected: 100% HTTP success rate
+  Expected: 100% valid data rate
+  Investigate if either rate < 100%
+
+Caching Effectiveness:
+  Expected: Cached calls 10-100x faster than first calls
+  Expected: Consistent times for cached data (low max/min variance)
+
+Concurrent Performance:
+  Good: Average concurrent time < 2x single request time
+  Investigate if concurrent times > 5x single request time
