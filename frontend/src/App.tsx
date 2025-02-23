@@ -38,6 +38,9 @@ function App() {
     };
 
     const handleFocus = () => {
+      // Immediately prevent default iOS scroll
+      window.scrollTo({ top: window.scrollY, behavior: "instant" });
+
       let distanceToTop = 0;
       let element: HTMLElement | null = input;
       while (element) {
@@ -48,26 +51,40 @@ function App() {
       const threshold = window.innerHeight * 1.5;
 
       if (distanceToTop < threshold) {
-        setTimeout(() => {
+        // Try multiple times to override iOS
+        window.scrollTo({ top: window.scrollY, behavior: "instant" });
+        requestAnimationFrame(() => {
           window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 50);
+          // One more time after a frame to be extra sure
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }, 16);
+        });
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.target === input) {
+        // Try to prevent default iOS behavior
+        window.scrollTo({ top: window.scrollY, behavior: "instant" });
       }
     };
 
     input.addEventListener("focus", handleFocus);
+    input.addEventListener("touchstart", handleTouchStart);
 
     return () => {
-      // Restore original focus method
       input.focus = originalFocus;
       input.removeEventListener("focus", handleFocus);
+      input.removeEventListener("touchstart", handleTouchStart);
     };
   }, []);
 
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus({ preventScroll: true });
-    }
-  }, [targetWord]);
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus({ preventScroll: true });
+  //   }
+  // }, [targetWord]);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
