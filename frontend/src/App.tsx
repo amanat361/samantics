@@ -32,6 +32,11 @@ function App() {
     }
   }, [targetWord]);
 
+  // if the input is ever focused, scroll to the top
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [inputRef.current?.focus]);
+
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     if (!inputValue.trim()) return;
