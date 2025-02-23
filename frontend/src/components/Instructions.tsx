@@ -1,6 +1,6 @@
 // src/components/Instructions.tsx
 import React from "react";
-import { LightbulbIcon, ShuffleIcon, SquarePlusIcon } from "lucide-react";
+import { LightbulbIcon, ShuffleIcon, InfinityIcon } from "lucide-react";
 import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
 
 const Instructions: React.FC = () => {
@@ -20,11 +20,11 @@ const Instructions: React.FC = () => {
       {/* New Game */}
       <div className="space-y-1">
         <h3 className="text-lg font-semibold text-[#00afb9] flex items-center gap-2">
-          <SquarePlusIcon className="w-5 h-5" />
-          New Game
+          <InfinityIcon className="w-5 h-5" />
+          Change Word
         </h3>
         <p>
-          Click the <strong>New Game</strong> button to start a fresh game. This
+          Click the <strong>Change Word</strong> button to start a fresh game. This
           resets your guesses and loads a new secret word. This is{" "}
           <strong>not</strong> the daily word. Check the top of the screen to
           see what you're guessing.
