@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
 import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
 import { LightbulbIcon, ShuffleIcon, SquarePlusIcon } from "lucide-react";
@@ -21,8 +21,16 @@ function App() {
     setRevealed,
   } = useSemantleGame();
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [showInstructions, setShowInstructions] = useState(false);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [targetWord]);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
@@ -226,6 +234,7 @@ function App() {
           {!gameOver && (
             <form onSubmit={handleGuess} className="flex space-x-2">
               <input
+                ref={inputRef}
                 autoFocus
                 type="text"
                 placeholder="Guess a word"
