@@ -240,7 +240,6 @@ function App() {
             <form onSubmit={handleGuess} className="flex space-x-2">
               <input
                 ref={inputRef}
-                autoFocus
                 type="text"
                 placeholder="Guess a word"
                 value={inputValue}
