@@ -80,11 +80,9 @@ function App() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.focus({ preventScroll: true });
-  //   }
-  // }, [targetWord]);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [targetWord]);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
@@ -288,7 +286,6 @@ function App() {
           {!gameOver && (
             <form onSubmit={handleGuess} className="flex space-x-2">
               <input
-                autoFocus
                 ref={inputRef}
                 type="text"
                 placeholder="Guess a word"
