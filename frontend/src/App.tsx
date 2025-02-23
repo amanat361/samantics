@@ -38,6 +38,9 @@ function App() {
     };
 
     const handleFocus = () => {
+      // if they've started guessing, don't scroll to top
+      if (guesses.length > 0) return;
+
       // Immediately prevent default iOS scroll
       window.scrollTo({ top: window.scrollY, behavior: "instant" });
 
@@ -78,7 +81,7 @@ function App() {
       input.removeEventListener("focus", handleFocus);
       input.removeEventListener("touchstart", handleTouchStart);
     };
-  }, []);
+  }, [guesses]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
