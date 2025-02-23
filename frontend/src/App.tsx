@@ -25,32 +25,35 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [showInstructions, setShowInstructions] = useState(false);
 
- useEffect(() => {
-   const input = inputRef.current;
-   if (!input) return;
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
 
-   const handleFocus = () => {
-     // Get distance from input to top of document
-     let distanceToTop = 0;
-     let element: HTMLElement | null = input;
-     while (element) {
-       distanceToTop += element.offsetTop;
-       element = element.offsetParent as HTMLElement;
-     }
+    const handleFocus = () => {
+      // Get distance from input to top of document
+      let distanceToTop = 0;
+      let element: HTMLElement | null = input;
+      while (element) {
+        distanceToTop += element.offsetTop;
+        element = element.offsetParent as HTMLElement;
+      }
 
-     // Only scroll if input is less than a viewport height from the top
-     if (distanceToTop < window.innerHeight) {
-       setTimeout(() => {
-         window.scrollTo({ top: 0, behavior: "smooth" });
-       }, 50);
-     }
-   };
+      // Add 50% buffer to viewport height to be more generous with scrolling
+      const threshold = window.innerHeight * 1.5;
 
-   input.addEventListener("focus", handleFocus);
-   return () => {
-     input.removeEventListener("focus", handleFocus);
-   };
- }, []);
+      // Scroll if input is within 1.5 viewport heights from the top
+      if (distanceToTop < threshold) {
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }, 100);
+      }
+    };
+
+    input.addEventListener("focus", handleFocus);
+    return () => {
+      input.removeEventListener("focus", handleFocus);
+    };
+  }, []);
 
  useEffect(() => {
    if (inputRef.current) {
