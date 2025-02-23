@@ -124,29 +124,32 @@ function App() {
   async function handleShare() {
     const shareUrl = "https://play.qwertea.dev";
     const guessText = guesses.length === 1 ? "guess" : "guesses";
+    const hintsUsed = 5 - remainingHints; // Calculate hints used
+
     let shareMessage = `It took me ${
       guesses.length
     } ${guessText} to figure out ${
       dayNumber === 0 ? "a random word" : `Day #${dayNumber}`
     }`;
+    
     // if they didnt use any hints, add that to the message
-    if (remainingHints === 5) {
+    if (hintsUsed === 0) {
       shareMessage += " with no hints";
     }
     // if they used some hints, add that to the message
-    if (remainingHints > 0 && remainingHints < 5) {
-      shareMessage += ` with ${remainingHints} hint${
-        remainingHints > 1 ? "s" : ""
-      }`;
+    else if (hintsUsed < 5) {
+      shareMessage += ` with ${hintsUsed} hint${hintsUsed > 1 ? "s" : ""}`;
     }
     // if they used all 5 hints, add that to the message
-    if (remainingHints === 0) {
+    else {
       shareMessage += " with all of the hints";
     }
+
     // if they revealed the answer, add that to the message
     if (revealed) {
       shareMessage += " (and cheated)";
     }
+
     if (navigator.share) {
       try {
         await navigator.share({
