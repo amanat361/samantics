@@ -41,7 +41,7 @@ function App() {
      // Only scroll if input is less than a viewport height from the top
      if (distanceToTop < window.innerHeight) {
        setTimeout(() => {
-         window.scrollTo({ top: 0, behavior: "instant" });
+         window.scrollTo({ top: 0, behavior: "smooth" });
        }, 100);
      }
    };
@@ -51,6 +51,14 @@ function App() {
      input.removeEventListener("focus", handleFocus);
    };
  }, []);
+
+ useEffect(() => {
+   if (inputRef.current) {
+     inputRef.current.focus();
+     window.scrollTo({ top: 0, behavior: "smooth" });
+   }
+ }, [targetWord]);
+ 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     if (!inputValue.trim()) return;
