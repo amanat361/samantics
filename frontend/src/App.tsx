@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
 import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
-import { LightbulbIcon, ShuffleIcon, SquarePlusIcon } from "lucide-react";
+import { LightbulbIcon, ShuffleIcon, InfinityIcon } from "lucide-react";
 import Instructions from "./components/Instructions";
 
 function App() {
@@ -219,8 +219,8 @@ function App() {
               onClick={startNewGame}
               className="w-full px-2 py-1.5 bg-[#00afb9] text-white rounded hover:bg-[#0081a7] transition flex items-center justify-center gap-2"
             >
-              <span className="max-sm:mr-6.5">New Game</span>
-              <SquarePlusIcon className="w-4 h-4" />
+              <span className="max-sm:mr-2.5">Change Word</span>
+              <InfinityIcon className="w-4 h-4" />
             </button>
             {gameOver && (
               <button
