@@ -238,7 +238,7 @@ function App() {
                     onClick={consumeHint}
                     className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
                   >
-                    <span className="max-sm:mr-2.5">
+                    <span className="max-sm:mr-0">
                       Use Hint: <strong>{remainingHints} left</strong>
                     </span>
                     {/* <LightBulbIcon className="w-4 h-4" /> */}
