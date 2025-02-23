@@ -29,6 +29,14 @@ function App() {
     const input = inputRef.current;
     if (!input) return;
 
+    // Store the original focus method
+    const originalFocus = input.focus.bind(input);
+
+    // Override the focus method
+    input.focus = function (options = {}) {
+      return originalFocus({ preventScroll: true, ...options });
+    };
+
     const handleFocus = () => {
       let distanceToTop = 0;
       let element: HTMLElement | null = input;
@@ -46,26 +54,18 @@ function App() {
       }
     };
 
-    // Handle both focus and touchstart events
-    const handleTouch = (e: TouchEvent) => {
-      // Check if the touch is on the input
-      if (e.target === input) {
-        handleFocus();
-      }
-    };
-
     input.addEventListener("focus", handleFocus);
-    input.addEventListener("touchstart", handleTouch);
 
     return () => {
+      // Restore original focus method
+      input.focus = originalFocus;
       input.removeEventListener("focus", handleFocus);
-      input.removeEventListener("touchstart", handleTouch);
     };
   }, []);
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus({preventScroll: true});
+      inputRef.current.focus({ preventScroll: true });
     }
   }, [targetWord]);
 
