@@ -42,7 +42,7 @@ function App() {
      if (distanceToTop < window.innerHeight) {
        setTimeout(() => {
          window.scrollTo({ top: 0, behavior: "smooth" });
-       }, 100);
+       }, 50);
      }
    };
 
@@ -55,10 +55,9 @@ function App() {
  useEffect(() => {
    if (inputRef.current) {
      inputRef.current.focus();
-     window.scrollTo({ top: 0, behavior: "smooth" });
    }
  }, [targetWord]);
- 
+
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     if (!inputValue.trim()) return;
