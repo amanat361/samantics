@@ -26,6 +26,11 @@ function App() {
   const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
+    // wait for everything to load before focusing the input
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+    
     if (inputRef.current) {
       inputRef.current.focus();
       window.scrollTo({ top: 0, behavior: "smooth" });
