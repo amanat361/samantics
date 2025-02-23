@@ -5,7 +5,7 @@ import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
 
 const Instructions: React.FC = () => {
   return (
-    <div className="text-gray-700 px-6 py-6 bg-gray-50 rounded space-y-6">
+    <div className="text-gray-700 px-4 py-4 sm:px-6 sm:py-6 bg-gray-50 rounded space-y-6">
       {/* Core Objective */}
       <div className="space-y-2">
         <h2 className="text-xl font-bold">How to Play 👋</h2>
@@ -31,11 +31,23 @@ const Instructions: React.FC = () => {
         </p>
       </div>
 
+      {/* Random Guess */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-[#9f86c0] flex items-center gap-2">
+          <ShuffleIcon className="w-5 h-5" />
+          Random Guess
+        </h3>
+        <p>
+          If you're stuck, click the <strong>Random Guess</strong> button for a
+          suggestion from the available words.
+        </p>
+      </div>
+
       {/* Hint Feature */}
       <div className="space-y-1">
         <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
           <LightbulbIcon className="w-5 h-5" />
-          Hint
+          Hints
         </h3>
         <p>
           You have <strong>5 hints</strong> per game. When you click the{" "}
@@ -56,18 +68,6 @@ const Instructions: React.FC = () => {
         </p>
       </div>
 
-      {/* Random Guess */}
-      <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-[#9f86c0] flex items-center gap-2">
-          <ShuffleIcon className="w-5 h-5" />
-          Random Guess
-        </h3>
-        <p>
-          If you're stuck, click the <strong>Random Guess</strong> button for a
-          suggestion from the available words.
-        </p>
-      </div>
-
       {/* Reveal Answer */}
       <div className="space-y-1">
         <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
@@ -85,7 +85,7 @@ const Instructions: React.FC = () => {
       <div className="space-y-1">
         <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
           <ShareIcon className="w-5 h-5" />
-          Share
+          Share Results
         </h3>
         <p>
           After you win, use the <strong>Share</strong> button to share your

@@ -1,10 +1,7 @@
 // src/App.tsx
 import React, { useState } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
-import {
-  CheckCircleIcon,
-  ShareIcon,
-} from "@heroicons/react/16/solid";
+import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
 import { LightbulbIcon, ShuffleIcon, SquarePlusIcon } from "lucide-react";
 import Instructions from "./components/Instructions";
 
@@ -45,10 +42,48 @@ function App() {
       });
   }
 
+  const emojiMap = {
+    10: "🔥", // 1-9 guesses
+    30: "👍", // 10-29 guesses
+    50: "😐", // 30-49 guesses
+    100: "🐢", // 50-99 guesses
+    Infinity: "🤔", // 100+ guesses
+  };
+
+  const getEmoji = (numGuesses: number) => {
+    return (
+      Object.entries(emojiMap).find(
+        ([threshold]) => numGuesses <= Number(threshold)
+      )?.[1] || emojiMap.Infinity
+    );
+  };
+
   async function handleShare() {
     const shareUrl = "https://play.qwertea.dev";
     const guessText = guesses.length === 1 ? "guess" : "guesses";
-    const shareMessage = `It took me ${guesses.length} ${guessText} to figure out Day #${dayNumber}`;
+    let shareMessage = `It took me ${
+      guesses.length
+    } ${guessText} to figure out ${
+      dayNumber === 0 ? "a random word" : `Day #${dayNumber}`
+    }`;
+    // if they didnt use any hints, add that to the message
+    if (remainingHints === 5) {
+      shareMessage += " with no hints";
+    }
+    // if they used some hints, add that to the message
+    if (remainingHints > 0 && remainingHints < 5) {
+      shareMessage += ` with ${remainingHints} hint${
+        remainingHints > 1 ? "s" : ""
+      }`;
+    }
+    // if they used all 5 hints, add that to the message
+    if (remainingHints === 0) {
+      shareMessage += " with all of the hints";
+    }
+    // if they revealed the answer, add that to the message
+    if (revealed) {
+      shareMessage += " (and cheated)";
+    }
     if (navigator.share) {
       try {
         await navigator.share({
@@ -129,7 +164,7 @@ function App() {
                 onClick={() => handleShare()}
                 className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
               >
-                <span className="max-sm:mr-2.5">Share</span>
+                <span className="max-sm:mr-2.5">Share Results</span>
                 <ShareIcon className="w-4 h-4" />
               </button>
             )}
@@ -166,13 +201,26 @@ function App() {
             )}
           </div>
           {gameOver && (
-            <p className="text-green-600 font-semibold">
-              Congratulations! You guessed it in {guesses.length} guesses.
-            </p>
+            <div className="space-y-2 flex-col flex">
+              <p className="text-green-600 font-semibold">
+                Congratulations! You guessed it in{" "}
+                <strong>{guesses.length}</strong>{" "}
+                {guesses.length === 1 ? "guess" : "guesses"}.{" "}
+                {getEmoji(guesses.length)}
+              </p>
+              <p className="text-[#9f86c0] font-semibold">
+                You used <strong>{5 - remainingHints}</strong> hints.
+              </p>
+              {revealed && (
+                <p className="text-[#073b4c]">
+                  The answer is: <strong>{targetWord}</strong>
+                </p>
+              )}
+            </div>
           )}
-          {(revealed || gameOver) && (
-            <p className="text-gray-500">
-              Target word: <strong>{targetWord}</strong>
+          {!gameOver && revealed && (
+            <p className="text-[#073b4c]">
+              The answer is: <strong>{targetWord}</strong>
             </p>
           )}
           {!gameOver && (
@@ -196,7 +244,9 @@ function App() {
           {guesses.length > 0 && (
             <>
               <div className="space-y-2">
-                <p className="text-gray-600">Last guess:</p>
+                <p className="text-gray-600">
+                  Guess <strong>#{guesses.length}</strong>:
+                </p>
                 <div
                   className="p-2 rounded text-white"
                   style={{
@@ -216,7 +266,7 @@ function App() {
             </>
           )}
           <GuessList guesses={guesses} />
-          <div className="text-center text-gray-500 text-xs">
+          <div className="text-center text-gray-500 text-sm">
             Made with{" "}
             <span role="img" aria-label="love">
               ❤️
