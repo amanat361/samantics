@@ -25,23 +25,32 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [showInstructions, setShowInstructions] = useState(false);
 
-  useEffect(() => {
-    // wait for everything to load before focusing the input
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
-    
-    if (inputRef.current) {
-      inputRef.current.focus();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [targetWord]);
+ useEffect(() => {
+   const input = inputRef.current;
+   if (!input) return;
 
-  // if the input is ever focused, scroll to the top
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [inputRef.current?.focus]);
+   const handleFocus = () => {
+     // Get distance from input to top of document
+     let distanceToTop = 0;
+     let element: HTMLElement | null = input;
+     while (element) {
+       distanceToTop += element.offsetTop;
+       element = element.offsetParent as HTMLElement;
+     }
 
+     // Only scroll if input is less than a viewport height from the top
+     if (distanceToTop < window.innerHeight) {
+       setTimeout(() => {
+         window.scrollTo({ top: 0, behavior: "instant" });
+       }, 100);
+     }
+   };
+
+   input.addEventListener("focus", handleFocus);
+   return () => {
+     input.removeEventListener("focus", handleFocus);
+   };
+ }, []);
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
     if (!inputValue.trim()) return;
