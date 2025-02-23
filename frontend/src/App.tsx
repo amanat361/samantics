@@ -30,7 +30,6 @@ function App() {
     if (!input) return;
 
     const handleFocus = () => {
-      // Get distance from input to top of document
       let distanceToTop = 0;
       let element: HTMLElement | null = input;
       while (element) {
@@ -38,28 +37,37 @@ function App() {
         element = element.offsetParent as HTMLElement;
       }
 
-      // Add 50% buffer to viewport height to be more generous with scrolling
       const threshold = window.innerHeight * 1.5;
 
-      // Scroll if input is within 1.5 viewport heights from the top
       if (distanceToTop < threshold) {
         setTimeout(() => {
           window.scrollTo({ top: 0, behavior: "smooth" });
-        }, 100);
+        }, 50);
+      }
+    };
+
+    // Handle both focus and touchstart events
+    const handleTouch = (e: TouchEvent) => {
+      // Check if the touch is on the input
+      if (e.target === input) {
+        handleFocus();
       }
     };
 
     input.addEventListener("focus", handleFocus);
+    input.addEventListener("touchstart", handleTouch);
+
     return () => {
       input.removeEventListener("focus", handleFocus);
+      input.removeEventListener("touchstart", handleTouch);
     };
   }, []);
 
- useEffect(() => {
-   if (inputRef.current) {
-     inputRef.current.focus();
-   }
- }, [targetWord]);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus({preventScroll: true});
+    }
+  }, [targetWord]);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
@@ -263,6 +271,7 @@ function App() {
           {!gameOver && (
             <form onSubmit={handleGuess} className="flex space-x-2">
               <input
+                autoFocus
                 ref={inputRef}
                 type="text"
                 placeholder="Guess a word"
