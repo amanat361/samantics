@@ -125,15 +125,14 @@ export default function useSemantleGame() {
   }
 
   /**
-   * Consume a hint:
-   * - Use one of 5 hints.
-   * - For the first hint, pick a random word from the bottom 20 (indices 80-99) of the similarWords list.
-   * - For subsequent hints, use the next 20-word tier (e.g., indices 60-79, 40-59, etc.).
-   * - Hints do not include the target word or already guessed words.
-   * - If a tier has no available words, move to the next higher tier.
-   * - If no hint is available across all tiers, set an error.
+   * Consume a hint with configurable pool size and random selection size
+   * @param totalHintPool The total number of similar words to consider (e.g. 60)
+   * @param randomSelectionSize How many words to randomly choose from in each tier (e.g. 3)
    */
-  async function consumeHint() {
+  async function consumeHint(
+    totalHintPool: number = 60,
+    randomSelectionSize: number = 3
+  ) {
     setError("");
     if (!targetWord) {
       setError("No game in progress.");
@@ -144,40 +143,43 @@ export default function useSemantleGame() {
       return;
     }
 
-    // Determine which tier to use based on hints already consumed.
-    // If 5 hints are available, then usedHints = 0 and tier = 0.
-    // Tier 0 corresponds to indices 80-99 (bottom 20), tier 1: 60-79, etc.
+    // Filter out invalid words first
+    const availableWords = similarWords.filter((item) => {
+      const word = item.word;
+      return (
+        word !== targetWord &&
+        !guesses.some((g) => g.word === word) &&
+        word !== targetWord + "s" &&
+        word !== targetWord + "es"
+      );
+    });
+
+    // Take only the specified pool size
+    const hintPool = availableWords.slice(0, totalHintPool);
+
+    // Calculate tier size based on total pool and number of hints
+    const TOTAL_HINTS = 5;
+    const tierSize = Math.floor(totalHintPool / TOTAL_HINTS);
     const usedHints = 5 - remainingHints;
-    let tier = usedHints;
-    let candidate: string | null = null;
 
-    // Loop through tiers from the desired one up to tier 4
-    while (tier < 5) {
-      const start = 100 - 20 * (tier + 1); // e.g. tier 0: start = 80
-      const end = 100 - 20 * tier - 1; // e.g. tier 0: end = 99
-      // Get candidates in this tier that are not the answer and haven't been guessed
-      const candidates = similarWords
-        .slice(start, end + 1)
-        .filter(
-          (item) =>
-            item.word !== targetWord &&
-            !guesses.some((g) => g.word === item.word)
-        );
-      if (candidates.length > 0) {
-        candidate =
-          candidates[Math.floor(Math.random() * candidates.length)].word;
-        break;
-      }
-      tier++;
-    }
+    // Get the current tier's words
+    const tierEnd = totalHintPool - usedHints * tierSize;
+    const tierStart = tierEnd - tierSize;
+    const currentTier = hintPool.slice(tierStart, tierEnd);
 
-    if (!candidate) {
-      setError("All possible hints have been given!");
+    // Take top N words from this tier to select from
+    const selectionPool = currentTier.slice(0, randomSelectionSize);
+
+    if (selectionPool.length === 0) {
+      setError("No hints available in this tier!");
       return;
     }
 
+    // Select random word from the pool
+    const candidate =
+      selectionPool[Math.floor(Math.random() * selectionPool.length)].word;
+
     setRemainingHints((prev) => prev - 1);
-    // Use the hint by making a guess with the selected candidate
     await guessWord(candidate);
   }
 

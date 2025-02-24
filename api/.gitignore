@@ -176,3 +176,4 @@ dist
 
 # The similarity graph is too large to be tracked in the repo
 data/similarityGraph.json
+data/embeddings.json

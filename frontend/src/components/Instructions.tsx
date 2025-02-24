@@ -24,8 +24,8 @@ const Instructions: React.FC = () => {
           Change Word
         </h3>
         <p>
-          Click the <strong>Change Word</strong> button to start a fresh game. This
-          resets your guesses and loads a new secret word. This is{" "}
+          Click the <strong>Change Word</strong> button to start a fresh game.
+          This resets your guesses and loads a new secret word. This is{" "}
           <strong>not</strong> the daily word. Check the top of the screen to
           see what you're guessing.
         </p>
@@ -51,19 +51,19 @@ const Instructions: React.FC = () => {
         </h3>
         <p>
           You have <strong>5 hints</strong> per game. When you click the{" "}
-          <strong>Use Hint</strong> button, you’ll be given a clue from the
-          similar words list:
+          <strong>Use Hint</strong> button, you'll be given a helpful
+          suggestion:
         </p>
         <ul className="list-inside list-disc space-y-1">
           <li>
-            <i>The first hint selects a random word from the bottom 20%.</i>
+            <i>Each hint ges closer to the target word</i> 
           </li>
           <li>
-            <i>Each subsequent hint moves up 20% in the ranking.</i>
+            <i>Early hints are distant, later hints are closer</i>
           </li>
         </ul>
         <p>
-          Hints will never reveal the secret word or repeat a word you’ve
+          Hints will never reveal the secret word or repeat a word you've
           already guessed.
         </p>
       </div>
@@ -105,6 +105,45 @@ const Instructions: React.FC = () => {
         <p>
           Think about words related in context and usage, not just similar in
           meaning.
+        </p>
+      </div>
+
+      {/* Similarity Labels */}
+      <div className="space-y-1 border-t border-gray-200 pt-4">
+        <h3 className="text-lg font-semibold">
+          Understanding Similarity Scores
+        </h3>
+        <p>
+          Each guess shows a similarity percentage and a helpful label. Here's
+          what they mean:
+        </p>
+        <ul className="list-inside space-y-1">
+          <li>
+            • 99-100%: <strong>Correct!</strong> - You've found the word! 🎯
+          </li>
+          <li>
+            • 90-98%: <strong>Smoking!!!</strong> - Extremely close!
+          </li>
+          <li>
+            • 80-89%: <strong>Hotter!</strong> - Very close to the target
+          </li>
+          <li>
+            • 70-79%: <strong>Hot/Warmer!</strong> - Getting much closer
+          </li>
+          <li>
+            • 60-69%: <strong>Warm/Lukewarm</strong> - On the right track
+          </li>
+          <li>
+            • 50-59%: <strong>Cool</strong> - Some connection, but still far
+          </li>
+          <li>
+            • Below 50%: <strong>Cold to Freezing</strong> - Try a different
+            approach
+          </li>
+        </ul>
+        <p className="text-sm italic mt-2">
+          The higher the percentage, the more semantically similar your guess is
+          to the target word.
         </p>
       </div>
     </div>
