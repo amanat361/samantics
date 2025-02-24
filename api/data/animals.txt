@@ -1,0 +1,50 @@
+lion
+tiger
+elephant
+giraffe
+zebra
+penguin
+kangaroo
+koala
+dolphin
+whale
+octopus
+sea turtle
+eagle
+owl
+flamingo
+panda
+polar bear
+grizzly bear
+wolf
+fox
+raccoon
+squirrel
+beaver
+moose
+deer
+rhinoceros
+hippopotamus
+crocodile
+alligator
+komodo dragon
+chameleon
+sloth
+gorilla
+chimpanzee
+orangutan
+lemur
+meerkat
+platypus
+hedgehog
+armadillo
+jaguar
+lynx
+cheetah
+hyena
+pangolin
+anteater
+bison
+narwhal
+axolotl
+red panda

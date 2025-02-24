@@ -21,6 +21,7 @@ class EmbeddingManager {
   private graphFile = "data/similarityGraph.json";
   private allWords: string[] = [];
   private targetWords: string[] = [];
+  private animalWords: string[] = [];
   private readonly OLLAMA_URL: string;
   private readonly headers: HeadersInit;
 
@@ -35,6 +36,7 @@ class EmbeddingManager {
     this.loadCache();
     this.loadTargetWords();
     this.loadAllWords();
+    this.loadAnimalWords();
     this.loadSimilarityGraph();
     this.initializeIfNeeded();
   }
@@ -58,6 +60,19 @@ class EmbeddingManager {
       }
 
       console.log("Initialization complete!");
+    }
+  }
+
+  private loadAnimalWords() {
+    try {
+      this.animalWords = readFileSync("data/animals.txt", "utf-8")
+        .split("\n")
+        .filter(Boolean)
+        .map((w) => w.trim());
+      console.log(`Loaded ${this.animalWords.length} animal words`);
+    } catch (e) {
+      console.warn("No animals.txt found");
+      this.animalWords = [];
     }
   }
 
@@ -131,12 +146,11 @@ class EmbeddingManager {
     // Calculate similarities with all words
     const similarities = await Promise.all(
       this.allWords.map(async (targetWord) => {
-        
         // If it's the same word, set similarity to exactly 1.
         if (targetWord === word) {
           return { word: targetWord, similarity: 1 };
         }
-        
+
         const { embedding: targetEmbedding } = this.cache.has(targetWord)
           ? { embedding: this.cache.get(targetWord)! }
           : await this.embed(targetWord);
@@ -320,8 +334,15 @@ class EmbeddingManager {
     if (this.targetWords.length === 0) {
       throw new Error("No target words loaded");
     }
-    return this.targetWords[
-      Math.floor(Math.random() * this.targetWords.length)
+    // return this.targetWords[
+    //   Math.floor(Math.random() * this.targetWords.length)
+    // ];
+    // do an animal word
+    if (this.animalWords.length === 0) {
+      throw new Error("No animal words loaded");
+    }
+    return this.animalWords[
+      Math.floor(Math.random() * this.animalWords.length)
     ];
   }
 
