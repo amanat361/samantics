@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
 import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
-import { LightbulbIcon, ShuffleIcon, InfinityIcon } from "lucide-react";
+import { LightbulbIcon, ShuffleIcon, InfinityIcon, ForwardIcon } from "lucide-react";
 import Instructions from "./components/Instructions";
 
 function App() {
@@ -181,16 +181,16 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen flex justify-center bg-[#caf0f8] p-2 sm:p-4">
+    <div className="min-h-screen flex justify-center bg-[#ffecd1] p-2 sm:p-4">
       <div className="flex flex-col space-y-2 sm:space-y-4 w-full sm:w-auto">
-        <div className="w-full bg-[#073b4c] rounded-lg shadow-md p-2 space-y-4">
+        <div className="w-full bg-[#78290f] rounded-lg shadow-md p-2 space-y-4">
           <p className="text-lg text-center text-white">
             <DayNumber />
           </p>
         </div>
-        <div className="max-w-xl sm:min-w-xl w-full bg-white rounded-lg shadow-md p-4 sm:p-6 space-y-4">
+        <div className="max-w-xl sm:min-w-xl w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-4">
           <div className="flex flex-col sm:flex-row justify-between gap-2 sm:items-start items-center">
-            <h1 className="text-2xl font-bold max-sm:text-center max-sm:w-full">
+            <h1 className="text-[#001524] text-2xl font-bold max-sm:text-center max-sm:w-full">
               Guess the Secret Word
             </h1>
             <button
@@ -220,7 +220,7 @@ function App() {
           <div className="flex sm:space-x-2 items-center sm:flex-row flex-col w-full max-sm:space-y-2">
             <button
               onClick={startNewGame}
-              className="w-full px-2 py-1.5 bg-[#00afb9] text-white rounded hover:bg-[#0081a7] transition flex items-center justify-center gap-2"
+              className="w-full px-2 py-1.5 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
             >
               <span className="max-sm:mr-2.5">Change Word</span>
               <InfinityIcon className="w-4 h-4" />
@@ -228,7 +228,7 @@ function App() {
             {gameOver && (
               <button
                 onClick={() => handleShare()}
-                className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
+                className="w-full px-2 py-1.5 bg-share text-white rounded hover:bg-share/80 transition flex items-center justify-center gap-2"
               >
                 <span className="max-sm:mr-2.5">Share Results</span>
                 <ShareIcon className="w-4 h-4" />
@@ -239,7 +239,7 @@ function App() {
                 {remainingHints > 0 ? (
                   <button
                     onClick={() => consumeHint(20, 3)}
-                    className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
+                    className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
                   >
                     <span className="max-sm:mr-0">
                       Use Hint: <strong>{remainingHints} left</strong>
@@ -250,7 +250,7 @@ function App() {
                 ) : (
                   <button
                     onClick={() => setRevealed(true)}
-                    className="w-full px-2 py-1.5 bg-[#84a98c] text-white rounded hover:bg-[#52796f] transition flex items-center justify-center gap-2"
+                    className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
                   >
                     <span className="max-sm:mr-2.5">Show Answer</span>
                     <CheckCircleIcon className="w-4 h-4" />
@@ -258,7 +258,7 @@ function App() {
                 )}
                 <button
                   onClick={guessRandomWord}
-                  className="w-full px-2 py-1.5 bg-[#9f86c0] text-white rounded hover:bg-[#5e548e] transition flex items-center justify-center gap-2"
+                  className="w-full px-2 py-1.5 bg-share text-white rounded hover:bg-share/80 transition flex items-center justify-center gap-2"
                 >
                   <span>Random Guess</span>
                   <ShuffleIcon className="w-4 h-4" />
@@ -275,7 +275,8 @@ function App() {
                 {getEmoji(guesses.length)}
               </p>
               <p className="text-[#9f86c0] font-semibold">
-                You used <strong>{5 - remainingHints}</strong> hint{5 - remainingHints > 1 ? "s" : ""}.
+                You used <strong>{5 - remainingHints}</strong> hint
+                {5 - remainingHints > 1 ? "s" : ""}.
               </p>
               {revealed && (
                 <p className="text-[#073b4c]">
@@ -285,7 +286,7 @@ function App() {
             </div>
           )}
           {!gameOver && revealed && (
-            <p className="text-[#073b4c]">
+            <p className="text-text">
               The answer is: <strong>{targetWord}</strong>
             </p>
           )}
@@ -301,9 +302,10 @@ function App() {
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-[#06d6a0] text-white rounded hover:bg-[#354f52] transition"
+                className="px-4 py-2 bg-guess text-white rounded hover:bg-guess/80 transition flex items-center justify-center gap-2"
               >
                 Guess
+                <ForwardIcon className="w-4 h-4" />
               </button>
             </form>
           )}

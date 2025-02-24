@@ -5,7 +5,7 @@ import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
 
 const Instructions: React.FC = () => {
   return (
-    <div className="text-gray-700 px-4 py-4 sm:px-6 sm:py-6 bg-gray-50 rounded space-y-6">
+    <div className="text-gray-700 px-4 py-4 sm:px-6 sm:py-6 bg-background/20 rounded-md overflow-hidden space-y-6">
       {/* Core Objective */}
       <div className="space-y-2">
         <h2 className="text-xl font-bold">How to Play 👋</h2>
@@ -19,7 +19,7 @@ const Instructions: React.FC = () => {
 
       {/* New Game */}
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-[#00afb9] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-primary flex items-center gap-2">
           <InfinityIcon className="w-5 h-5" />
           Change Word
         </h3>
@@ -31,23 +31,11 @@ const Instructions: React.FC = () => {
         </p>
       </div>
 
-      {/* Random Guess */}
-      <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-[#9f86c0] flex items-center gap-2">
-          <ShuffleIcon className="w-5 h-5" />
-          Random Guess
-        </h3>
-        <p>
-          If you're stuck, click the <strong>Random Guess</strong> button for a
-          suggestion from the available words.
-        </p>
-      </div>
-
       {/* Hint Feature */}
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-hint flex items-center gap-2">
           <LightbulbIcon className="w-5 h-5" />
-          Hints
+          Using Hints
         </h3>
         <p>
           You have <strong>5 hints</strong> per game. When you click the{" "}
@@ -56,7 +44,7 @@ const Instructions: React.FC = () => {
         </p>
         <ul className="list-inside list-disc space-y-1">
           <li>
-            <i>Each hint ges closer to the target word</i> 
+            <i>Each hint ges closer to the target word</i>
           </li>
           <li>
             <i>Early hints are distant, later hints are closer</i>
@@ -70,7 +58,7 @@ const Instructions: React.FC = () => {
 
       {/* Reveal Answer */}
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-hint flex items-center gap-2">
           <CheckCircleIcon className="w-5 h-5" />
           Reveal Answer
         </h3>
@@ -81,9 +69,21 @@ const Instructions: React.FC = () => {
         </p>
       </div>
 
+      {/* Random Guess */}
+      <div className="space-y-1">
+        <h3 className="text-lg font-semibold text-share flex items-center gap-2">
+          <ShuffleIcon className="w-5 h-5" />
+          Random Guess
+        </h3>
+        <p>
+          If you're stuck, click the <strong>Random Guess</strong> button for a
+          suggestion from the available words.
+        </p>
+      </div>
+
       {/* Share Feature */}
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold text-[#84a98c] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-share flex items-center gap-2">
           <ShareIcon className="w-5 h-5" />
           Share Results
         </h3>
