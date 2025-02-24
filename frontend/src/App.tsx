@@ -138,7 +138,7 @@ function App() {
     }
     // if they used some hints, add that to the message
     else if (hintsUsed < 5) {
-      shareMessage += ` with ${hintsUsed} hint${hintsUsed > 1 ? "s" : ""}`;
+      shareMessage += ` with ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`;
     }
     // if they used all 5 hints, add that to the message
     else {
