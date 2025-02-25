@@ -1,16 +1,10 @@
 // src/components/HeaderWithInstructions.tsx
-import React from "react";
+import React, { useState } from "react";
 import Instructions from "./Instructions";
 
-interface HeaderWithInstructionsProps {
-  showInstructions: boolean;
-  setShowInstructions: (value: boolean) => void;
-}
+const HeaderWithInstructions: React.FC = () => {
+  const [showInstructions, setShowInstructions] = useState(false);
 
-const HeaderWithInstructions: React.FC<HeaderWithInstructionsProps> = ({
-  showInstructions,
-  setShowInstructions,
-}) => {
   return (
     <>
       <div className="flex flex-col sm:flex-row justify-between gap-2 sm:items-start items-center">

@@ -1,5 +1,6 @@
 // src/components/GuessDisplay.tsx
 import React from "react";
+import { getEmoji } from "../utils/gameHelpers";
 
 interface Guess {
   word: string;
@@ -12,7 +13,6 @@ interface GuessDisplayProps {
   gameOver: boolean;
   targetWord: string;
   remainingHints: number;
-  getEmoji: (numGuesses: number) => string;
 }
 
 const GuessDisplay: React.FC<GuessDisplayProps> = ({
@@ -21,7 +21,6 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
   gameOver,
   targetWord,
   remainingHints,
-  getEmoji,
 }) => {
   return (
     <>

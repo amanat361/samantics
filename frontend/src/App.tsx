@@ -1,12 +1,11 @@
 // src/App.tsx
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
 import GameHeader from "./components/GameHeader";
 import GameControls from "./components/GameControls";
 import GuessForm from "./components/GuessForm";
 import GuessDisplay from "./components/GuessDisplay";
 import HeaderWithInstructions from "./components/HeaderWithInstructions";
-import { getEmoji, handleShare } from "./utils/gameHelpers";
 
 function App() {
   const {
@@ -24,8 +23,6 @@ function App() {
     setRevealed,
   } = useSemantleGame();
 
-  const [showInstructions, setShowInstructions] = useState(false);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [targetWord]);
@@ -35,14 +32,11 @@ function App() {
       <div className="flex flex-col space-y-2 sm:space-y-4 w-full sm:w-auto">
         <GameHeader dayNumber={dayNumber} />
         <div className="max-w-xl sm:min-w-xl w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-4">
-          <HeaderWithInstructions 
-            showInstructions={showInstructions}
-            setShowInstructions={setShowInstructions}
-          />
-          
+          <HeaderWithInstructions />
+
           {error && <p className="text-red-600">Error: {error}</p>}
-          
-          <GameControls 
+
+          <GameControls
             gameOver={gameOver}
             revealed={revealed}
             remainingHints={remainingHints}
@@ -53,22 +47,21 @@ function App() {
             consumeHint={consumeHint}
             setRevealed={setRevealed}
           />
-          
-          <GuessDisplay 
+
+          <GuessDisplay
             guesses={guesses}
             revealed={revealed}
             gameOver={gameOver}
             targetWord={targetWord}
             remainingHints={remainingHints}
-            getEmoji={getEmoji}
           />
-          
-          <GuessForm 
+
+          <GuessForm
             guessWord={guessWord}
             gameOver={gameOver}
             guessesLength={guesses.length}
           />
-          
+
           <div className="text-center text-gray-500 text-sm">
             Made with{" "}
             <span role="img" aria-label="love">
