@@ -334,16 +334,16 @@ class EmbeddingManager {
     if (this.targetWords.length === 0) {
       throw new Error("No target words loaded");
     }
-    // return this.targetWords[
-    //   Math.floor(Math.random() * this.targetWords.length)
-    // ];
-    // do an animal word
-    if (this.animalWords.length === 0) {
-      throw new Error("No animal words loaded");
-    }
-    return this.animalWords[
-      Math.floor(Math.random() * this.animalWords.length)
+    return this.targetWords[
+      Math.floor(Math.random() * this.targetWords.length)
     ];
+    // do an animal word
+    // if (this.animalWords.length === 0) {
+    //   throw new Error("No animal words loaded");
+    // }
+    // return this.animalWords[
+    //   Math.floor(Math.random() * this.animalWords.length)
+    // ];
   }
 
   getTargetWords(): string[] {
