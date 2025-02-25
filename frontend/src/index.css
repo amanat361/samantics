@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600;700&display=swap');
 
 @theme {
   --color-background: #ffecd1;
@@ -9,4 +10,12 @@
   --color-hint: #15616d;
   --color-guess: #0eab82;
   --color-guess-hover: #354f52;
+}
+
+.font-title {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-main {
+  font-family: 'Poppins', sans-serif;
 }

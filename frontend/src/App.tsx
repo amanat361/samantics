@@ -1,11 +1,11 @@
 // src/App.tsx
 import { useEffect } from "react";
 import useSemantleGame from "./hooks/useSemantleGame";
-import GameHeader from "./components/GameHeader";
 import GameControls from "./components/GameControls";
 import GuessForm from "./components/GuessForm";
 import GuessDisplay from "./components/GuessDisplay";
 import HeaderWithInstructions from "./components/HeaderWithInstructions";
+import GameModeBanner from "./components/GameModeBanner";
 
 function App() {
   const {
@@ -16,7 +16,8 @@ function App() {
     gameOver,
     revealed,
     remainingHints,
-    startNewGame,
+    startPracticeGame,
+    loadDailyGame,
     guessWord,
     guessRandomWord,
     consumeHint,
@@ -28,11 +29,11 @@ function App() {
   }, [targetWord]);
 
   return (
-    <div className="min-h-screen flex justify-center bg-[#ffecd1] p-2 sm:p-4">
-      <div className="flex flex-col space-y-2 sm:space-y-4 w-full sm:w-auto">
-        <GameHeader dayNumber={dayNumber} />
-        <div className="max-w-xl sm:min-w-xl w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-4">
-          <HeaderWithInstructions />
+    <div className="min-h-screen flex justify-center bg-[#ffecd1] p-2 sm:p-4 font-main">
+      <div className="flex flex-col w-full max-w-xl">
+        <HeaderWithInstructions />
+        <div className="w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-4">
+          <GameModeBanner dayNumber={dayNumber} />
 
           {error && <p className="text-red-600">Error: {error}</p>}
 
@@ -42,24 +43,27 @@ function App() {
             remainingHints={remainingHints}
             dayNumber={dayNumber}
             guessesLength={guesses.length}
-            startNewGame={startNewGame}
+            startPracticeGame={startPracticeGame}
+            loadDailyGame={loadDailyGame}
             guessRandomWord={guessRandomWord}
             consumeHint={consumeHint}
             setRevealed={setRevealed}
-          />
-
-          <GuessDisplay
-            guesses={guesses}
-            revealed={revealed}
-            gameOver={gameOver}
-            targetWord={targetWord}
-            remainingHints={remainingHints}
           />
 
           <GuessForm
             guessWord={guessWord}
             gameOver={gameOver}
             guessesLength={guesses.length}
+          />
+          <GuessDisplay
+            guesses={guesses}
+            revealed={revealed}
+            gameOver={gameOver}
+            targetWord={targetWord}
+            remainingHints={remainingHints}
+            dayNumber={dayNumber}
+            startPracticeGame={startPracticeGame}
+            loadDailyGame={loadDailyGame}
           />
 
           <div className="text-center text-gray-500 text-sm">

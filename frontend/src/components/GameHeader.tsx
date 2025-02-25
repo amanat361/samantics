@@ -5,22 +5,12 @@ interface GameHeaderProps {
   dayNumber: number;
 }
 
-const GameHeader: React.FC<GameHeaderProps> = ({ dayNumber }) => {
+const GameHeader: React.FC<GameHeaderProps> = () => {
   return (
-    <div className="w-full bg-[#78290f] rounded-lg shadow-md p-2 space-y-4">
-      <p className="text-lg text-center text-white">
-        {dayNumber > 0 ? (
-          <span>
-            You're guessing the word for <strong>Day #{dayNumber}!</strong>
-          </span>
-        ) : dayNumber === 0 ? (
-          <span>
-            You're guessing a <strong>random</strong> word!
-          </span>
-        ) : (
-          <span>Loading...</span>
-        )}
-      </p>
+    <div className="w-full bg-white rounded-lg p-4 shadow-sm border-b-2 border-[#78290f]">
+      <h1 className="text-xl font-bold text-center text-[#001524]">
+        <span className="text-[#78290f]">Samantics</span> - Test your vocabulary
+      </h1>
     </div>
   );
 };
