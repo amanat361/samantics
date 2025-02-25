@@ -1,6 +1,6 @@
 // src/components/GuessDisplay.tsx
 import React from "react";
-import { getEmoji } from "../utils/gameHelpers";
+import GameResult from "./GameResult";
 
 interface Guess {
   word: string;
@@ -13,6 +13,9 @@ interface GuessDisplayProps {
   gameOver: boolean;
   targetWord: string;
   remainingHints: number;
+  dayNumber?: number;
+  startPracticeGame: () => void;
+  loadDailyGame: () => void;
 }
 
 const GuessDisplay: React.FC<GuessDisplayProps> = ({
@@ -21,38 +24,29 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
   gameOver,
   targetWord,
   remainingHints,
+  dayNumber = 0,
+  startPracticeGame,
+  loadDailyGame,
 }) => {
   return (
     <>
       {gameOver && (
-        <div className="space-y-2 flex-col flex">
-          <p className="text-green-600 font-semibold">
-            Congratulations! You guessed it in{" "}
-            <strong>{guesses.length}</strong>{" "}
-            {guesses.length === 1 ? "guess" : "guesses"}.{" "}
-            {getEmoji(guesses.length)}
-          </p>
-          <p className="text-[#9f86c0] font-semibold">
-            You used <strong>{5 - remainingHints}</strong> hint
-            {5 - remainingHints > 1 ? "s" : ""}.
-          </p>
-          {revealed && (
-            <p className="text-[#073b4c]">
-              The answer is: <strong>{targetWord}</strong>
-            </p>
-          )}
-        </div>
+        <GameResult
+          guessCount={guesses.length}
+          hintsUsed={5 - remainingHints}
+          targetWord={targetWord}
+          revealed={revealed}
+          dayNumber={dayNumber}
+          startPracticeGame={startPracticeGame}
+          loadDailyGame={loadDailyGame}
+        />
       )}
-      {!gameOver && revealed && (
-        <p className="text-text">
-          The answer is: <strong>{targetWord}</strong>
-        </p>
-      )}
+      {/* We no longer need to show the revealed answer here since we auto-guess it */}
       {guesses.length > 0 && (
         <>
           <div className="space-y-2">
             <p className="text-gray-600">
-              <span className="max-sm:hidden">Guess </span>
+              <span>Guess </span>
               <strong>#{guesses.length}</strong>:
             </p>
             <div

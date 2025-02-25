@@ -16,38 +16,55 @@ export default function useSemantleGame() {
   const [error, setError] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  
+  // Custom setter function to auto-guess the word when revealed
+  const handleReveal = (value: boolean) => {
+    setRevealed(value);
+    if (value && targetWord && !gameOver) {
+      const newGuess = { word: targetWord, similarity: 1.0 };
+      setGuesses((prev) => [...prev, newGuess]);
+      setGameOver(true);
+    }
+  };
   const [remainingHints, setRemainingHints] = useState(5);
 
   /**
    * Load daily game data (target word, target words, similar words, and day number)
    */
-  useEffect(() => {
-    async function loadDailyGame() {
-      try {
-        const res = await fetch(`${API_URL}/daily-game`);
-        if (!res.ok) throw new Error("Failed to load daily game");
-        const data = await res.json();
-        setTargetWord(data.targetWord);
-        setTargetWords(data.targetWords || []);
-        setSimilarWords(data.similarWords || []);
-        setDayNumber(data.dayNumber);
-        setRemainingHints(5);
-      } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : String(err);
-        setError(errorMessage);
-      }
-    }
-    loadDailyGame();
-  }, []);
-
-  /**
-   * Start a new game by fetching a random game
-   */
-  async function startNewGame() {
+  async function loadDailyGame() {
     setError("");
     setGuesses([]);
     setGameOver(false);
-    setRevealed(false);
+    handleReveal(false);
+    
+    try {
+      const res = await fetch(`${API_URL}/daily-game`);
+      if (!res.ok) throw new Error("Failed to load daily game");
+      const data = await res.json();
+      setTargetWord(data.targetWord);
+      setTargetWords(data.targetWords || []);
+      setSimilarWords(data.similarWords || []);
+      setDayNumber(data.dayNumber);
+      setRemainingHints(5);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      setError(errorMessage);
+    }
+  }
+  
+  useEffect(() => {
+    loadDailyGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /**
+   * Start a practice game by fetching a random game
+   */
+  async function startPracticeGame() {
+    setError("");
+    setGuesses([]);
+    setGameOver(false);
+    handleReveal(false);
 
     try {
       const res = await fetch(`${API_URL}/random-game`);
@@ -192,10 +209,11 @@ export default function useSemantleGame() {
     gameOver,
     revealed,
     remainingHints,
-    startNewGame,
+    startPracticeGame,
+    loadDailyGame,
     guessWord,
     guessRandomWord,
     consumeHint,
-    setRevealed,
+    setRevealed: handleReveal,
   };
 }
