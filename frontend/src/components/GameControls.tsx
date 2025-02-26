@@ -26,7 +26,6 @@ const GameControls: React.FC<GameControlsProps> = ({
   revealed,
   remainingHints,
   dayNumber,
-  guessesLength,
   startPracticeGame,
   loadDailyGame,
   guessRandomWord,
