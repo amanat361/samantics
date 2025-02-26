@@ -1,1 +1,3 @@
 /prod.env
+./api/data/embeddings.json
+./api/data/similarityGraph.json
