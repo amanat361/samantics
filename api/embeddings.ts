@@ -22,6 +22,7 @@ class EmbeddingManager {
   private allWords: string[] = [];
   private targetWords: string[] = [];
   private animalWords: string[] = [];
+  private hintWords: string[] = [];
   private readonly OLLAMA_URL: string;
   private readonly headers: HeadersInit;
 
@@ -37,6 +38,7 @@ class EmbeddingManager {
     this.loadTargetWords();
     this.loadAllWords();
     this.loadAnimalWords();
+    this.loadHintWords();
     this.loadSimilarityGraph();
     this.initializeIfNeeded();
   }
@@ -60,6 +62,19 @@ class EmbeddingManager {
       }
 
       console.log("Initialization complete!");
+    }
+  }
+
+  private loadHintWords() {
+    try {
+      this.hintWords = readFileSync("data/hints.txt", "utf-8")
+        .split("\n")
+        .filter(Boolean)
+        .map((w) => w.trim());
+      console.log(`Loaded ${this.hintWords.length} hint words`);
+    } catch (e) {
+      console.warn("No hints.txt found");
+      this.hintWords = [];
     }
   }
 
@@ -145,7 +160,7 @@ class EmbeddingManager {
 
     // Calculate similarities with all words
     const similarities = await Promise.all(
-      this.allWords.map(async (targetWord) => {
+      this.hintWords.map(async (targetWord) => {
         // If it's the same word, set similarity to exactly 1.
         if (targetWord === word) {
           return { word: targetWord, similarity: 1 };
