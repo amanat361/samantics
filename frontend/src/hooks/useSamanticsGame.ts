@@ -1,4 +1,4 @@
-// src/hooks/useSemantleGame.ts
+// src/hooks/useSamanticsGame.ts
 import { useState, useEffect } from "react";
 import { API_URL } from "../config";
 import { useLocalStorage } from "./useLocalStorage";
@@ -10,7 +10,7 @@ interface Guess {
   isHint?: boolean;
 }
 
-export default function useSemantleGame() {
+export default function useSamanticsGame() {
   const [dayNumber, setDayNumber] = useState(-1);
   const [targetWords, setTargetWords] = useState<string[]>([]);
   const [targetWord, setTargetWord] = useState("");
@@ -19,7 +19,7 @@ export default function useSemantleGame() {
   const [error, setError] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [revealed, setRevealed] = useState(false);
-  const [stats, setStats] = useLocalStorage<GameStats>("semantle-stats", DEFAULT_STATS);
+  const [stats, setStats] = useLocalStorage<GameStats>("samantics-stats", DEFAULT_STATS);
   
   // Custom setter function to auto-guess the word when revealed
   const handleReveal = (value: boolean) => {

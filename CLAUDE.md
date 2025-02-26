@@ -1,4 +1,4 @@
-# Semantle Project Guide
+# Samantics Project Guide
 
 ## Commands
 - Frontend dev: `cd frontend && bun run dev`

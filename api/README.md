@@ -1,4 +1,4 @@
-# Semantle Clone API Specification
+# Samantics Clone API Specification
 
 Base URL: `http://localhost:3000`
 

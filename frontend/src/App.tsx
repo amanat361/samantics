@@ -1,6 +1,6 @@
 // src/App.tsx
 import { useEffect } from "react";
-import useSemantleGame from "./hooks/useSemantleGame";
+import useSamanticsGame from "./hooks/useSamanticsGame";
 import GameControls from "./components/GameControls";
 import GuessForm from "./components/GuessForm";
 import GuessDisplay from "./components/GuessDisplay";
@@ -24,7 +24,7 @@ function App() {
     consumeHint,
     getHintAvailability,
     setRevealed,
-  } = useSemantleGame();
+  } = useSamanticsGame();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
