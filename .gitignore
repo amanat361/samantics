@@ -1,2 +1,6 @@
 embeddings.json
 similarityGraph.json
+.env
+**/.env
+node_modules
+**/node_modules
