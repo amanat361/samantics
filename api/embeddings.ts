@@ -44,9 +44,9 @@ class EmbeddingManager {
   }
 
   private async initializeIfNeeded() {
-    const needsSeeding = this.cache.size < this.allWords.length;
+    const needsSeeding = this.cache.size < this.allWords.length && process.env.DEV !== 'true';
     const needsGraph =
-      Object.keys(this.similarityGraph).length < this.targetWords.length;
+      Object.keys(this.similarityGraph).length < this.targetWords.length && process.env.DEV !== 'true';
 
     if (needsSeeding || needsGraph) {
       console.log("Initializing missing data...");

@@ -45,8 +45,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
           stats={stats}
         />
       )}
-      {/* We no longer need to show the revealed answer here since we auto-guess it */}
-      {guesses.length > 0 && (
+      {guesses.length > 0 && !gameOver && (
         <>
           <div className="space-y-2">
             <p className="text-gray-600">
