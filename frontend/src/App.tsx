@@ -83,6 +83,7 @@ function App() {
             <a href="https://saminamanat.com" className="underline">
               Sam
             </a>
+            {" - "}Enjoy :)
           </div>
         </div>
       </div>
