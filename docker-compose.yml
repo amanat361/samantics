@@ -11,6 +11,8 @@ services:
       - app-network
     environment:
       - TZ=America/Los_Angeles
+    volumes:
+      - semantle_data:/app/data
 
   frontend:
     build:
@@ -29,3 +31,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  semantle_data:
