@@ -1,74 +1,93 @@
-from collections import defaultdict
+def should_keep_word(word, existing_words):
+    """
+    Single comprehensive function to determine if a word should be kept.
+    Returns (should_keep, reason_if_removed)
+    """
+    # Must have at least one vowel
+    if not any(vowel in word for vowel in 'aeiou'):
+        return False, "no vowels"
+    
+    # Check for simpler forms that already exist
+    if len(word) > 1:  # Only check if word is long enough
+        word_without_last = word[:-1]
+        if word_without_last in existing_words:
+            return False, f"simpler form '{word_without_last}' exists"
 
-def get_root_forms(word):
-    """Returns possible root forms of a word based on common suffixes and prefixes"""
+    # Common suffixes - if root word exists, don't keep this word
     suffixes = ['ed', 'ing', 'ion', 's', 'es', 'ned', 'er', 'est', 'ly', 'ment', 
                 'ness', 'ful', 'less', 'able', 'ible']
-    prefixes = ['un', 're', 'dis', 'over', 'under', 'pre', 'post', 'non', 'anti', 
-                'sub', 'super']
-    
-    possible_roots = set()
-    
-    # Check suffixes
     for suffix in suffixes:
         if word.endswith(suffix):
-            possible_roots.add(word[:-len(suffix)])
-            # Handle double letters (e.g., planned -> plan)
-            if len(word) > len(suffix) + 1 and word[-len(suffix)-1] == word[-len(suffix)-2]:
-                possible_roots.add(word[:-len(suffix)-1])
-    
-    # Check prefixes
+            root = word[:-len(suffix)]
+            # Only check for double letters if root is long enough
+            if len(root) > 1:  # Need at least 2 characters to check doubles
+                if root[-1] == root[-2]:
+                    simpler_root = root[:-1]
+                    if simpler_root in existing_words:
+                        return False, f"root form '{simpler_root}' exists"
+            if root in existing_words:
+                return False, f"root form '{root}' exists"
+
+    # Common prefixes - if root word exists, don't keep this word
+    prefixes = ['un', 're', 'dis', 'over', 'under', 'pre', 'post', 'non', 'anti', 
+                'sub', 'super']
     for prefix in prefixes:
         if word.startswith(prefix):
-            possible_roots.add(word[len(prefix):])
+            root = word[len(prefix):]
+            if root in existing_words:
+                return False, f"root form '{root}' exists"
+
+    # Remove words with unusual character combinations
+    unusual_combos = ['uu', 'ii', 'jj', 'kk', 'qq', 'vv', 'ww', 'xx', 'yy', 'zz']
+    for combo in unusual_combos:
+        if combo in word:
+            return False, f"unusual letter combination '{combo}'"
+
+    # Remove words with uncommon endings
+    uncommon_endings = ['dg', 'fk', 'gk', 'hk', 'jk', 'mk', 'nk', 'pk', 'rk', 'sk', 
+                       'tk', 'vk', 'wk', 'xk', 'yk', 'zk']
+    for ending in uncommon_endings:
+        if word.endswith(ending):
+            return False, f"uncommon ending '{ending}'"
+
+    return True, ""
+
+def main():
+    print("Reading words file...")
+    with open('hints.txt', 'r', encoding='utf-8') as file:
+        words = {word.strip().lower() for word in file.readlines()}
+
+    print("Processing words...")
+    kept_words = set()
+    removed_words = {}
     
-    return possible_roots
-
-# Read words file
-with open('words.txt', 'r', encoding='utf-8') as file:
-    words = {word.strip().lower() for word in file.readlines()}
-
-# Create word length buckets for faster processing
-length_buckets = defaultdict(set)
-for word in words:
-    length_buckets[len(word)].add(word)
-
-kept_words = set()
-removed_words = {}
-
-# Process words from shortest to longest
-for length in sorted(length_buckets.keys()):
-    for word in length_buckets[length]:
-        # Skip if word was already marked for removal
-        if word in removed_words:
-            continue
+    total = len(words)
+    # Sort words by length (shortest first) to prioritize simpler forms
+    for i, word in enumerate(sorted(words, key=len)):
+        if i % 1000 == 0:  # Progress indicator
+            print(f"Processed {i}/{total} words...")
             
-        # Get possible root forms
-        roots = get_root_forms(word)
-        
-        # Check if any root form exists in kept_words
-        is_derived = False
-        for root in roots:
-            if root in kept_words:
-                removed_words[word] = f"Derived from '{root}'"
-                is_derived = True
-                break
-        
-        # If word is not derived, check if it's a root for any previously kept word
-        if not is_derived:
+        keep_word, reason = should_keep_word(word, kept_words)
+        if keep_word:
             kept_words.add(word)
+        else:
+            removed_words[word] = reason
 
-# Write filtered words to hints.txt
-with open('hints.txt', 'w', encoding='utf-8') as file:
-    file.write('\n'.join(sorted(kept_words)))
+    print("Writing results...")
+    with open('hints.txt', 'w', encoding='utf-8') as file:
+        file.write('\n'.join(sorted(kept_words)))
 
-# Write removal log
-with open('removed_words.log', 'w', encoding='utf-8') as file:
-    for word, reason in removed_words.items():
-        file.write(f"{word}: {reason}\n")
+    with open('removed_words.log', 'w', encoding='utf-8') as file:
+        for word, reason in sorted(removed_words.items()):
+            file.write(f"{word}: {reason}\n")
 
-print(f"Process complete:")
-print(f"Original words: {len(words)}")
-print(f"Kept words: {len(kept_words)}")
-print(f"Removed words: {len(removed_words)}")
-print("Check removed_words.log for details on removals")
+    print(f"""
+    Process complete:
+    Original words: {len(words)}
+    Kept words: {len(kept_words)}
+    Removed words: {len(removed_words)}
+    Check removed_words.log for details on removals
+    """)
+
+if __name__ == "__main__":
+    main()
