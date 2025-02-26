@@ -163,10 +163,13 @@ function getWeight(sim: number): number {
 function interpolateColor(sim: number): string {
   const weight = Math.max(0.1, getWeight(sim));
 
-  // Easy to update color strings
-  const startColor = "oklch(32% 0.50 123)";
-  const endColor = "oklch(63% 0.30 216)";
-
+  // Warm gradient that transitions from rust/brown to orange
+  // Representing "far" (cooler, darker) to "near" (warmer, brighter)
+  // const startColor = "oklch(35% 0.14 30)"; // Deep rust brown (far)
+  // const endColor = "oklch(65% 0.18 60)"; // Warm orange (near)
+  const startColor = "oklch(30% 0.13 25)"; // Deep chocolate brown (far)
+  const endColor = "oklch(70% 0.17 70)"; // Bright orange-gold (near)
+  
   // Parse OKLCH strings into components
   const parseOklch = (str: string) => {
     const matches = str.match(/oklch\((\d+)%\s+(\d*\.?\d+)\s+(\d+)/);
@@ -181,12 +184,13 @@ function interpolateColor(sim: number): string {
   const start = parseOklch(startColor);
   const end = parseOklch(endColor);
 
-  const lightness = start.l + weight * (end.l - start.l);
-  const chroma = start.c + weight * (end.c - start.c);
+  // Ease-in-out function to make the middle range transition more gradual
+  const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+  const easedWeight = easeInOut(weight);
 
-  // Force decreasing path (negative direction around the wheel)
-  const hueDiff = end.h - start.h;
-  const hue = start.h + weight * (hueDiff - 360);
+  const lightness = start.l + easedWeight * (end.l - start.l);
+  const chroma = start.c + easedWeight * (end.c - start.c);
+  const hue = start.h + easedWeight * (end.h - start.h);
 
   return `oklch(${lightness}% ${chroma} ${hue})`;
 }
