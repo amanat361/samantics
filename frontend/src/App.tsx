@@ -37,7 +37,11 @@ function App() {
         <div className="w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-4">
           <GameModeBanner dayNumber={dayNumber} />
 
-          {error && <p className="text-red-600">Error: {error}</p>}
+          {error && (
+            <div className="bg-red-50 border border-red-200 rounded-md p-3">
+              <p className="text-red-600"><strong>Error:</strong> {error}</p>
+            </div>
+          )}
 
           <GameControls
             gameOver={gameOver}
