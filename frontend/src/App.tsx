@@ -84,7 +84,7 @@ function App() {
               Sam
             </a>
             {" - "}
-            <a href="https://github.com/saminamanat/semantle" className="underline">
+            <a href="https://github.com/amanat361/samantics" className="underline">
               Learn more
             </a>
           </div>
