@@ -11,6 +11,7 @@ Samantics challenges players to find a secret target word by making guesses and 
 - Semantic similarity scoring using word embeddings
 - Color-coded feedback on how close your guesses are
 - Daily puzzles with consistent target words
+- Random game mode for unlimited play
 - User progress saved locally in your browser
 - Clean, responsive UI design
 
@@ -64,11 +65,25 @@ This will build and run the containers defined in the docker-compose.yml file.
 
 Samantics uses word embeddings to calculate semantic similarity between words. The backend manages a database of word embeddings and provides similarity scores for the frontend game interface.
 
+### Embedding Model
+
+**Important:** This project requires a text embedding model to generate word vectors. You'll need to configure your own embedding model by updating the `OLLAMA_URL` in `api/embeddings.ts`. 
+
+By default, the code is configured to use a Cloudflare tunnel to access an embedding model, but you can replace this with any embedding API. You don't need to use the Cloudflare tunnel system - it's a "bring your own model" setup.
+
+To use your own model:
+1. Edit `api/embeddings.ts`
+2. Update the `OLLAMA_URL` to point to your embedding service
+3. Adjust the request format in the `getFromAPI` method if needed
+4. Remove the Cloudflare credentials if they're not needed for your setup
+
 ## License
 
-[License information here]
+[GNU General Public License v3.0](https://github.com/amanat361/samantics/main/LICENSE.md)
+
+This project is licensed under the terms of the GNU General Public License v3.0. This means you can use, modify, and distribute this project, as long as you follow the terms of the license. Keep software open and free!
 
 ## Acknowledgments
 
-- Inspired by the original [Samantics](https://Samantics.com/) game
-- Word embeddings based on [model/data source]
+- Inspired by the original [Semantle](https://semantle.com/) game
+- Word embeddings based on [Nomic Embed Text](https://ollama.com/library/nomic-embed-text) from [Ollama](https://ollama.ai/)
