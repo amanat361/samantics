@@ -79,9 +79,9 @@ To use your own model:
 
 ## License
 
-[GNU General Public License v3.0](https://github.com/amanat361/samantics/main/LICENSE.md)
+[GNU AFFERO GENERAL PUBLIC LICENSE v3.0](https://github.com/amanat361/samantics/blob/main/LICENSE)
 
-This project is licensed under the terms of the GNU General Public License v3.0. This means you can use, modify, and distribute this project, as long as you follow the terms of the license. Keep software open and free!
+This project is licensed under the terms of the GNU Affero General Public License v3.0. This means you can use, modify, and distribute this project, as long as you follow the terms of the license. Keep software open and free!
 
 ## Acknowledgments
 
