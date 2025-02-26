@@ -158,7 +158,11 @@ const GameResult: React.FC<GameResultProps> = ({
             </div>
             <div className="flex flex-col items-center p-2 bg-[#f7edde]/50 rounded">
               <span className="text-3xl font-bold text-[#001524]">
-                {stats.currentStreak < Infinity ? `${stats.currentStreak} day${stats.currentStreak > 1 ? 's' : ''}` : '-'}
+                {stats.currentStreak < Infinity
+                  ? `${stats.currentStreak} day${
+                      stats.currentStreak > 1 ? "s" : ""
+                    }`
+                  : "-"}
               </span>
               <span className="text-xs text-[#666] uppercase tracking-wider">
                 Streak
@@ -180,8 +184,16 @@ const GameResult: React.FC<GameResultProps> = ({
         {/* Action buttons with improved styling */}
         <div className="flex gap-2 pt-2">
           <button
+            onClick={startPracticeGame}
+            className="flex-1 bg-[#0eab82] hover:bg-[#0a8d6c] text-white py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-bold shadow-md"
+          >
+            <ListRestart className="w-5 h-5" />
+            Play Again
+          </button>
+          
+          <button
             onClick={handleShareClick}
-            className="flex-1 bg-[#d67c24] hover:bg-[#b56516] text-white py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-bold shadow-md"
+            className="flex-1 bg-[#d67c24] hover:bg-[#b56516] text-white py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-bold shadow-md animate-bounce"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -192,14 +204,6 @@ const GameResult: React.FC<GameResultProps> = ({
               <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
             </svg>
             Share Results
-          </button>
-
-          <button
-            onClick={startPracticeGame}
-            className="flex-1 bg-[#0eab82] hover:bg-[#0a8d6c] text-white py-2.5 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm font-bold shadow-md"
-          >
-            <ListRestart className="w-5 h-5" />
-            Play Again
           </button>
         </div>
       </div>

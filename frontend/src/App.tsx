@@ -34,7 +34,7 @@ function App() {
     <div className="min-h-screen flex justify-center bg-[#ffecd1] p-2 sm:p-4 font-main">
       <div className="flex flex-col w-full max-w-xl">
         <HeaderWithInstructions />
-        <div className="w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-4">
+        <div className="w-full bg-[#fff] rounded-lg shadow-md p-4 sm:p-6 space-y-6 sm:space-y-4 border border-primary">
           <GameModeBanner dayNumber={dayNumber} />
 
           {error && (

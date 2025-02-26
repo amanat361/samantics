@@ -46,7 +46,7 @@ const GameControls: React.FC<GameControlsProps> = ({
         {dayNumber > 0 ? (
           <button
             onClick={startPracticeGame}
-            className="w-full px-2 py-1.5 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
+            className="w-full px-2 py-2 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
           >
             <span className="max-sm:mr-2">Practice Mode</span>
             <InfinityIcon className="w-4 h-4" />
@@ -54,7 +54,7 @@ const GameControls: React.FC<GameControlsProps> = ({
         ) : (
           <button
             onClick={loadDailyGame}
-            className="w-full px-2 py-1.5 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
+            className="w-full px-2 py-2 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
           >
             <span className="max-sm:mr-0">Daily Challenge</span>
             <CalendarIcon className="w-4 h-4" />
@@ -72,7 +72,7 @@ const GameControls: React.FC<GameControlsProps> = ({
                 return (
                   <button
                     onClick={() => consumeHint(20, 3)}
-                    className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
+                    className="w-full px-2 py-2 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
                   >
                     <span className="max-sm:mr-0">
                       Use Hint: <strong>{remainingHints} left</strong>
@@ -83,9 +83,9 @@ const GameControls: React.FC<GameControlsProps> = ({
               } else if (remainingHints > 0) {
                 // Hints remaining but locked until more guesses
                 return (
-                  <button className="w-full px-2 py-1.5 bg-gray-400 text-white rounded flex items-center justify-center gap-2 cursor-not-allowed">
+                  <button className="w-full px-2 py-2 bg-gray-400 text-white rounded flex items-center justify-center gap-2 cursor-not-allowed">
                     <span className="max-sm:mr-0">
-                      {hintStatus.guessesUntilNextHint} more tries
+                      {hintStatus.guessesUntilNextHint} more {hintStatus.guessesUntilNextHint > 1 ? 'tries' : 'try'}
                     </span>
                     <LockIcon className="w-4 h-4" />
                   </button>
@@ -95,7 +95,7 @@ const GameControls: React.FC<GameControlsProps> = ({
                 return (
                   <button
                     onClick={() => setRevealed(true)}
-                    className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
+                    className="w-full px-2 py-2 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
                   >
                     <span className="max-sm:mr-2.5">Give Up</span>
                     <svg
@@ -118,7 +118,7 @@ const GameControls: React.FC<GameControlsProps> = ({
             })()}
             <button
               onClick={guessRandomWord}
-              className="w-full px-2 py-1.5 bg-share text-white rounded hover:bg-share/80 transition flex items-center justify-center gap-2"
+              className="w-full px-2 py-2 bg-share text-white rounded hover:bg-share/80 transition flex items-center justify-center gap-2"
             >
               <span>Random Guess</span>
               <ShuffleIcon className="w-4 h-4" />

@@ -10,7 +10,7 @@ const GameModeBanner: React.FC<GameModeBannerProps> = ({ dayNumber }) => {
   const isDaily = dayNumber > 0;
   
   return (
-    <div className={`w-full py-2 px-3 mb-3 rounded flex items-center justify-center gap-2 bg-[#78290f]/10 border-2 border-[#78290f] text-[#78290f]`}>
+    <div className={`w-full py-2 px-3 mb-6 rounded flex items-center justify-center gap-2 bg-[#78290f]/10 border-2 border-[#78290f] text-[#78290f]`}>
       {isDaily ? (
         <>
           <CalendarIcon className="w-5 h-5" />
