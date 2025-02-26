@@ -1,6 +1,7 @@
 // src/components/GuessDisplay.tsx
 import React from "react";
 import GameResult from "./GameResult";
+import { GameStats } from "../types/stats";
 
 interface Guess {
   word: string;
@@ -16,6 +17,7 @@ interface GuessDisplayProps {
   dayNumber?: number;
   startPracticeGame: () => void;
   loadDailyGame: () => void;
+  stats: GameStats;
 }
 
 const GuessDisplay: React.FC<GuessDisplayProps> = ({
@@ -27,6 +29,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
   dayNumber = 0,
   startPracticeGame,
   loadDailyGame,
+  stats,
 }) => {
   return (
     <>
@@ -39,6 +42,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
           dayNumber={dayNumber}
           startPracticeGame={startPracticeGame}
           loadDailyGame={loadDailyGame}
+          stats={stats}
         />
       )}
       {/* We no longer need to show the revealed answer here since we auto-guess it */}

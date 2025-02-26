@@ -1,6 +1,6 @@
 // src/components/GameControls.tsx
 import React from "react";
-import { LightbulbIcon, ShuffleIcon, InfinityIcon, CalendarIcon } from "lucide-react";
+import { LightbulbIcon, ShuffleIcon, InfinityIcon, CalendarIcon, LockIcon } from "lucide-react";
 
 interface GameControlsProps {
   gameOver: boolean;
@@ -12,6 +12,12 @@ interface GameControlsProps {
   loadDailyGame: () => void;
   guessRandomWord: () => void;
   consumeHint: (count: number, proximity: number) => void;
+  getHintAvailability: () => { 
+    available: boolean;
+    message: string;
+    nextThreshold: number | null;
+    guessesUntilNextHint: number;
+  };
   setRevealed: (revealed: boolean) => void;
 }
 
@@ -20,10 +26,12 @@ const GameControls: React.FC<GameControlsProps> = ({
   revealed,
   remainingHints,
   dayNumber,
+  guessesLength,
   startPracticeGame,
   loadDailyGame,
   guessRandomWord,
   consumeHint,
+  getHintAvailability,
   setRevealed,
 }) => {
 
@@ -52,29 +60,52 @@ const GameControls: React.FC<GameControlsProps> = ({
 
           {!revealed && (
             <>
-              {remainingHints > 0 ? (
-                <button
-                  onClick={() => consumeHint(20, 3)}
-                  className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
-                >
-                  <span className="max-sm:mr-0">
-                    Use Hint: <strong>{remainingHints} left</strong>
-                  </span>
-                  <LightbulbIcon className="w-4 h-4" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => setRevealed(true)}
-                  className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
-                >
-                  <span className="max-sm:mr-2.5">Give Up</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                  </svg>
-                </button>
-              )}
+              {/* Use the hint availability helper function */}
+              {(() => {
+                const hintStatus = getHintAvailability();
+                
+                // If hint is available
+                if (hintStatus.available) {
+                  return (
+                    <button
+                      onClick={() => consumeHint(20, 3)}
+                      className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
+                    >
+                      <span className="max-sm:mr-0">
+                        Use Hint: <strong>{remainingHints} left</strong>
+                      </span>
+                      <LightbulbIcon className="w-4 h-4" />
+                    </button>
+                  );
+                } else if (remainingHints > 0) {
+                  // Hints remaining but locked until more guesses
+                  return (
+                    <button
+                      className="w-full px-2 py-1.5 bg-gray-400 text-white rounded flex items-center justify-center gap-2 cursor-not-allowed"
+                    >
+                      <span className="max-sm:mr-0">
+                        {hintStatus.guessesUntilNextHint} more tries
+                      </span>
+                      <LockIcon className="w-4 h-4" />
+                    </button>
+                  );
+                } else {
+                  // No hints left
+                  return (
+                    <button
+                      onClick={() => setRevealed(true)}
+                      className="w-full px-2 py-1.5 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
+                    >
+                      <span className="max-sm:mr-2.5">Give Up</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                      </svg>
+                    </button>
+                  );
+                }
+              })()}
               <button
                 onClick={guessRandomWord}
                 className="w-full px-2 py-1.5 bg-share text-white rounded hover:bg-share/80 transition flex items-center justify-center gap-2"

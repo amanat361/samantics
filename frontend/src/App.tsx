@@ -16,11 +16,13 @@ function App() {
     gameOver,
     revealed,
     remainingHints,
+    stats,
     startPracticeGame,
     loadDailyGame,
     guessWord,
     guessRandomWord,
     consumeHint,
+    getHintAvailability,
     setRevealed,
   } = useSemantleGame();
 
@@ -47,6 +49,7 @@ function App() {
             loadDailyGame={loadDailyGame}
             guessRandomWord={guessRandomWord}
             consumeHint={consumeHint}
+            getHintAvailability={getHintAvailability}
             setRevealed={setRevealed}
           />
 
@@ -64,6 +67,7 @@ function App() {
             dayNumber={dayNumber}
             startPracticeGame={startPracticeGame}
             loadDailyGame={loadDailyGame}
+            stats={stats}
           />
 
           <div className="text-center text-gray-500 text-sm">

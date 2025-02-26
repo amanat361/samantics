@@ -1,7 +1,8 @@
 // src/components/GameResult.tsx
 import React from "react";
 import { getEmoji, handleShare } from "../utils/gameHelpers";
-import { ListRestartIcon } from "lucide-react";
+import { ListRestartIcon, TrophyIcon, BarChart2Icon } from "lucide-react";
+import { GameStats } from "../types/stats";
 
 interface GameResultProps {
   guessCount: number;
@@ -11,6 +12,7 @@ interface GameResultProps {
   dayNumber?: number;
   startPracticeGame: () => void;
   loadDailyGame: () => void;
+  stats: GameStats;
 }
 
 const GameResult: React.FC<GameResultProps> = ({
@@ -20,8 +22,11 @@ const GameResult: React.FC<GameResultProps> = ({
   revealed,
   dayNumber = 0,
   startPracticeGame,
+  stats,
 }) => {
   const emoji = getEmoji(guessCount);
+  const isDaily = dayNumber > 0;
+  const isWin = !revealed;
 
   const handleShareClick = () => {
     handleShare({
@@ -37,7 +42,7 @@ const GameResult: React.FC<GameResultProps> = ({
       <div className="space-y-3">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-bold text-[#78290f]">
-            Congratulations! 🎉
+            {isWin ? "Congratulations! 🎉" : "Game Over"}
           </h2>
           <span className="text-2xl">{emoji}</span>
         </div>
@@ -73,6 +78,42 @@ const GameResult: React.FC<GameResultProps> = ({
                   : hintsUsed === 5
                   ? "All hints used"
                   : `${hintsUsed} hint${hintsUsed !== 1 ? "s" : ""} used`}
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Section */}
+          <div className="bg-white/70 rounded p-2 border border-[#d8c4a5]/50">
+            <div className="flex justify-between items-center mb-1">
+              <div className="text-xs text-[#d67c24] font-medium flex items-center">
+                <BarChart2Icon className="w-3 h-3 mr-1" />
+                Your Stats
+              </div>
+              {isDaily && isWin && (
+                <div className="flex items-center text-xs text-[#0eab82] font-bold">
+                  <TrophyIcon className="w-3 h-3 mr-1" />
+                  {stats.currentStreak > 0 && `${stats.currentStreak} day streak!`}
+                </div>
+              )}
+            </div>
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <div>
+                <div className="text-xs text-[#666]">Games</div>
+                <div className="text-sm font-bold">{stats.gamesPlayed}</div>
+              </div>
+              <div>
+                <div className="text-xs text-[#666]">Win %</div>
+                <div className="text-sm font-bold">
+                  {stats.gamesPlayed > 0
+                    ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100)
+                    : 0}%
+                </div>
+              </div>
+              <div>
+                <div className="text-xs text-[#666]">Best</div>
+                <div className="text-sm font-bold">
+                  {stats.bestScore < Infinity ? stats.bestScore : "-"}
+                </div>
               </div>
             </div>
           </div>
