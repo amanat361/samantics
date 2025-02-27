@@ -138,3 +138,140 @@ ghost
 fairy
 goblin
 alien
+forest
+desert
+waterfall
+reef
+cave
+glacier
+prairie
+tundra
+marsh
+meadow
+animals:
+bear
+wolf
+eagle
+dolphin
+tiger
+kangaroo
+leopard
+octopus
+peacock
+lynx
+gorilla
+chameleon
+telescope
+hammer
+lantern
+microscope
+scissors
+bucket
+ladder
+helmet
+anchor
+paintbrush
+adventure
+sorrow
+dream
+memory
+nostalgia
+whisper
+hope
+rhythm
+paradox
+infinity
+evolution
+serendipity
+equilibrium
+integrity
+chaos
+epiphany
+resilience
+perspective
+synergy
+explorer
+inventor
+philosopher
+archaeologist
+detective
+astronaut
+sculptor
+journalist
+poet
+gardener
+navigator
+architect
+quantum
+genome
+algorithm
+neutron
+catalyst
+spectrum
+prism
+nucleus
+entropy
+eclipse
+plasma
+renaissance
+mythology
+folklore
+revolution
+pilgrimage
+expedition
+frontier
+heritage
+prophecy
+meditation
+alchemy
+chronicle
+tsunami
+avalanche
+constellation
+nebula
+aurora
+earthquake
+meteor
+whirlpool
+landslide
+heartbeat
+metabolism
+consciousness
+neuron
+pulse
+breath
+reflex
+hormone
+skeleton
+immune
+nerve
+melody
+canvas
+narrative
+imagination
+sculpture
+metaphor
+creativity
+improvisation
+symphony
+poetry
+neil armstrong
+albert einstein
+steve jobs
+elon musk
+walt disney
+nelson mandela
+great wall
+golden gate
+mount everest
+grand canyon
+cold war
+world peace
+dark matter
+social justice
+global warming
+rubber duck
+flying saucer
+paper clip
+crystal ball
+magic carpet
