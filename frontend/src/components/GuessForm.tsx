@@ -84,7 +84,7 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
       <input
         ref={inputRef}
         type="text"
-        placeholder="Guess a word"
+        placeholder="Guess one or more words..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         className="flex-1 p-2 border border-gray-300 rounded"

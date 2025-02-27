@@ -17,7 +17,7 @@ const Instructions: React.FC = () => {
       <div className="space-y-2">
         <h2 className="text-xl font-bold text-[#78290f]">How to Play 👋</h2>
         <p className="leading-relaxed">
-          Your goal is to guess the secret word! After each guess, you'll see a
+          Your goal is to guess the secret word (or multiple)! After each guess, you'll see a
           similarity percentage that tells you how close your guess is. Higher
           is better! The game is <strong>meant to be challenging</strong> - so
           don't give up if it seems tough at first!
