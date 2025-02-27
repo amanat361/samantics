@@ -119,8 +119,6 @@ hollywood
 twitter
 facebook
 pokemon
-ninja
-samurai
 viking
 cowboy
 vampire
