@@ -1,6 +1,6 @@
 def remove_duplicates():
     # Read original words
-    with open('target-words.txt', 'r') as f:
+    with open('words.txt', 'r') as f:
         words = f.read().splitlines()
     
     # Track original words for logging
@@ -15,7 +15,7 @@ def remove_duplicates():
             unique_words.append(word)
     
     # Write unique words back to file
-    with open('target-words.txt', 'w') as f:
+    with open('words.txt', 'w') as f:
         f.write('\n'.join(unique_words))
     
     # Log changes
