@@ -27,6 +27,9 @@ function validateWord(word: unknown): string {
   if (!trimmed.match(/^[a-zA-Z ]+$/)) {
     throw new Error("Invalid input: word can only contain letters and spaces.");
   }
+  if (trimmed.length > 100) {
+    throw new Error("Invalid input: text cannot be longer than 100 characters.");
+  }
   return trimmed;
 }
 
