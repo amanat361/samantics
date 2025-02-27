@@ -44,7 +44,7 @@ class EmbeddingManager {
   }
 
   private async initializeIfNeeded() {
-    const needsSeeding = this.cache.size < this.allWords.length && process.env.DEV !== 'true';
+    const needsSeeding = this.allWords.some((word) => !this.cache.has(word)) && process.env.DEV !== 'true';
     const needsGraph =
       Object.keys(this.similarityGraph).length < this.targetWords.length && process.env.DEV !== 'true';
 
