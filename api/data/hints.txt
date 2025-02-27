@@ -499,9 +499,7 @@ aspire
 assailant
 assassin
 assault
-asses
 asset
-asshole
 assign
 assimilate
 assist
@@ -832,7 +830,6 @@ bilge
 bilingual
 bills
 billy
-bimbo
 binary
 binds
 binge
@@ -855,7 +852,6 @@ bishop
 bison
 bisque
 bistro
-bitch
 bites
 biting
 bitsy
@@ -939,7 +935,6 @@ bombs
 bonbon
 bonds
 boned
-boner
 bones
 bonfire
 bongo
@@ -948,7 +943,6 @@ bonkers
 bonnet
 bonnie
 bonus
-boobs
 booby
 booger
 boogey
@@ -1123,7 +1117,6 @@ businesswomen
 busload
 bussing
 busts
-busty
 busybody
 butch
 butler
@@ -1495,7 +1488,6 @@ climb
 cling
 clips
 clique
-clitoris
 cloak
 clobbered
 clock
@@ -1531,7 +1523,6 @@ cobra
 cobweb
 cocaine
 cockamamie
-cocksucker
 cocky
 cocoa
 coddle
@@ -1789,7 +1780,6 @@ coward
 cowboy
 cowed
 cower
-cowgirl
 coyote
 cozier
 cozying
@@ -1854,7 +1844,6 @@ croquet
 cross
 crosshairs
 crossroads
-crotch
 crouch
 croupier
 croutons
@@ -1897,7 +1886,6 @@ cummerbund
 cumulative
 cuneiform
 cunning
-cunts
 cupboard
 cupcake
 cupid
@@ -2203,7 +2191,6 @@ dignity
 digress
 dilated
 dilation
-dildo
 dilemma
 dilettante
 diligent
@@ -2224,7 +2211,6 @@ dingo
 dings
 dingy
 dining
-dinks
 dinky
 dinner
 dinning
@@ -2341,7 +2327,6 @@ donna
 donor
 donut
 doodle
-doofus
 doohickey
 doomed
 doomsday
@@ -2349,7 +2334,6 @@ doors
 doozy
 dopamine
 dopes
-dopey
 doping
 doppelganger
 dorado
@@ -2363,7 +2347,6 @@ dossier
 dotes
 dotty
 doubt
-douche
 dough
 doused
 doves
@@ -2440,7 +2423,6 @@ dulled
 dullness
 dumber
 dumdum
-dummy
 dumps
 dunes
 dungeon
@@ -2465,7 +2447,6 @@ dwell
 dwindling
 dyeing
 dying
-dykes
 dynamo
 dynasty
 dysentery
@@ -2538,7 +2519,6 @@ egyptian
 eight
 einstein
 either
-ejaculate
 eject
 eking
 elaborate
@@ -2681,12 +2661,10 @@ equipped
 equity
 equivalent
 erase
-erect
 erica
 erode
 erogenous
 erosion
-erotic
 errand
 errant
 erratic
@@ -2849,7 +2827,6 @@ fabulous
 faced
 faces
 facet
-facial
 facility
 facing
 facts
@@ -2880,7 +2857,6 @@ fanatic
 fancy
 fanfare
 fangs
-fanny
 fantabulous
 fantasy
 faraway
@@ -3091,7 +3067,6 @@ foliage
 folks
 folly
 fonder
-fondle
 fondue
 foods
 fools
@@ -3214,7 +3189,6 @@ frustration
 fryer
 frying
 fuchsia
-fucks
 fudge
 fuels
 fugitive
@@ -3281,7 +3255,6 @@ gammy
 gamut
 gander
 gangs
-ganja
 garage
 garbage
 garcon
@@ -3373,7 +3346,6 @@ gifts
 gigantic
 giggle
 giggly
-gigolo
 gilbert
 gilded
 gills
@@ -3434,7 +3406,6 @@ gobbledegook
 gobbledygook
 goblet
 goblin
-goddam
 goddaughter
 goddess
 godfather
@@ -3728,8 +3699,6 @@ hermaphrodite
 hernia
 heroes
 heroic
-heroin
-herpes
 herring
 herself
 hertz
@@ -3810,7 +3779,6 @@ homeopathic
 homeowners
 homer
 homes
-homey
 homicide
 homily
 homing
@@ -3823,9 +3791,7 @@ honed
 honey
 honeysuckle
 honks
-honky
 honor
-hooch
 hooded
 hoodlums
 hoodwinked
@@ -3835,7 +3801,6 @@ hooligan
 hoops
 hooray
 hoosegow
-hooter
 hooves
 hoped
 hopes
@@ -3845,7 +3810,6 @@ horde
 horizon
 hormone
 horns
-horny
 horoscope
 horrendous
 horrid
@@ -3930,7 +3894,6 @@ husband
 hushed
 husks
 husky
-hussy
 hustle
 hutch
 hybrid
@@ -4038,7 +4001,6 @@ inadequacy
 inadmissible
 inadvertently
 inaugural
-inbred
 incantation
 incapacitate
 incarcerate
@@ -4049,7 +4011,6 @@ incense
 incentive
 inception
 incessantly
-incest
 inches
 incident
 incinerate
@@ -4340,7 +4301,6 @@ juncture
 jungle
 junior
 juniper
-junky
 juries
 jurisdiction
 juror
@@ -4392,7 +4352,6 @@ kindergarten
 kindergartners
 kinds
 kings
-kinky
 kinship
 kismet
 kissy
@@ -4558,7 +4517,6 @@ lenses
 lentils
 leopard
 leotard
-leper
 leprechaun
 lesbian
 lesions
@@ -4663,7 +4621,6 @@ logan
 logged
 logger
 logic
-loins
 loitering
 lolly
 loner
@@ -4858,11 +4815,8 @@ mashed
 masks
 mason
 masquerade
-massa
 master
 masturbated
-masturbating
-masturbation
 matador
 match
 matchmaker
@@ -5148,7 +5102,6 @@ moreover
 morgan
 morgue
 morning
-moron
 morph
 morris
 morrow
@@ -5163,8 +5116,6 @@ mosey
 mosque
 mostly
 motel
-motherfucker
-motherfucking
 moths
 motif
 motley
@@ -5216,7 +5167,6 @@ munch
 mundane
 munitions
 mural
-murder
 murky
 murmur
 murphy
@@ -5250,7 +5200,6 @@ nagged
 nagging
 nails
 naive
-naked
 named
 names
 naming
@@ -5259,11 +5208,9 @@ nancy
 nanny
 nanosecond
 nanotechnology
-napalm
 naphthalene
 napkin
 napoleon
-nappy
 narcissism
 narcissist
 narcolepsy
@@ -5349,14 +5296,11 @@ nicks
 nicotine
 niece
 nifty
-nigger
 night
 nightingale
 nihilist
-nimrod
 nines
 ninja
-ninny
 ninth
 nippy
 nirvana
@@ -5423,7 +5367,6 @@ noxious
 nuance
 nubile
 nuclear
-nudes
 nudge
 nudie
 nuggets
@@ -5527,7 +5470,6 @@ oozing
 opens
 opera
 opinion
-opium
 opponent
 opportune
 oppose
@@ -5536,7 +5478,6 @@ opted
 optic
 optometrist
 oracle
-orally
 orange
 orator
 orbed
@@ -5549,8 +5490,6 @@ ordinary
 ordinate
 ordnance
 oregano
-organ
-orgies
 oriental
 oriented
 origami
@@ -5656,7 +5595,6 @@ pachyderm
 pacific
 pacing
 packs
-paddy
 padlock
 padre
 paella
@@ -5695,7 +5633,6 @@ panned
 pansy
 pantaloons
 pants
-panty
 papayas
 paper
 paperweight
@@ -5805,7 +5742,6 @@ pedestrian
 pediatric
 pedicure
 pedigree
-pedophile
 pedro
 peeing
 peeks
@@ -5823,10 +5759,8 @@ penal
 pence
 pendant
 pending
-penetrate
 penguin
 penicillin
-penis
 penitentiary
 penne
 penny
@@ -5963,9 +5897,6 @@ piqued
 piranhas
 pirate
 pissant
-pissed
-pisses
-pissing
 pistachio
 pistol
 piston
@@ -6070,8 +6001,6 @@ porch
 pores
 poring
 porky
-porno
-pornography
 porridge
 porterhouse
 ports
@@ -6094,7 +6023,6 @@ pothead
 pothole
 potion
 potsie
-potty
 pouch
 poultry
 pound
@@ -6162,7 +6090,6 @@ preview
 previous
 preys
 price
-prick
 pride
 priest
 prima
@@ -6217,7 +6144,6 @@ propulsion
 prosciutto
 prose
 prosthetic
-prostitute
 protect
 protein
 protest
@@ -6233,7 +6159,6 @@ provocation
 provocative
 prowl
 proxy
-prude
 prune
 prying
 psalm
@@ -6244,7 +6169,6 @@ psychobabble
 psychosomatic
 psychotherapy
 pubes
-pubic
 public
 publication
 pucker
@@ -6264,7 +6188,6 @@ pungent
 punish
 punitive
 punks
-punky
 punters
 pupil
 puppy
@@ -6280,7 +6203,6 @@ purpose
 purse
 purview
 pushy
-pussy
 putrid
 putty
 pyjamas
@@ -6303,7 +6225,6 @@ quarantine
 quart
 queasy
 queen
-queer
 quell
 query
 quest
@@ -6370,7 +6291,6 @@ ranks
 ransack
 ransom
 rants
-raped
 rapes
 rapid
 rappers
@@ -6435,10 +6355,8 @@ reconciliation
 reconnaissance
 recrimination
 recruit
-rectal
 rectify
 rectory
-rectum
 recuperate
 recurring
 recuse
@@ -6574,7 +6492,6 @@ retail
 retain
 retake
 retaliate
-retard
 retest
 retina
 retire
@@ -6761,7 +6678,6 @@ sacrifice
 sacrilege
 sadder
 saddle
-sadist
 sadly
 sadness
 safari
@@ -6865,7 +6781,6 @@ scepter
 schedule
 scheme
 schiller
-schizo
 schizophrenia
 schizophrenic
 schlep
@@ -6895,13 +6810,11 @@ scots
 scout
 scram
 scrap
-screw
 screwdriver
 scribble
 script
 scroll
 scrooge
-scrotum
 scrounge
 scrub
 scuba
@@ -6935,7 +6848,6 @@ section
 sector
 secure
 sedan
-seduce
 seeds
 seedy
 seeing
@@ -6956,7 +6868,6 @@ seltzer
 selves
 semantics
 semblance
-semen
 semiautomatic
 seminal
 seminar
@@ -7008,7 +6919,6 @@ sexier
 sexism
 sexist
 sexless
-sexual
 shabby
 shack
 shade
@@ -7054,7 +6964,6 @@ shins
 shiny
 ships
 shirt
-shits
 shiva
 shoal
 shock
@@ -7143,7 +7052,6 @@ siree
 siren
 sirloin
 sirree
-sissy
 sister
 sitcom
 sites
@@ -7196,12 +7104,9 @@ slash
 slate
 slaughter
 slaughterhouse
-slave
 slayed
 slayer
 slaying
-sleaze
-sleazy
 sledding
 sledge
 sledgehammer
@@ -7224,7 +7129,6 @@ slither
 sliver
 slobbering
 slogan
-slope
 sloshed
 slots
 slouch
@@ -7242,7 +7146,6 @@ slumped
 slung
 slurp
 slush
-sluts
 smack
 small
 smart
@@ -7271,7 +7174,6 @@ snails
 snake
 snaps
 snarl
-snatch
 sneak
 sneer
 snicker
@@ -7291,7 +7193,6 @@ snowmobile
 snowy
 snubbed
 snuck
-snuff
 snuggle
 soaked
 soaking
@@ -7363,7 +7264,6 @@ soups
 soupy
 source
 sourpuss
-souse
 south
 southbound
 souvenir
@@ -7391,7 +7291,6 @@ spell
 spelt
 spend
 spent
-sperm
 spewing
 sphere
 sphinx
@@ -7543,9 +7442,7 @@ stray
 streetlights
 streetwalker
 strep
-strip
 strobe
-stroke
 stroll
 strong
 strut
@@ -7559,7 +7456,6 @@ stump
 stung
 stunt
 stupendous
-stupid
 stupor
 sturdy
 sturgeon
@@ -7786,7 +7682,6 @@ tamales
 tambourine
 tammy
 tamper
-tampon
 tandem
 tango
 tanks
@@ -7823,7 +7718,6 @@ tattoo
 taught
 taunt
 tavern
-tawdry
 taxed
 taxes
 taxidermist
@@ -7929,7 +7823,6 @@ thrift
 thrill
 thrive
 throw
-thrust
 thruway
 thugs
 thumb
@@ -7968,7 +7861,6 @@ tingly
 tiniest
 tinkered
 tinkering
-tinkle
 tinsel
 tinted
 tippy
@@ -7981,7 +7873,6 @@ tiring
 tissue
 titan
 title
-titty
 toast
 tobacco
 today
@@ -8014,7 +7905,6 @@ toons
 tooth
 toothbrush
 toothpaste
-toots
 topaz
 topes
 topic
@@ -8069,7 +7959,6 @@ trail
 train
 trait
 trajectory
-tramp
 trans
 transaction
 transatlantic
@@ -8083,7 +7972,6 @@ transparent
 transpired
 transplant
 transponder
-transsexual
 transvestite
 traps
 trash
@@ -8247,7 +8135,6 @@ undeniably
 under
 underneath
 undetectable
-undies
 undisputed
 undone
 undoubtedly
@@ -8375,7 +8262,6 @@ urethra
 urged
 urges
 urging
-urine
 urologist
 usable
 useful
@@ -8386,7 +8272,6 @@ using
 usual
 utensils
 uterine
-uterus
 utility
 utilize
 utmost
@@ -8396,7 +8281,6 @@ vacant
 vacate
 vaccine
 vagabond
-vagina
 vague
 valet
 valid
@@ -8514,7 +8398,6 @@ vinyl
 viola
 viper
 viral
-virgin
 virile
 virtue
 virus
@@ -8529,10 +8412,8 @@ visual
 vital
 vivacious
 vivid
-vixen
 vocabulary
 vocal
-vodka
 vogue
 voice
 voila
@@ -8545,7 +8426,6 @@ volts
 volume
 voluntary
 volunteer
-vomit
 voodoo
 vortex
 voted
@@ -8556,9 +8436,7 @@ vouch
 vowed
 vowel
 voyage
-voyeur
 vroom
-vulgar
 vulnerability
 vulnerable
 vulture
@@ -8652,7 +8530,6 @@ weeny
 weepy
 weevil
 weigh
-weiner
 weird
 welch
 welded
@@ -8662,7 +8539,6 @@ welfare
 wells
 welsh
 welts
-wench
 werewolf
 westbound
 western
@@ -8704,7 +8580,6 @@ whomever
 whoop
 whopper
 whopping
-whore
 whose
 wicked
 widen
@@ -8719,7 +8594,6 @@ wilder
 wildfire
 wildly
 wills
-willy
 wimps
 wimpy
 winch
@@ -8778,7 +8652,6 @@ wondrous
 wonky
 woodpecker
 woods
-woody
 wooed
 wooing
 woolly
