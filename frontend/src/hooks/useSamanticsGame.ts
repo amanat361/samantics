@@ -4,8 +4,15 @@ import { API_URL } from "../config";
 import { useLocalStorage } from "./useLocalStorage";
 import { GameStats, DEFAULT_STATS, GameRecord } from "../types/stats";
 
-// Maximum number of hints available to the player
-export const TOTAL_HINTS = 5;
+// Game configuration
+export const TOTAL_HINTS = 10;
+// Configuration for hint system
+export const HINT_CONFIG = {
+  // Number of top words to use for best hints
+  TOP_WORDS_COUNT: 5,
+  // How many hints should come from the top words
+  TOP_WORDS_HINTS: 5
+};
 
 interface Guess {
   word: string;
@@ -35,7 +42,11 @@ export default function useSamanticsGame() {
   };
   const [remainingHints, setRemainingHints] = useState(TOTAL_HINTS);
   // Number of guesses required to unlock each hint
-  const HINT_UNLOCK_THRESHOLDS = [5, 10, 15, 20, 25];
+  // This should have the same length as TOTAL_HINTS
+  const HINT_UNLOCK_THRESHOLDS = Array.from(
+    { length: TOTAL_HINTS },
+    (_, i) => (i + 1) * 5
+  );
 
   // Update stats when game is won
   useEffect(() => {
@@ -229,14 +240,10 @@ export default function useSamanticsGame() {
   }
 
   /**
-   * Consume a hint with configurable pool size and random selection size
-   * @param totalHintPool The total number of similar words to consider (e.g. 60)
-   * @param randomSelectionSize How many words to randomly choose from in each tier (e.g. 3)
+   * Consume a hint with improved tier selection logic
+   * Hints get progressively closer to the target word as more hints are used
    */
-  async function consumeHint(
-    totalHintPool: number = 60,
-    randomSelectionSize: number = 3
-  ) {
+  async function consumeHint() {
     setError("");
     if (!targetWord) {
       setError("No game in progress.");
@@ -266,20 +273,51 @@ export default function useSamanticsGame() {
       );
     });
 
-    // Take only the specified pool size
-    const hintPool = availableWords.slice(0, totalHintPool);
-
-    // Calculate tier size based on total pool and number of hints
-    const tierSize = Math.floor(totalHintPool / TOTAL_HINTS);
+    // Use all available words after filtering
+    const hintPool = availableWords;
     const usedHints = TOTAL_HINTS - remainingHints;
+    
+    // Select hint based on the simplified exponential range approach
+    let currentTier: Guess[] = [];
+    let selectionPool: Guess[] = [];
+    
+    // First determine if this is a "top words" hint or an earlier hint
+    const hintIndex = usedHints; // 0-based index of current hint (0 to TOTAL_HINTS-1)
+    const earlierHintCount = TOTAL_HINTS - HINT_CONFIG.TOP_WORDS_HINTS;
+    
+    if (hintIndex >= earlierHintCount) {
+      // This is one of the top hints - always use the top words
+      currentTier = hintPool.slice(0, HINT_CONFIG.TOP_WORDS_COUNT);
+    } else {
+      // This is an earlier hint - use exponentially larger ranges as we go backwards
+      // For example, with 10 hints total and 5 top hints:
+      // - Hint 5: Words 5-10 (range of 5)
+      // - Hint 4: Words 10-20 (range of 10)
+      // - Hint 3: Words 20-40 (range of 20)
+      // - Hint 2: Words 40-80 (range of 40)
+      // - Hint 1: Words 80+ (up to available words)
+      
+      // Calculate range sizes exponentially (doubling as we go back)
+      // Start with the top words count as our smallest range
+      let rangeSize = HINT_CONFIG.TOP_WORDS_COUNT;
+      
+      // For each step back from the top hints, double the range size
+      for (let i = 0; i < (earlierHintCount - hintIndex - 1); i++) {
+        rangeSize *= 2;
+      }
+      
+      // Calculate the start and end indices for this tier
+      const startIndex = HINT_CONFIG.TOP_WORDS_COUNT + 
+                        (hintIndex > 0 ? 
+                          (rangeSize / 2) : 0); // First hint gets all remaining words
+      const endIndex = Math.min(hintPool.length, HINT_CONFIG.TOP_WORDS_COUNT + rangeSize);
+      
+      // Get the words for this tier
+      currentTier = hintPool.slice(startIndex, endIndex);
+    }
 
-    // Get the current tier's words
-    const tierEnd = totalHintPool - usedHints * tierSize;
-    const tierStart = tierEnd - tierSize;
-    const currentTier = hintPool.slice(tierStart, tierEnd);
-
-    // Take top N words from this tier to select from
-    const selectionPool = currentTier.slice(0, randomSelectionSize);
+    // Select from the tier - if we have multiple options, pick randomly
+    selectionPool = currentTier;
 
     if (selectionPool.length === 0) {
       setError("No hints available in this tier!");
@@ -287,8 +325,7 @@ export default function useSamanticsGame() {
     }
 
     // Select random word from the pool
-    const candidate =
-      selectionPool[Math.floor(Math.random() * selectionPool.length)].word;
+    const candidate = selectionPool[Math.floor(Math.random() * selectionPool.length)].word;
 
     setRemainingHints((prev) => prev - 1);
     

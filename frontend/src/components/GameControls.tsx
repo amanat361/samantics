@@ -17,7 +17,7 @@ interface GameControlsProps {
   startPracticeGame: () => void;
   loadDailyGame: () => void;
   guessRandomWord: () => void;
-  consumeHint: (count: number, proximity: number) => void;
+  consumeHint: () => void;
   getHintAvailability: () => {
     available: boolean;
     message: string;
@@ -71,7 +71,7 @@ const GameControls: React.FC<GameControlsProps> = ({
               if (hintStatus.available) {
                 return (
                   <button
-                    onClick={() => consumeHint(20, 3)}
+                    onClick={() => consumeHint()}
                     className="w-full px-2 py-2 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
                   >
                     <span className="max-sm:mr-0">
