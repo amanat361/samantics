@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ListRestart, Trophy, BarChart2 } from "lucide-react";
 import { getEmoji, handleShare } from "../utils/gameHelpers";
 import { GameStats } from "../types/stats";
+import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 interface GameResultProps {
   guessCount: number;
@@ -45,7 +46,7 @@ const GameResult: React.FC<GameResultProps> = ({
     handleShare({
       guessesLength: guessCount,
       dayNumber: dayNumber,
-      remainingHints: 5 - hintsUsed,
+      remainingHints: TOTAL_HINTS - hintsUsed,
       revealed,
     });
   };

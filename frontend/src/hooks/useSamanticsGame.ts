@@ -4,6 +4,9 @@ import { API_URL } from "../config";
 import { useLocalStorage } from "./useLocalStorage";
 import { GameStats, DEFAULT_STATS, GameRecord } from "../types/stats";
 
+// Maximum number of hints available to the player
+export const TOTAL_HINTS = 5;
+
 interface Guess {
   word: string;
   similarity: number;
@@ -30,7 +33,7 @@ export default function useSamanticsGame() {
       setGameOver(true);
     }
   };
-  const [remainingHints, setRemainingHints] = useState(5);
+  const [remainingHints, setRemainingHints] = useState(TOTAL_HINTS);
   // Number of guesses required to unlock each hint
   const HINT_UNLOCK_THRESHOLDS = [5, 10, 15, 20, 25];
 
@@ -39,7 +42,7 @@ export default function useSamanticsGame() {
     if (gameOver && guesses.length > 0 && guesses[guesses.length - 1].similarity > 0.99) {
       const isWin = !revealed; // Only count as win if answer wasn't revealed
       const isDaily = dayNumber > 0;
-      const hintsUsed = 5 - remainingHints;
+      const hintsUsed = TOTAL_HINTS - remainingHints;
       
       updateGameStats(isWin, isDaily, guesses.length, hintsUsed);
     }
@@ -129,7 +132,7 @@ export default function useSamanticsGame() {
       setTargetWords(data.targetWords || []);
       setSimilarWords(data.similarWords || []);
       setDayNumber(data.dayNumber);
-      setRemainingHints(5);
+      setRemainingHints(TOTAL_HINTS);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       setError(errorMessage);
@@ -158,7 +161,7 @@ export default function useSamanticsGame() {
       setTargetWords(data.targetWords || []);
       setSimilarWords(data.similarWords || []);
       setDayNumber(0);
-      setRemainingHints(5);
+      setRemainingHints(TOTAL_HINTS);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       setError(errorMessage);
@@ -267,9 +270,8 @@ export default function useSamanticsGame() {
     const hintPool = availableWords.slice(0, totalHintPool);
 
     // Calculate tier size based on total pool and number of hints
-    const TOTAL_HINTS = 5;
     const tierSize = Math.floor(totalHintPool / TOTAL_HINTS);
-    const usedHints = 5 - remainingHints;
+    const usedHints = TOTAL_HINTS - remainingHints;
 
     // Get the current tier's words
     const tierEnd = totalHintPool - usedHints * tierSize;
@@ -326,7 +328,7 @@ export default function useSamanticsGame() {
     ).length;
     
     // Calculate how many hints have been used
-    const usedHintCount = 5 - remainingHints;
+    const usedHintCount = TOTAL_HINTS - remainingHints;
     
     // Check if all available hints are used
     if (usedHintCount >= unlockedHintCount) {

@@ -1,4 +1,5 @@
 // src/utils/gameHelpers.ts
+import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 export const emojiMap = {
   10: "🔥", // 1-9 guesses
@@ -40,7 +41,7 @@ export async function handleShare({
 }: ShareParams): Promise<void> {
   const shareUrl = "https://play.qwertea.dev";
   const guessText = guessesLength === 1 ? "guess" : "guesses";
-  const hintsUsed = 5 - remainingHints;
+  const hintsUsed = TOTAL_HINTS - remainingHints;
 
   let shareMessage = `It took me ${
     guessesLength
@@ -50,7 +51,7 @@ export async function handleShare({
 
   if (hintsUsed === 0) {
     shareMessage += " with no hints";
-  } else if (hintsUsed < 5) {
+  } else if (hintsUsed < TOTAL_HINTS) {
     shareMessage += ` with ${hintsUsed} hint${hintsUsed === 1 ? "" : "s"}`;
   } else {
     shareMessage += " with all of the hints";
