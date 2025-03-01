@@ -9,6 +9,7 @@ import {
   GamepadIcon
 } from "lucide-react";
 import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
+import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 const Instructions: React.FC = () => {
   return (
@@ -71,7 +72,7 @@ const Instructions: React.FC = () => {
           Using Hints
         </h3>
         <p>
-          You have <strong>5 hints</strong> per game, but they unlock gradually:
+          You have <strong>{TOTAL_HINTS} hints</strong> per game, but they unlock gradually:
         </p>
         <ul className="list-inside space-y-2 pl-2 mt-2">
           <li className="flex items-start">

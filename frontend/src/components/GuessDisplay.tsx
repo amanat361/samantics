@@ -2,6 +2,7 @@
 import React from "react";
 import GameResult from "./GameResult";
 import { GameStats } from "../types/stats";
+import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 interface Guess {
   word: string;
@@ -36,7 +37,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
       {gameOver && (
         <GameResult
           guessCount={guesses.length}
-          hintsUsed={5 - remainingHints}
+          hintsUsed={TOTAL_HINTS - remainingHints}
           targetWord={targetWord}
           revealed={revealed}
           dayNumber={dayNumber}
