@@ -7,6 +7,7 @@ import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 interface Guess {
   word: string;
   similarity: number;
+  isHint?: boolean;
 }
 
 interface GuessDisplayProps {
@@ -65,9 +66,12 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
                 <GuessNumberLabel guessNumber={guesses.length} />
                 <strong>{guesses[guesses.length - 1].word}</strong>
               </div>
-              <GuessClosenessLabel
-                weight={getWeight(guesses[guesses.length - 1].similarity)}
-              />
+              <div className="flex items-center gap-2">
+                {guesses[guesses.length - 1].isHint && <HintLabel />}
+                <GuessClosenessLabel
+                  weight={getWeight(guesses[guesses.length - 1].similarity)}
+                  />
+              </div>
             </div>
           </div>
           <hr className="border-gray-200 my-4" />
@@ -82,6 +86,14 @@ function GuessNumberLabel({ guessNumber }: { guessNumber: number }) {
   return (
     <span className={`text-nowrap px-2 py-1 rounded-md text-sm bg-white/20`}>
       <span className="max-sm:hidden">Guess </span><strong>#{guessNumber}</strong>
+    </span>
+  );
+}
+
+function HintLabel() {
+  return (
+    <span className={`text-nowrap px-2 py-1 rounded-md text-sm bg-white/20`}>
+      <span className="max-sm:hidden">Hint </span><strong>💡</strong>
     </span>
   );
 }
@@ -131,8 +143,14 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
             <div className="flex items-center gap-2">
               <GuessNumberLabel guessNumber={g.originalIndex + 1} />
               <strong className="">{g.word}</strong>
+              {/* {g.isHint && (
+                <span title="Hint"><LightbulbIcon className="w-4 h-4" /></span>
+              )} */}
             </div>
-            <GuessClosenessLabel weight={weight} />
+            <div className="flex items-center gap-2">
+              {g.isHint && <HintLabel />}
+              <GuessClosenessLabel weight={weight} />
+            </div>
           </div>
         );
       })}
