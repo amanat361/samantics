@@ -9,7 +9,7 @@ import {
   GamepadIcon,
   HelpCircleIcon
 } from "lucide-react";
-import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
+import { ShareIcon } from "@heroicons/react/16/solid";
 import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 const Instructions: React.FC = () => {

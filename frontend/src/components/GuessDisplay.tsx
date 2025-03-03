@@ -58,15 +58,15 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
               <span>Processing...</span>
             </p>
             <div
-              className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
+              className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden animate-in fade-in-0 duration-300"
               style={{
-                backgroundColor: "oklch(55% 0.15 45)", // Medium orange color
+                backgroundColor: "#333", // Dark gray/almost black
               }}
             >
               {/* Main content row */}
               <div className="flex items-stretch">
                 {/* Left section with number */}
-                <div className="bg-black/25 p-2 flex items-center w-10 justify-center border-r-2 border-black">
+                <div className="bg-black/40 p-2 flex items-center w-10 justify-center border-r-2 border-black">
                   <span className="font-bold text-sm">{guesses.length + 1}</span>
                 </div>
                 
@@ -80,7 +80,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
                 </div>
                 
                 {/* Right section with spinner */}
-                <div className="bg-black/25 p-2 flex flex-col items-center justify-center border-l-2 border-black w-16">
+                <div className="bg-black/40 p-2 flex flex-col items-center justify-center border-l-2 border-black w-16">
                   <div className="flex justify-center items-center">
                     <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -102,7 +102,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
               <span>Latest Guess:</span>
             </p>
             <div
-              className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
+              className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden animate-in fade-in-0 slide-in-from-bottom-2 duration-300"
               style={{
                 backgroundColor: interpolateColor(
                   guesses[guesses.length - 1].similarity
@@ -190,7 +190,7 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
           <div
             key={i}
             className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
-            style={{ backgroundColor: bgColor }}
+            style={{ backgroundColor: bgColor, animationDelay: `${i * 50}ms` }}
           >
             {/* Main content row */}
             <div className="flex items-stretch">
@@ -252,12 +252,13 @@ function getWeight(sim: number): number {
 function interpolateColor(sim: number): string {
   const weight = Math.max(0.1, getWeight(sim));
 
-  // Warm gradient that transitions from rust/brown to orange
-  // Representing "far" (cooler, darker) to "near" (warmer, brighter)
-  // const startColor = "oklch(35% 0.14 30)"; // Deep rust brown (far)
-  // const endColor = "oklch(65% 0.18 60)"; // Warm orange (near)
-  const startColor = "oklch(30% 0.13 25)"; // Deep chocolate brown (far)
-  const endColor = "oklch(70% 0.17 70)"; // Bright orange-gold (near)
+  // Rainbow color scheme from cold to hot
+  // Full spectrum: violet -> blue -> teal -> green -> yellow -> orange -> red
+  const coldColor = "oklch(45% 0.20 300)";  // Violet (coldest)
+  const coolColor = "oklch(55% 0.22 260)";  // Blue-purple
+  const midColor  = "oklch(65% 0.24 180)";  // Teal-cyan
+  const warmColor = "oklch(70% 0.26 120)";  // Green-yellow
+  const hotColor  = "oklch(65% 0.28 25)";   // Red-orange (hottest)
   
   // Parse OKLCH strings into components
   const parseOklch = (str: string) => {
@@ -270,16 +271,43 @@ function interpolateColor(sim: number): string {
     };
   };
 
-  const start = parseOklch(startColor);
-  const end = parseOklch(endColor);
+  const cold = parseOklch(coldColor);
+  const cool = parseOklch(coolColor);
+  const mid = parseOklch(midColor);
+  const warm = parseOklch(warmColor);
+  const hot = parseOklch(hotColor);
 
-  // Ease-in-out function to make the middle range transition more gradual
-  const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
-  const easedWeight = easeInOut(weight);
-
-  const lightness = start.l + easedWeight * (end.l - start.l);
-  const chroma = start.c + easedWeight * (end.c - start.c);
-  const hue = start.h + easedWeight * (end.h - start.h);
+  // Ease-in-out function to make the transition more gradual (unused for now)
+  // const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+  
+  // Determine which segment of the gradient to use based on weight
+  let lightness, chroma, hue;
+  
+  if (weight < 0.25) {
+    // Coldest segment (violet to blue-purple)
+    const adjustedWeight = weight * 4;
+    lightness = cold.l + adjustedWeight * (cool.l - cold.l);
+    chroma = cold.c + adjustedWeight * (cool.c - cold.c);
+    hue = cold.h + adjustedWeight * (cool.h - cold.h);
+  } else if (weight < 0.5) {
+    // Cool segment (blue-purple to teal)
+    const adjustedWeight = (weight - 0.25) * 4;
+    lightness = cool.l + adjustedWeight * (mid.l - cool.l);
+    chroma = cool.c + adjustedWeight * (mid.c - cool.c);
+    hue = cool.h + adjustedWeight * (mid.h - cool.h);
+  } else if (weight < 0.75) {
+    // Warm segment (teal to green-yellow)
+    const adjustedWeight = (weight - 0.5) * 4;
+    lightness = mid.l + adjustedWeight * (warm.l - mid.l);
+    chroma = mid.c + adjustedWeight * (warm.c - mid.c);
+    hue = mid.h + adjustedWeight * (warm.h - mid.h);
+  } else {
+    // Hottest segment (green-yellow to red-orange)
+    const adjustedWeight = (weight - 0.75) * 4;
+    lightness = warm.l + adjustedWeight * (hot.l - warm.l);
+    chroma = warm.c + adjustedWeight * (hot.c - warm.c);
+    hue = warm.h + adjustedWeight * (hot.h - warm.h);
+  }
 
   return `oklch(${lightness}% ${chroma} ${hue})`;
 }

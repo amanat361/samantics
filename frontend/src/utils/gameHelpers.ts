@@ -17,12 +17,13 @@ export function getEmoji(numGuesses: number): string {
   );
 }
 
-export async function copyToClipboard(text: string): Promise<void> {
+export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text);
-    alert("Results copied to clipboard!");
+    return true;
   } catch (err) {
     console.error("Failed to copy text: ", err);
+    return false;
   }
 }
 
@@ -38,7 +39,7 @@ export async function handleShare({
   dayNumber,
   remainingHints,
   revealed
-}: ShareParams): Promise<void> {
+}: ShareParams): Promise<boolean> {
   const shareUrl = "https://play.qwertea.dev";
   const guessText = guessesLength === 1 ? "guess" : "guesses";
   const hintsUsed = TOTAL_HINTS - remainingHints;
@@ -61,18 +62,24 @@ export async function handleShare({
     shareMessage += " (and cheated)";
   }
 
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "Samantics",
-        text: shareMessage,
-        url: shareUrl,
-      });
-    } catch (err) {
-      console.error("Failed to share: ", err);
-      copyToClipboard(shareMessage);
+  try {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Samantics",
+          text: shareMessage,
+          url: shareUrl,
+        });
+        return true;
+      } catch (err) {
+        console.error("Failed to share: ", err);
+        return await copyToClipboard(shareMessage);
+      }
+    } else {
+      return await copyToClipboard(shareMessage);
     }
-  } else {
-    copyToClipboard(shareMessage);
+  } catch (error) {
+    console.error("Share error:", error);
+    return false;
   }
 }

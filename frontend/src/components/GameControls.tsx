@@ -38,7 +38,6 @@ const GameControls: React.FC<GameControlsProps> = ({
   loadDailyGame,
   guessRandomWord,
   consumeHint,
-  isLoading = false,
   getHintAvailability,
   setRevealed,
 }) => {

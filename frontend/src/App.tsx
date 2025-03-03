@@ -47,7 +47,7 @@ function App() {
               <p className="text-text pt-6 pl-1 font-medium">{error}</p>
               <button 
                 onClick={() => setError("")} 
-                className="absolute top-1 right-2 font-bold text-lg"
+                className="absolute top-1 right-2 font-bold text-lg hover:text-red-500 transition-colors"
                 aria-label="Close error message"
               >
                 ×

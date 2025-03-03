@@ -141,7 +141,7 @@ export default function useSamanticsGame() {
     handleReveal(false);
     
     // Start a loading timeout - only show loading state if request takes longer than 500ms
-    let loadingTimer = setTimeout(() => {
+    const loadingTimer = setTimeout(() => {
       setIsLoading(true);
     }, 500);
 
@@ -180,7 +180,7 @@ export default function useSamanticsGame() {
     handleReveal(false);
     
     // Start a loading timeout - only show loading state if request takes longer than 500ms
-    let loadingTimer = setTimeout(() => {
+    const loadingTimer = setTimeout(() => {
       setIsLoading(true);
     }, 500);
 
@@ -220,7 +220,7 @@ export default function useSamanticsGame() {
     }
 
     // Start a loading timeout - only show loading state if request takes longer than 500ms
-    let loadingTimer = setTimeout(() => {
+    const loadingTimer = setTimeout(() => {
       setIsLoading(true);
     }, 500);
     
@@ -288,7 +288,7 @@ export default function useSamanticsGame() {
     }
 
     // Start a loading timeout - only show loading state if request takes longer than 500ms
-    let loadingTimer = setTimeout(() => {
+    const loadingTimer = setTimeout(() => {
       setIsLoading(true);
     }, 500);
     

@@ -11,7 +11,7 @@ interface GuessFormProps {
   isLoading: boolean;
 }
 
-const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLength, isLoading }) => {
+const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLength }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
 
@@ -78,21 +78,45 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
     if (!inputValue.trim()) return;
     guessWord(inputValue.trim().toLowerCase());
     setInputValue("");
+    // Auto-focus input after submitting
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 10);
   }
 
   if (gameOver) return null;
 
   return (
     <form onSubmit={handleGuess} className="flex w-full space-x-3">
-      <Input
-        //@ts-expect-error idk why this is not working
-        ref={inputRef}
-        type="text"
-        placeholder="Guess one or more words..."
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        className="flex-1"
-      />
+      <div className="relative flex-1">
+        <Input
+          //@ts-expect-error idk why this is not working
+          ref={inputRef}
+          type="text"
+          placeholder="Guess one or more words..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="w-full pr-8"
+        />
+        {inputValue && (
+          <button
+            type="button"
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+            onClick={() => {
+              setInputValue("");
+              inputRef.current?.focus();
+            }}
+            aria-label="Clear input"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        )}
+      </div>
       <Button 
         type="submit"
         className="sm:not-autofill:min-w-[120px]" 
