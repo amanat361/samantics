@@ -301,11 +301,12 @@ const GameResult: React.FC<GameResultProps> = ({
           </div>
         )}
 
-        {/* Action buttons with neobrutalist styling */}
-        <CardFooter className="flex gap-1 pt-2 px-0">
+        {/* Action buttons with neobrutalist styling - mobile friendly */}
+        <CardFooter className="flex flex-col gap-2 pt-2 px-0">
+          {/* Play Again Button - Full width on mobile, deep red */}
           <Button
             onClick={startPracticeGame}
-            className="flex-1 bg-[#B4F8C8] text-mtext"
+            className="w-full bg-[#B91C1C] hover:bg-[#991B1B] text-white"
             variant="default"
           >
             <ListRestart className="w-5 h-5 mr-1" />
@@ -318,10 +319,11 @@ const GameResult: React.FC<GameResultProps> = ({
             )}
           </Button>
 
-          <div className="flex-1 flex">
+          {/* Share/Copy Row - Side by side under Play Again */}
+          <div className="flex w-full gap-2">
             <Button
               onClick={handleShareClick}
-              className="flex-1 bg-[#A0E7E5] text-mtext animate-bounce"
+              className="flex-1 bg-[#A0E7E5] text-mtext"
               variant="default"
             >
               <svg
@@ -337,13 +339,12 @@ const GameResult: React.FC<GameResultProps> = ({
             <Button
               id="copy-button"
               onClick={handleCopyClick}
-              className="aspect-square p-0 bg-[#71BBFF] text-mtext ml-2"
+              className="bg-[#71BBFF] text-mtext px-4"
               variant="default"
-              size="icon"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 mr-1"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -354,6 +355,7 @@ const GameResult: React.FC<GameResultProps> = ({
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
               </svg>
+              Copy
             </Button>
           </div>
         </CardFooter>
