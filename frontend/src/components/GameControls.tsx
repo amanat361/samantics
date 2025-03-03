@@ -7,6 +7,7 @@ import {
   CalendarIcon,
   LockIcon,
 } from "lucide-react";
+import { Button } from "./ui/button";
 
 interface GameControlsProps {
   gameOver: boolean;
@@ -44,21 +45,22 @@ const GameControls: React.FC<GameControlsProps> = ({
       {/* Don't show the control buttons when game is over, as they're now in the GameResult component */}
       <>
         {dayNumber > 0 ? (
-          <button
+          <Button
             onClick={startPracticeGame}
-            className="w-full px-2 py-2 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
-          >
-            <span className="max-sm:mr-2">Practice Mode</span>
-            <InfinityIcon className="w-4 h-4" />
-          </button>
+            className="w-full"
+            >
+              <span className="max-sm:mr-2">Practice Mode</span>
+              <InfinityIcon className="w-4 h-4" />
+            </Button>
         ) : (
-          <button
+          <Button
             onClick={loadDailyGame}
-            className="w-full px-2 py-2 bg-primary text-white rounded hover:bg-primary/80 transition flex items-center justify-center gap-2"
+            variant="default"
+            className="w-full"
           >
             <span className="max-sm:mr-0">Daily Challenge</span>
             <CalendarIcon className="w-4 h-4" />
-          </button>
+          </Button>
         )}
 
         {!revealed && (
@@ -70,32 +72,38 @@ const GameControls: React.FC<GameControlsProps> = ({
               // If hint is available
               if (hintStatus.available) {
                 return (
-                  <button
+                  <Button
                     onClick={() => consumeHint()}
-                    className="w-full px-2 py-2 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
+                    variant="default"
+                    className="w-full"
                   >
                     <span className="max-sm:mr-0">
                       Use Hint: <strong>{remainingHints} left</strong>
                     </span>
                     <LightbulbIcon className="w-4 h-4" />
-                  </button>
+                  </Button>
                 );
               } else if (remainingHints > 0) {
                 // Hints remaining but locked until more guesses
                 return (
-                  <button className="w-full px-2 py-2 bg-gray-400 text-white rounded flex items-center justify-center gap-2 cursor-not-allowed">
+                  <Button 
+                    disabled
+                    variant="neutral"
+                    className="w-full"
+                  >
                     <span className="max-sm:mr-0">
                       {hintStatus.guessesUntilNextHint} more {hintStatus.guessesUntilNextHint > 1 ? 'tries' : 'try'}
                     </span>
                     <LockIcon className="w-4 h-4" />
-                  </button>
+                  </Button>
                 );
               } else {
                 // No hints left
                 return (
-                  <button
+                  <Button
                     onClick={() => setRevealed(true)}
-                    className="w-full px-2 py-2 bg-hint text-white rounded hover:bg-hint/80 transition flex items-center justify-center gap-2"
+                    variant="neutral"
+                    className="w-full"
                   >
                     <span className="max-sm:mr-2.5">Give Up</span>
                     <svg
@@ -112,17 +120,17 @@ const GameControls: React.FC<GameControlsProps> = ({
                       <polyline points="16 17 21 12 16 7"></polyline>
                       <line x1="21" y1="12" x2="9" y2="12"></line>
                     </svg>
-                  </button>
+                  </Button>
                 );
               }
             })()}
-            <button
+            <Button
               onClick={guessRandomWord}
-              className="w-full px-2 py-2 bg-share text-white rounded hover:bg-share/80 transition flex items-center justify-center gap-2"
+              className="w-full"
             >
               <span>Random Guess</span>
               <ShuffleIcon className="w-4 h-4" />
-            </button>
+            </Button>
           </>
         )}
       </>

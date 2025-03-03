@@ -13,10 +13,10 @@ import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 const Instructions: React.FC = () => {
   return (
-    <div className="text-[#001524] overflow-hidden space-y-6">
+    <div className="text-text overflow-hidden space-y-6">
       {/* Core Objective */}
       <div className="space-y-2">
-        <h2 className="text-xl font-bold text-[#78290f]">How to Play 👋</h2>
+        <h2 className="text-xl font-bold text-mtext">How to Play 👋</h2>
         <p className="leading-relaxed">
           Your goal is to guess the secret word (or multiple)! After each guess, you'll see a
           similarity percentage that tells you how close your guess is. Higher
@@ -27,17 +27,17 @@ const Instructions: React.FC = () => {
 
       {/* Game Modes - Now with separate cards */}
       <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-[#78290f] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
           <GamepadIcon className="w-5 h-5" />
           Game Modes
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Daily Challenge Card */}
-          <div className="bg-[#f7edde] p-4 rounded-md border-l-4 border-primary">
+          <div className="bg-main p-4 rounded-base border-2 border-border">
             <div className="flex items-center gap-2 mb-2">
-              <CalendarIcon className="w-5 h-5 text-primary" />
-              <h4 className="font-semibold text-primary">Daily Challenge</h4>
+              <CalendarIcon className="w-5 h-5 text-mtext" />
+              <h4 className="font-semibold text-mtext">Daily Challenge</h4>
             </div>
             <p className="text-sm">
               A new word each day that everyone gets to play. Compare your
@@ -46,10 +46,10 @@ const Instructions: React.FC = () => {
           </div>
 
           {/* Practice Mode Card */}
-          <div className="bg-[#f7edde] p-4 rounded-md border-l-4 border-primary">
+          <div className="bg-main p-4 rounded-base border-2 border-border">
             <div className="flex items-center gap-2 mb-2">
-              <InfinityIcon className="w-5 h-5 text-primary" />
-              <h4 className="font-semibold text-primary">Practice Mode</h4>
+              <InfinityIcon className="w-5 h-5 text-mtext" />
+              <h4 className="font-semibold text-mtext">Practice Mode</h4>
             </div>
             <p className="text-sm">
               Play with random words as many times as you want. Perfect for
@@ -66,8 +66,8 @@ const Instructions: React.FC = () => {
       </div>
 
       {/* Hint Feature - Updated with new hint info */}
-      <div className="space-y-2 bg-[#f7edde] p-4 rounded-md">
-        <h3 className="text-lg font-semibold text-[#15616d] flex items-center gap-2">
+      <div className="space-y-2 bg-main p-4 rounded-base border-2 border-border">
+        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
           <LightbulbIcon className="w-5 h-5" />
           Using Hints
         </h3>
@@ -76,17 +76,17 @@ const Instructions: React.FC = () => {
         </p>
         <ul className="list-inside space-y-2 pl-2 mt-2">
           <li className="flex items-start">
-            <span className="text-[#15616d] font-bold mr-2">•</span>
+            <span className="text-mtext font-bold mr-2">•</span>
             <span>
               One hint unlocks after every <strong>5 guesses</strong> you make
             </span>
           </li>
           <li className="flex items-start">
-            <span className="text-[#15616d] font-bold mr-2">•</span>
+            <span className="text-mtext font-bold mr-2">•</span>
             <span>Each hint gets progressively closer to the target word</span>
           </li>
           <li className="flex items-start">
-            <span className="text-[#15616d] font-bold mr-2">•</span>
+            <span className="text-mtext font-bold mr-2">•</span>
             <span>Hints will never repeat words you've already guessed</span>
           </li>
         </ul>
@@ -98,7 +98,7 @@ const Instructions: React.FC = () => {
 
       {/* Reveal Answer */}
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-[#15616d] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
           <CheckCircleIcon className="w-5 h-5" />
           Reveal Answer
         </h3>
@@ -112,7 +112,7 @@ const Instructions: React.FC = () => {
 
       {/* Random Guess - Updated with more info */}
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-[#d67c24] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
           <ShuffleIcon className="w-5 h-5" />
           Random Guess
         </h3>
@@ -125,7 +125,7 @@ const Instructions: React.FC = () => {
 
       {/* Share Feature */}
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-[#d67c24] flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
           <ShareIcon className="w-5 h-5" />
           Share Results
         </h3>
@@ -137,14 +137,14 @@ const Instructions: React.FC = () => {
       </div>
 
       {/* Strategy Explanation - Better formatted */}
-      <div className="space-y-3 border-t border-[#d8c4a5] pt-4">
-        <h3 className="text-lg font-semibold text-[#5a0d6b] flex items-center gap-2">
+      <div className="space-y-3 border-t-2 border-border pt-4">
+        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
           <BrainIcon className="w-5 h-5" />
           Strategy Tips
         </h3>
 
-        <div className="bg-[#f7edde] p-4 rounded-md">
-          <p className="mb-3 italic font-medium text-[#78290f]">
+        <div className="bg-main p-4 rounded-base border-2 border-border">
+          <p className="mb-3 italic font-medium text-mtext">
             "Think in semantic space, not just synonyms!"
           </p>
 
@@ -154,7 +154,7 @@ const Instructions: React.FC = () => {
               based on how words relate in context and usage within language.
             </p>
 
-            <div className="bg-white/70 p-3 rounded-md">
+            <div className="bg-bw p-3 rounded-base border-2 border-border">
               <p className="text-sm font-medium mb-1">Example:</p>
               <p className="text-sm">
                 If your guess <strong>"jacket"</strong> is very close, the
@@ -174,16 +174,16 @@ const Instructions: React.FC = () => {
       </div>
 
       {/* Similarity Labels - Now in a nicer table format */}
-      <div className="space-y-3 border-t border-[#d8c4a5] pt-4 pb-2">
-        <h3 className="text-lg font-semibold text-[#78290f]">
+      <div className="space-y-3 border-t-2 border-border pt-4 pb-2">
+        <h3 className="text-lg font-semibold text-mtext">
           Understanding Similarity Scores
         </h3>
         <p>Each guess shows a similarity percentage and a helpful label:</p>
 
-        <div className="bg-[#f7edde] rounded-md overflow-hidden">
+        <div className="bg-main rounded-base overflow-hidden border-2 border-border">
           <table className="w-full">
             <thead>
-              <tr className="bg-[#d8c4a5]/50">
+              <tr className="bg-main/80">
                 <th className="py-2 px-3 text-left text-sm font-semibold">
                   Score
                 </th>
@@ -196,10 +196,10 @@ const Instructions: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-t border-[#d8c4a5]/30">
+              <tr className="border-t-2 border-border/30">
                 <td className="py-2 px-3 text-sm font-semibold">99-100%</td>
                 <td className="py-2 px-3">
-                  <span className="font-bold text-[#0eab82]">Correct!</span>
+                  <span className="font-bold">Correct!</span>
                 </td>
                 <td className="py-2 px-3 text-sm">You've found the word! 🎯</td>
               </tr>

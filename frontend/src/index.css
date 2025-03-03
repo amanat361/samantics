@@ -1,21 +1,80 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animate";
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600;700&display=swap');
+@custom-variant dark (&:is(.dark *));
 
-@theme {
-  --color-background: #ffecd1;
-  --color-primary: #78290f;
-  --color-white: #fff;
-  --color-text: #001524;
-  --color-share: #d67c24;
-  --color-hint: #15616d;
-  --color-guess: #0eab82;
-  --color-guess-hover: #354f52;
+:root {
+  --main: #FFDC58;
+  --overlay: rgba(0, 0, 0, 0.8);
+  --bg: #FEF2E8;
+  --bw: #fff;
+  --blank: #000;
+  --border: #000;
+  --text: #000;
+  --mtext: #000;
+  --ring: #000;
+  --ring-offset: #fff;
+  --border-radius: 5px;
+  --box-shadow-x: 4px;
+  --box-shadow-y: 4px;
+  --reverse-box-shadow-x: -4px;
+  --reverse-box-shadow-y: -4px;
+  --base-font-weight: 500;
+  --heading-font-weight: 700;
+  --shadow: var(--box-shadow-x) var(--box-shadow-y) 0px 0px var(--border);
 }
 
-.font-title {
-  font-family: 'Playfair Display', serif;
+.dark {
+  --bg: #374151;
+  --bw: #212121;
+  --blank: #fff;
+  --border: #000;
+  --text: #e6e6e6;
+  --mtext: #000;
+  --ring: #fff;
+  --ring-offset: #000;
+  --shadow: var(--box-shadow-x) var(--box-shadow-y) 0px 0px var(--border);
 }
 
-.font-main {
-  font-family: 'Poppins', sans-serif;
+@theme inline {
+  --color-secondaryBlack: #212121;
+  --color-overlay: var(--overlay);
+  --color-main: var(--main);
+  --color-bg: var(--bg);
+  --color-bw: var(--bw);
+  --color-blank: var(--blank);
+  --color-text: var(--text);
+  --color-mtext: var(--mtext);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-ringOffset: var(--ring-offset);
+  --spacing-boxShadowX: var(--box-shadow-x);
+  --spacing-boxShadowY: var(--box-shadow-y);
+  --spacing-reverseBoxShadowX: var(--reverse-box-shadow-x);
+  --spacing-reverseBoxShadowY: var(--reverse-box-shadow-y);
+  --radius-base: var(--border-radius);
+  --shadow-shadow: var(--shadow);
+  --font-weight-base: var(--base-font-weight);
+  --font-weight-heading: var(--heading-font-weight);
+  
+  /* Animation keyframes - keeping these from the example */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
