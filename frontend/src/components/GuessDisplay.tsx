@@ -124,7 +124,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
                         💡
                       </span>
                     }
-                    <span className="font-medium text-sm sm:text-base break-all">
+                    <span className="font-medium text-md sm:text-base break-all">
                       {guesses[guesses.length - 1].word}
                     </span>
                   </div>
@@ -208,7 +208,7 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
                       💡
                     </span>
                   }
-                  <span className="font-medium text-sm sm:text-base break-all">
+                  <span className="font-medium text-md sm:text-base break-all">
                     {g.word}
                   </span>
                 </div>
