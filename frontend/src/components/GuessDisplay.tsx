@@ -20,6 +20,7 @@ interface GuessDisplayProps {
   startPracticeGame: () => void;
   loadDailyGame: () => void;
   stats: GameStats;
+  isLoading?: boolean;
 }
 
 const GuessDisplay: React.FC<GuessDisplayProps> = ({
@@ -32,6 +33,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
   startPracticeGame,
   loadDailyGame,
   stats,
+  isLoading = false,
 }) => {
   return (
     <>
@@ -47,6 +49,52 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
           stats={stats}
         />
       )}
+      
+      {/* Show loading guess UI when isLoading is true */}
+      {isLoading && (
+        <>
+          <div className="space-y-2">
+            <p className="text-text font-medium">
+              <span>Processing...</span>
+            </p>
+            <div
+              className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
+              style={{
+                backgroundColor: "oklch(55% 0.15 45)", // Medium orange color
+              }}
+            >
+              {/* Main content row */}
+              <div className="flex items-stretch">
+                {/* Left section with number */}
+                <div className="bg-black/25 p-2 flex items-center w-10 justify-center border-r-2 border-black">
+                  <span className="font-bold text-sm">{guesses.length + 1}</span>
+                </div>
+                
+                {/* Word section */}
+                <div className="px-3 py-2 flex-grow flex items-center">
+                  <div className="flex items-center">
+                    <span className="font-medium text-sm sm:text-base break-all">
+                      Processing...
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Right section with spinner */}
+                <div className="bg-black/25 p-2 flex flex-col items-center justify-center border-l-2 border-black w-16">
+                  <div className="flex justify-center items-center">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr className="border-2 border-border my-6" />
+        </>
+      )}
+      
       {guesses.length > 0 && !gameOver && (
         <>
           <div className="space-y-2">

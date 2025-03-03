@@ -17,6 +17,7 @@ function App() {
     revealed,
     remainingHints,
     stats,
+    isLoading,
     startPracticeGame,
     loadDailyGame,
     guessWord,
@@ -24,6 +25,7 @@ function App() {
     consumeHint,
     getHintAvailability,
     setRevealed,
+    setError,
   } = useSamanticsGame();
 
   useEffect(() => {
@@ -38,8 +40,18 @@ function App() {
           <GameModeBanner dayNumber={dayNumber} />
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-3">
-              <p className="text-red-600"><strong>Error:</strong> {error}</p>
+            <div className="bg-white border-2 border-border rounded-base p-4 shadow-error relative">
+              <div className="absolute top-0 left-0 bg-red-500 text-white px-3 py-1 font-bold rounded-tl-sm">
+                Error
+              </div>
+              <p className="text-text pt-6 pl-1 font-medium">{error}</p>
+              <button 
+                onClick={() => setError("")} 
+                className="absolute top-1 right-2 font-bold text-lg"
+                aria-label="Close error message"
+              >
+                ×
+              </button>
             </div>
           )}
 
@@ -53,6 +65,7 @@ function App() {
             loadDailyGame={loadDailyGame}
             guessRandomWord={guessRandomWord}
             consumeHint={consumeHint}
+            isLoading={isLoading}
             getHintAvailability={getHintAvailability}
             setRevealed={setRevealed}
           />
@@ -61,6 +74,7 @@ function App() {
             guessWord={guessWord}
             gameOver={gameOver}
             guessesLength={guesses.length}
+            isLoading={isLoading}
           />
           <GuessDisplay
             guesses={guesses}
@@ -72,6 +86,7 @@ function App() {
             startPracticeGame={startPracticeGame}
             loadDailyGame={loadDailyGame}
             stats={stats}
+            isLoading={isLoading}
           />
 
           <div className="text-center text-gray-500 text-sm">

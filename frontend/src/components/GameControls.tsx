@@ -19,6 +19,7 @@ interface GameControlsProps {
   loadDailyGame: () => void;
   guessRandomWord: () => void;
   consumeHint: () => void;
+  isLoading?: boolean;
   getHintAvailability: () => {
     available: boolean;
     message: string;
@@ -37,6 +38,7 @@ const GameControls: React.FC<GameControlsProps> = ({
   loadDailyGame,
   guessRandomWord,
   consumeHint,
+  isLoading = false,
   getHintAvailability,
   setRevealed,
 }) => {

@@ -18,10 +18,15 @@ interface HintAvailability {
 }
 
 // Number of guesses required to unlock each hint
-const HINT_UNLOCK_THRESHOLDS = Array.from(
-  { length: TOTAL_HINTS },
-  (_, i) => (i + 1) * 5
-);
+// First hint (index 0) is available immediately (threshold 0)
+// Remaining hints unlock every 5 guesses
+const HINT_UNLOCK_THRESHOLDS = [
+  0, // First hint available immediately
+  ...Array.from(
+    { length: TOTAL_HINTS - 1 },
+    (_, i) => (i + 1) * 5
+  )
+];
 
 /**
  * Check if a hint is available based on guess count

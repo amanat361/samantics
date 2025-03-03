@@ -36,6 +36,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  isLoading?: boolean;
 }
 
 function Button({
@@ -43,14 +44,18 @@ function Button({
   variant,
   size,
   asChild = false,
+  isLoading = false,
   ...props
 }: ButtonProps) {
   const Comp = asChild ? Slot : "button";
   return (
     <Comp
       className={cn(buttonVariants({ variant, size, className }))}
+      disabled={isLoading || props.disabled}
       {...props}
-    />
+    >
+      {props.children}
+    </Comp>
   );
 }
 Button.displayName = "Button";

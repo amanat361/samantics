@@ -18,7 +18,22 @@
 - **Immutability**: Use spread operators for state updates, avoid direct mutations
 - **Comments**: Add JSDoc for complex functions
 
+## UI Design
+- **Neobrutalist Style**: Bold colors, distinctive borders, shadows, and slightly "imperfect" design
+- **Typography**: DM Sans as primary font
+- **Components**:
+  - Buttons have shadows that disappear on hover (transform effect)
+  - GuessDisplay uses a three-section layout with distinctive left/middle/right areas
+  - Error displays use rotation effects and bold badges
+  - Loading states should be clearly visible with spinner animations
+
 ## Architecture
 - Frontend: React/TypeScript/Vite with Tailwind CSS
 - Backend: Bun with TypeScript for API and embedding management
 - Docker: Used for deployment with docker-compose
+
+## Game Mechanics
+- First hint is available immediately, no guesses required
+- Remaining hints are progressively unlocked (one every 5 guesses)
+- 10 total hints available per game
+- Hints are marked with a lightbulb icon in the guess display

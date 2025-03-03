@@ -8,9 +8,10 @@ interface GuessFormProps {
   guessWord: (word: string) => void;
   gameOver: boolean;
   guessesLength: number;
+  isLoading: boolean;
 }
 
-const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLength }) => {
+const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLength, isLoading }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
 

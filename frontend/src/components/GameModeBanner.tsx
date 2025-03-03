@@ -10,7 +10,12 @@ const GameModeBanner: React.FC<GameModeBannerProps> = ({ dayNumber }) => {
   const isDaily = dayNumber > 0;
   
   return (
-    <div className={`w-full py-3 px-4 mb-6 rounded-base flex items-center justify-center gap-3 ${isDaily ? 'bg-[#FBE7C6]' : 'bg-[#B4F8C8]'} border-2 border-border shadow-shadow text-mtext`} style={{ fontFamily: 'Londrina Solid, sans-serif' }}>
+    <div
+      className={`w-full py-3 px-4 mb-6 rounded-base flex items-center justify-center gap-3 ${
+        isDaily ? "bg-[#0c58af]" : "bg-[#17889c]"
+      } border-2 border-border shadow-shadow text-white`}
+      style={{ fontFamily: "Londrina Solid, sans-serif" }}
+    >
       {isDaily ? (
         <>
           <CalendarIcon className="w-6 h-6" />
@@ -21,9 +26,7 @@ const GameModeBanner: React.FC<GameModeBannerProps> = ({ dayNumber }) => {
       ) : (
         <>
           <InfinityIcon className="w-6 h-6" />
-          <div className="font-bold text-center text-lg">
-            PRACTICE MODE
-          </div>
+          <div className="font-bold text-center text-lg">PRACTICE MODE</div>
         </>
       )}
     </div>

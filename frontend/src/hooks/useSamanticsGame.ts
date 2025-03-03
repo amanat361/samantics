@@ -27,6 +27,7 @@ export default function useSamanticsGame() {
   const [error, setError] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [stats, setStats] = useLocalStorage<GameStats>(
     "samantics-stats",
     DEFAULT_STATS
@@ -138,6 +139,11 @@ export default function useSamanticsGame() {
     setGuesses([]);
     setGameOver(false);
     handleReveal(false);
+    
+    // Start a loading timeout - only show loading state if request takes longer than 500ms
+    let loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
 
     try {
       const res = await fetch(`${API_URL}/daily-game`);
@@ -148,9 +154,14 @@ export default function useSamanticsGame() {
       setSimilarWords(data.similarWords || []);
       setDayNumber(data.dayNumber);
       setRemainingHints(TOTAL_HINTS);
+      
+      // No longer auto-consuming hint since first hint is now unlocked by default
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       setError(errorMessage);
+    } finally {
+      clearTimeout(loadingTimer);
+      setIsLoading(false);
     }
   }
 
@@ -167,6 +178,11 @@ export default function useSamanticsGame() {
     setGuesses([]);
     setGameOver(false);
     handleReveal(false);
+    
+    // Start a loading timeout - only show loading state if request takes longer than 500ms
+    let loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
 
     try {
       const res = await fetch(`${API_URL}/random-game`);
@@ -177,9 +193,14 @@ export default function useSamanticsGame() {
       setSimilarWords(data.similarWords || []);
       setDayNumber(0);
       setRemainingHints(TOTAL_HINTS);
+      
+      // No longer auto-consuming hint since first hint is now unlocked by default
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       setError(errorMessage);
+    } finally {
+      clearTimeout(loadingTimer);
+      setIsLoading(false);
     }
   }
 
@@ -198,6 +219,11 @@ export default function useSamanticsGame() {
       return;
     }
 
+    // Start a loading timeout - only show loading state if request takes longer than 500ms
+    let loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
+    
     try {
       const res = await fetch(`${API_URL}/guess`, {
         method: "POST",
@@ -218,6 +244,9 @@ export default function useSamanticsGame() {
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       setError(errorMessage);
+    } finally {
+      clearTimeout(loadingTimer);
+      setIsLoading(false);
     }
   }
 
@@ -258,16 +287,26 @@ export default function useSamanticsGame() {
       return;
     }
 
-    await processHint(
-      targetWord,
-      similarWords,
-      guesses,
-      remainingHints,
-      setError,
-      setRemainingHints,
-      setGuesses,
-      setGameOver
-    );
+    // Start a loading timeout - only show loading state if request takes longer than 500ms
+    let loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 500);
+    
+    try {
+      await processHint(
+        targetWord,
+        similarWords,
+        guesses,
+        remainingHints,
+        setError,
+        setRemainingHints,
+        setGuesses,
+        setGameOver
+      );
+    } finally {
+      clearTimeout(loadingTimer);
+      setIsLoading(false);
+    }
   }
 
   return {
@@ -280,6 +319,7 @@ export default function useSamanticsGame() {
     revealed,
     remainingHints,
     stats,
+    isLoading,
     startPracticeGame,
     loadDailyGame,
     guessWord,
@@ -287,5 +327,6 @@ export default function useSamanticsGame() {
     consumeHint,
     getHintAvailability: () => getHintAvailability(guesses, remainingHints),
     setRevealed: handleReveal,
+    setError,
   };
 }
