@@ -140,7 +140,8 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
                       {(() => {
                         const weight = getWeight(guesses[guesses.length - 1].similarity);
                         const label = SIMILARITY_LABELS.find((l) => weight >= l.threshold) || SIMILARITY_LABELS[SIMILARITY_LABELS.length - 1];
-                        return label.text.split(' ')[0];
+                        // Extract just the text without any emoji
+                        return label.text.replace(/[^\w\s!?]/g, '').trim().split('!')[0];
                       })()}
                     </div>
                   </div>
@@ -217,7 +218,7 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
               <div className="bg-black/25 p-2 flex flex-col items-center justify-center border-l-2 border-black">
                 <div className="text-center">
                   <div className="font-bold text-sm">{percentValue}%</div>
-                  <div className="text-xs text-white/80">{label.text.split(' ')[0]}</div>
+                  <div className="text-xs text-white/80">{label.text.replace(/[^\w\s!?]/g, '').trim().split('!')[0]}</div>
                 </div>
               </div>
             </div>
