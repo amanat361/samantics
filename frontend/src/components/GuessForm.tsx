@@ -15,6 +15,9 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
 
+  // Add this at the component level, outside the useEffect
+  const disableAutoScroll = true; // Set to false to re-enable scrolling
+
   useEffect(() => {
     const input = inputRef.current;
     if (!input) return;
@@ -28,6 +31,9 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
     };
 
     const handleFocus = () => {
+      // Skip all scrolling if disabled
+      if (disableAutoScroll) return;
+
       // if they've started guessing, don't scroll to top
       if (guessesLength > 0) return;
 
@@ -57,6 +63,9 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
     };
 
     const handleTouchStart = (e: TouchEvent) => {
+      // Skip if disabled
+      if (disableAutoScroll) return;
+
       if (e.target === input) {
         // Try to prevent default iOS behavior
         window.scrollTo({ top: window.scrollY, behavior: "instant" });
@@ -71,7 +80,7 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
       input.removeEventListener("focus", handleFocus);
       input.removeEventListener("touchstart", handleTouchStart);
     };
-  }, [guessesLength]);
+  }, [guessesLength, disableAutoScroll]);
 
   function handleGuess(e: React.FormEvent) {
     e.preventDefault();
@@ -110,16 +119,25 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
             }}
             aria-label="Clear input"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         )}
       </div>
-      <Button 
+      <Button
         type="submit"
-        className="sm:not-autofill:min-w-[120px]" 
+        className="sm:not-autofill:min-w-[120px]"
         variant="reverse"
       >
         <span className="max-sm:hidden">Guess</span>
