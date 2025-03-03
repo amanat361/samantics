@@ -1,6 +1,8 @@
 // src/components/GuessForm.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { ForwardIcon } from "lucide-react";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 interface GuessFormProps {
   guessWord: (word: string) => void;
@@ -80,22 +82,24 @@ const GuessForm: React.FC<GuessFormProps> = ({ guessWord, gameOver, guessesLengt
   if (gameOver) return null;
 
   return (
-    <form onSubmit={handleGuess} className="flex space-x-2">
-      <input
+    <form onSubmit={handleGuess} className="flex w-full space-x-3">
+      <Input
+        //@ts-expect-error idk why this is not working
         ref={inputRef}
         type="text"
         placeholder="Guess one or more words..."
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="flex-1 p-2 border border-gray-300 rounded"
+        className="flex-1"
       />
-      <button
+      <Button 
         type="submit"
-        className="px-4 py-2 bg-guess text-white rounded hover:bg-guess/80 transition flex items-center justify-center gap-2"
+        className="sm:not-autofill:min-w-[120px]" 
+        variant="reverse"
       >
-        Guess
+        <span className="max-sm:hidden">Guess</span>
         <ForwardIcon className="w-4 h-4" />
-      </button>
+      </Button>
     </form>
   );
 };

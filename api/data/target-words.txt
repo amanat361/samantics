@@ -146,7 +146,7 @@ prairie
 tundra
 marsh
 meadow
-animals:
+animals
 bear
 wolf
 eagle

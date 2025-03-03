@@ -31,7 +31,7 @@ function App() {
   }, [targetWord]);
 
   return (
-    <div className="min-h-screen flex justify-center bg-bg p-2 sm:p-4">
+    <div className="min-h-screen flex justify-center bg-bg p-2 sm:p-4" style={{ fontFamily: 'var(--font-base)' }}>
       <div className="flex flex-col w-full max-w-xl">
         <HeaderWithInstructions />
         <div className="w-full bg-bw rounded-lg shadow-shadow p-4 sm:p-6 space-y-6 sm:space-y-4 border-2 border-border">
