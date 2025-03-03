@@ -51,26 +51,52 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
         <>
           <div className="space-y-2">
             <p className="text-text font-medium">
-              <span>Guess </span>
-              <strong>#{guesses.length}</strong>:
+              <span>Latest Guess:</span>
             </p>
             <div
-              className="p-3 rounded-base text-white flex items-center justify-between flex-wrap gap-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
               style={{
                 backgroundColor: interpolateColor(
                   guesses[guesses.length - 1].similarity
                 ),
               }}
             >
-              <div className="flex items-center gap-2">
-                <GuessNumberLabel guessNumber={guesses.length} />
-                <strong className="text-base sm:text-lg">{guesses[guesses.length - 1].word}</strong>
-              </div>
-              <div className="flex items-center gap-2">
-                {guesses[guesses.length - 1].isHint && <HintLabel />}
-                <GuessClosenessLabel
-                  weight={getWeight(guesses[guesses.length - 1].similarity)}
-                  />
+              {/* Main content row */}
+              <div className="flex items-stretch">
+                {/* Left section with number */}
+                <div className="bg-black/25 p-2 flex items-center w-10 justify-center border-r-2 border-black">
+                  <span className="font-bold text-sm">{guesses.length}</span>
+                </div>
+                
+                {/* Word section */}
+                <div className="px-3 py-2 flex-grow flex items-center">
+                  <div className="flex items-center">
+                    {guesses[guesses.length - 1].isHint && 
+                      <span className="bg-black/25 p-1 rounded-sm mr-2 text-xs">
+                        💡
+                      </span>
+                    }
+                    <span className="font-medium text-sm sm:text-base break-all">
+                      {guesses[guesses.length - 1].word}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Right section with percentage */}
+                <div className="bg-black/25 p-2 flex flex-col items-center justify-center border-l-2 border-black">
+                  <div className="text-center">
+                    <div className="font-bold text-sm">
+                      {(getWeight(guesses[guesses.length - 1].similarity) * 100).toFixed(2)}%
+                    </div>
+                    <div className="text-xs text-white/80">
+                      {(() => {
+                        const weight = getWeight(guesses[guesses.length - 1].similarity);
+                        const label = SIMILARITY_LABELS.find((l) => weight >= l.threshold) || SIMILARITY_LABELS[SIMILARITY_LABELS.length - 1];
+                        return label.text.split(' ')[0];
+                      })()}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -82,47 +108,21 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
   );
 };
 
-function GuessNumberLabel({ guessNumber }: { guessNumber: number }) {
-  return (
-    <span className={`text-nowrap px-2 py-1 rounded-base text-sm bg-white/20 border border-white/40`}>
-      <span className="max-sm:hidden">Guess </span><strong>#{guessNumber}</strong>
-    </span>
-  );
-}
-
-function HintLabel() {
-  return (
-    <span className={`text-nowrap px-2 py-1 rounded-base text-sm bg-white/20 border border-white/40`}>
-      <span className="max-sm:hidden">Hint </span><strong>💡</strong>
-    </span>
-  );
-}
-
-function GuessClosenessLabel({ weight }: { weight: number }) {
-  const labels = [
-    { threshold: 0.99, text: "Correct! 🎯🎯🎯" },
-    { threshold: 0.9, text: "Smoking!!! ♨️" },
-    { threshold: 0.8, text: "Hotter! 🔥🔥" },
-    { threshold: 0.75, text: "Hot! 🔥" },
-    { threshold: 0.7, text: "Warmer! 🌞🌞" },
-    { threshold: 0.65, text: "Warm 🌞" },
-    { threshold: 0.6, text: "Lukewarm 👍" },
-    { threshold: 0.55, text: "Cool 👀" },
-    { threshold: 0.5, text: "Cooler 👎" },
-    { threshold: 0.45, text: "Cold! ❄️" },
-    { threshold: 0.4, text: "Ice Cold! ❄️ ❄️" },
-    { threshold: 0, text: "Freezing!!! 🧊" },
-  ];
-
-  const label =
-    labels.find((l) => weight >= l.threshold) || labels[labels.length - 1];
-
-  return (
-    <span className={`text-nowrap px-2 py-1 rounded-base text-sm bg-white/20 border border-white/40`}>
-      <strong>{(weight * 100).toFixed(2)}%</strong> - {label.text}
-    </span>
-  );
-}
+// Label constants for use in multiple places
+const SIMILARITY_LABELS = [
+  { threshold: 0.99, text: "Correct! 🎯🎯🎯" },
+  { threshold: 0.9, text: "Smoking!!! ♨️" },
+  { threshold: 0.8, text: "Hotter! 🔥🔥" },
+  { threshold: 0.75, text: "Hot! 🔥" },
+  { threshold: 0.7, text: "Warmer! 🌞🌞" },
+  { threshold: 0.65, text: "Warm 🌞" },
+  { threshold: 0.6, text: "Lukewarm 👍" },
+  { threshold: 0.55, text: "Cool 👀" },
+  { threshold: 0.5, text: "Cooler 👎" },
+  { threshold: 0.45, text: "Cold! ❄️" },
+  { threshold: 0.4, text: "Ice Cold! ❄️ ❄️" },
+  { threshold: 0, text: "Freezing!!! 🧊" },
+];
 
 function GuessList({ guesses }: { guesses: Guess[] }) {
   const sorted = [...guesses]
@@ -130,23 +130,48 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
     .sort((a, b) => b.similarity - a.similarity);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {sorted.map((g, i) => {
         const weight = getWeight(g.similarity);
         const bgColor = interpolateColor(g.similarity);
+        const percentValue = (weight * 100).toFixed(2);
+        
+        const label = SIMILARITY_LABELS.find((l) => weight >= l.threshold) || SIMILARITY_LABELS[SIMILARITY_LABELS.length - 1];
+
         return (
           <div
             key={i}
-            className="p-3 rounded-base text-white flex items-center justify-between flex-wrap gap-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="rounded-md text-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] border-2 border-black overflow-hidden"
             style={{ backgroundColor: bgColor }}
           >
-            <div className="flex items-center gap-2">
-              <GuessNumberLabel guessNumber={g.originalIndex + 1} />
-              <strong className="text-base sm:text-lg max-sm:text-sm">{g.word}</strong>
-            </div>
-            <div className="flex items-center gap-2">
-              {g.isHint && <HintLabel />}
-              <GuessClosenessLabel weight={weight} />
+            {/* Main content row */}
+            <div className="flex items-stretch">
+              {/* Left section with number */}
+              <div className="bg-black/25 p-2 flex items-center w-10 justify-center border-r-2 border-black">
+                <span className="font-bold text-sm">{g.originalIndex + 1}</span>
+              </div>
+              
+              {/* Word section */}
+              <div className="px-3 py-2 flex-grow flex items-center">
+                <div className="flex items-center">
+                  {g.isHint && 
+                    <span className="bg-black/25 p-1 rounded-sm mr-2 text-xs">
+                      💡
+                    </span>
+                  }
+                  <span className="font-medium text-sm sm:text-base break-all">
+                    {g.word}
+                  </span>
+                </div>
+              </div>
+              
+              {/* Right section with percentage */}
+              <div className="bg-black/25 p-2 flex flex-col items-center justify-center border-l-2 border-black">
+                <div className="text-center">
+                  <div className="font-bold text-sm">{percentValue}%</div>
+                  <div className="text-xs text-white/80">{label.text.split(' ')[0]}</div>
+                </div>
+              </div>
             </div>
           </div>
         );
