@@ -74,7 +74,7 @@ const GameResult: React.FC<GameResultProps> = ({
   }, [showConfetti]);
 
   // Generate the share message for both sharing and copying
-  const generateShareMessage = () => {
+  const generateShareMessage = (withUrl: boolean) => {
     const shareUrl = "https://play.qwertea.dev";
     const guessText = guessCount === 1 ? "guess" : "guesses";
 
@@ -96,20 +96,20 @@ const GameResult: React.FC<GameResultProps> = ({
       shareMessage += " (and cheated)";
     }
     
-    return shareMessage + "\n" + shareUrl;
+    return withUrl ? shareMessage + "\n" + shareUrl : shareMessage;
   };
   
   // Handle the share button click (uses the Web Share API if available)
   const handleShareClick = () => {
-    const shareMessage = generateShareMessage();
-    // const shareUrl = "https://play.qwertea.dev";
+    const shareMessage = generateShareMessage(false);
+    const shareUrl = "https://play.qwertea.dev";
     
     if (navigator.share) {
       try {
         navigator.share({
           title: "Samantics",
           text: shareMessage,
-          // url: shareUrl,
+          url: shareUrl,
         }).catch(err => {
           console.error("Failed to share: ", err);
           handleCopyClick(); // Fall back to copying if sharing fails
@@ -125,7 +125,7 @@ const GameResult: React.FC<GameResultProps> = ({
   
   // Handle the copy button click (just copies to clipboard)
   const handleCopyClick = () => {
-    const shareMessage = generateShareMessage();
+    const shareMessage = generateShareMessage(true);
     const button = document.getElementById('copy-button');
     const originalIcon = button?.innerHTML || '';
     
