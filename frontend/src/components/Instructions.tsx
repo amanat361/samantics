@@ -6,259 +6,193 @@ import {
   InfinityIcon,
   CalendarIcon,
   BrainIcon,
-  GamepadIcon
+  GamepadIcon,
+  HelpCircleIcon
 } from "lucide-react";
 import { CheckCircleIcon, ShareIcon } from "@heroicons/react/16/solid";
 import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
 
 const Instructions: React.FC = () => {
   return (
-    <div className="text-text overflow-hidden space-y-6">
-      {/* Core Objective */}
-      <div className="space-y-2">
-        <h2 className="text-xl font-bold text-mtext">How to Play 👋</h2>
-        <p className="leading-relaxed">
-          Your goal is to guess the secret word (or multiple)! After each guess, you'll see a
+    <div className="text-text overflow-hidden space-y-5" style={{ fontFamily: 'var(--font-base)' }}>
+      {/* Introduction Card */}
+      <div className="bg-yellow p-4 rounded-base border-2 border-border shadow-shadow">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-1.5 bg-bw rounded-full border-2 border-border">
+            <HelpCircleIcon className="w-5 h-5" />
+          </div>
+          <h2 className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+            How to Play
+          </h2>
+        </div>
+        <p className="leading-relaxed text-base">
+          Your goal is to guess the secret word! After each guess, you'll see a
           similarity percentage that tells you how close your guess is. Higher
           is better! The game is <strong>meant to be challenging</strong> - so
           don't give up if it seems tough at first!
         </p>
       </div>
 
-      {/* Game Modes - Now with separate cards */}
-      <div className="space-y-3">
-        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
-          <GamepadIcon className="w-5 h-5" />
-          Game Modes
-        </h3>
+      {/* Game Modes Card */}
+      <div className="bg-blue p-4 rounded-base border-2 border-border shadow-shadow">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-1.5 bg-bw rounded-full border-2 border-border">
+            <GamepadIcon className="w-5 h-5" />
+          </div>
+          <h3 className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+            Game Modes
+          </h3>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Daily Challenge Card */}
-          <div className="bg-main p-4 rounded-base border-2 border-border">
-            <div className="flex items-center gap-2 mb-2">
-              <CalendarIcon className="w-5 h-5 text-mtext" />
-              <h4 className="font-semibold text-mtext">Daily Challenge</h4>
+          <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex items-center gap-2 mb-1">
+              <CalendarIcon className="w-4 h-4 text-mtext" />
+              <h4 className="font-bold text-base" style={{ fontFamily: 'var(--font-accent)' }}>Daily Challenge</h4>
             </div>
             <p className="text-sm">
               A new word each day that everyone gets to play. Compare your
-              results with friends and see who can solve it in fewer guesses!
+              results with friends!
             </p>
           </div>
 
           {/* Practice Mode Card */}
-          <div className="bg-main p-4 rounded-base border-2 border-border">
-            <div className="flex items-center gap-2 mb-2">
-              <InfinityIcon className="w-5 h-5 text-mtext" />
-              <h4 className="font-semibold text-mtext">Practice Mode</h4>
+          <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <div className="flex items-center gap-2 mb-1">
+              <InfinityIcon className="w-4 h-4 text-mtext" />
+              <h4 className="font-bold text-base" style={{ fontFamily: 'var(--font-accent)' }}>Practice Mode</h4>
             </div>
             <p className="text-sm">
               Play with random words as many times as you want. Perfect for
-              honing your skills or just having fun when you can't wait for
-              tomorrow's challenge.
+              honing your skills!
             </p>
           </div>
         </div>
-
-        <p className="text-sm italic">
-          Switch between modes using the buttons at the top. A banner will
-          clearly show which mode you're currently playing.
-        </p>
       </div>
 
-      {/* Hint Feature - Updated with new hint info */}
-      <div className="space-y-2 bg-main p-4 rounded-base border-2 border-border">
-        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
-          <LightbulbIcon className="w-5 h-5" />
-          Using Hints
-        </h3>
-        <p>
-          You have <strong>{TOTAL_HINTS} hints</strong> per game, but they unlock gradually:
-        </p>
-        <ul className="list-inside space-y-2 pl-2 mt-2">
-          <li className="flex items-start">
-            <span className="text-mtext font-bold mr-2">•</span>
-            <span>
-              One hint unlocks after every <strong>5 guesses</strong> you make
-            </span>
-          </li>
-          <li className="flex items-start">
-            <span className="text-mtext font-bold mr-2">•</span>
-            <span>Each hint gets progressively closer to the target word</span>
-          </li>
-          <li className="flex items-start">
-            <span className="text-mtext font-bold mr-2">•</span>
-            <span>Hints will never repeat words you've already guessed</span>
-          </li>
-        </ul>
-        <p className="text-sm italic mt-2">
-          Use hints strategically when you're stuck - they're designed to guide
-          you toward the answer!
-        </p>
-      </div>
+      {/* Hints Card */}
+      <div className="bg-pink p-4 rounded-base border-2 border-border shadow-shadow">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-1.5 bg-bw rounded-full border-2 border-border">
+            <LightbulbIcon className="w-5 h-5" />
+          </div>
+          <h3 className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+            Hints & Features
+          </h3>
+        </div>
 
-      {/* Reveal Answer */}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
-          <CheckCircleIcon className="w-5 h-5" />
-          Reveal Answer
-        </h3>
-        <p>
-          Once you run out of hints, the <strong>Use Hint</strong> button
-          switches to <strong>Show Answer</strong>. If you're completely stuck,
-          you can click it to reveal the secret word - but try your best to
-          solve it without peeking!
-        </p>
-      </div>
+        <div className="grid grid-cols-1 gap-4">
+          {/* Hints Section */}
+          <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <h4 className="font-bold text-base mb-1" style={{ fontFamily: 'var(--font-accent)' }}>Hints ({TOTAL_HINTS} per game)</h4>
+            <ul className="space-y-1 text-sm">
+              <li className="flex items-start gap-1.5">
+                <span className="text-pink font-bold">•</span>
+                <span>One hint unlocks after every <strong>5 guesses</strong></span>
+              </li>
+              <li className="flex items-start gap-1.5">
+                <span className="text-pink font-bold">•</span>
+                <span>Each hint gets progressively closer to the target word</span>
+              </li>
+              <li className="flex items-start gap-1.5">
+                <span className="text-pink font-bold">•</span>
+                <span>Hints won't repeat words you've already guessed</span>
+              </li>
+            </ul>
+          </div>
 
-      {/* Random Guess - Updated with more info */}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
-          <ShuffleIcon className="w-5 h-5" />
-          Random Guess
-        </h3>
-        <p>
-          If you're stuck, click the <strong>Random Guess</strong> button for a
-          suggestion. These guesses are pulled from the same dictionary as the
-          target words, giving you a potentially useful word to try.
-        </p>
-      </div>
-
-      {/* Share Feature */}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
-          <ShareIcon className="w-5 h-5" />
-          Share Results
-        </h3>
-        <p>
-          After solving the word, use the <strong>Share</strong> button to share
-          your results with friends. Challenge them to beat your score on the
-          daily word!
-        </p>
-      </div>
-
-      {/* Strategy Explanation - Better formatted */}
-      <div className="space-y-3 border-t-2 border-border pt-4">
-        <h3 className="text-lg font-semibold text-mtext flex items-center gap-2">
-          <BrainIcon className="w-5 h-5" />
-          Strategy Tips
-        </h3>
-
-        <div className="bg-main p-4 rounded-base border-2 border-border">
-          <p className="mb-3 italic font-medium text-mtext">
-            "Think in semantic space, not just synonyms!"
-          </p>
-
-          <div className="space-y-3">
-            <p>
-              Your guesses don't have to be exact synonyms. The similarity is
-              based on how words relate in context and usage within language.
-            </p>
-
-            <div className="bg-bw p-3 rounded-base border-2 border-border">
-              <p className="text-sm font-medium mb-1">Example:</p>
+          {/* Other Features */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="flex items-center gap-2 mb-1">
+                <ShuffleIcon className="w-4 h-4 text-mtext" />
+                <h4 className="font-bold text-base" style={{ fontFamily: 'var(--font-accent)' }}>Random Guess</h4>
+              </div>
               <p className="text-sm">
-                If your guess <strong>"jacket"</strong> is very close, the
-                answer might not be "coat" or "sweater" – it could be something
-                in the same semantic space, like <strong>"closet"</strong> or{" "}
-                <strong>"wardrobe"</strong>.
+                If you're stuck, get a randomly selected word from our dictionary.
               </p>
             </div>
 
-            <p className="text-sm">
-              Try words related by context, category, or function. Look at the
-              similarity percentage as a guide for exploring different
-              directions.
-            </p>
+            <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              <div className="flex items-center gap-2 mb-1">
+                <ShareIcon className="w-4 h-4 text-mtext" />
+                <h4 className="font-bold text-base" style={{ fontFamily: 'var(--font-accent)' }}>Share Results</h4>
+              </div>
+              <p className="text-sm">
+                After solving, share your score with friends and challenge them to beat it!
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Similarity Labels - Now in a nicer table format */}
-      <div className="space-y-3 border-t-2 border-border pt-4 pb-2">
-        <h3 className="text-lg font-semibold text-mtext">
-          Understanding Similarity Scores
-        </h3>
-        <p>Each guess shows a similarity percentage and a helpful label:</p>
+      {/* Strategy Card */}
+      <div className="bg-mint p-4 rounded-base border-2 border-border shadow-shadow">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-1.5 bg-bw rounded-full border-2 border-border">
+            <BrainIcon className="w-5 h-5" />
+          </div>
+          <h3 className="text-xl font-bold" style={{ fontFamily: 'var(--font-heading)' }}>
+            Strategy Tips
+          </h3>
+        </div>
 
-        <div className="bg-main rounded-base overflow-hidden border-2 border-border">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-main/80">
-                <th className="py-2 px-3 text-left text-sm font-semibold">
-                  Score
-                </th>
-                <th className="py-2 px-3 text-left text-sm font-semibold">
-                  Label
-                </th>
-                <th className="py-2 px-3 text-left text-sm font-semibold">
-                  What it means
-                </th>
-              </tr>
-            </thead>
+        <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] mb-3">
+          <blockquote className="border-l-4 pl-2 border-mint italic">
+            <p className="font-medium text-sm">Think in semantic space, not just synonyms!</p>
+          </blockquote>
+          <p className="mt-2 text-sm">
+            Your guesses don't have to be exact synonyms. The similarity is
+            based on how words relate in context and usage within language.
+          </p>
+          <div className="mt-2 bg-yellow/20 p-2 rounded-base border border-border">
+            <p className="text-sm"><strong>Example:</strong> If <strong>"jacket"</strong> is very close, the answer might not be "coat" but something in the same space, like <strong>"closet"</strong> or <strong>"wardrobe"</strong>.</p>
+          </div>
+        </div>
+
+        {/* Similarity Guide */}
+        <h4 className="font-bold mb-2 text-base" style={{ fontFamily: 'var(--font-heading)' }}>
+          Similarity Score Guide
+        </h4>
+        <div className="bg-bw p-3 rounded-base border-2 border-border shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          <table className="w-full text-sm">
             <tbody>
-              <tr className="border-t-2 border-border/30">
-                <td className="py-2 px-3 text-sm font-semibold">99-100%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold">Correct!</span>
-                </td>
-                <td className="py-2 px-3 text-sm">You've found the word! 🎯</td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold" width="25%">90-100%:</td>
+                <td className="py-1"><span className="font-bold">Correct/Smoking! 🔥</span></td>
               </tr>
-              <tr className="border-t border-[#d8c4a5]/30 bg-white/30">
-                <td className="py-2 px-3 text-sm font-semibold">90-98%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold text-[#0eab82]">Smoking!!!</span>
-                </td>
-                <td className="py-2 px-3 text-sm">Extremely close!</td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold">80-89%:</td>
+                <td className="py-1"><span className="font-bold">Very hot! 🔥🔥</span></td>
               </tr>
-              <tr className="border-t border-[#d8c4a5]/30">
-                <td className="py-2 px-3 text-sm font-semibold">80-89%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold text-[#d67c24]">Hotter!</span>
-                </td>
-                <td className="py-2 px-3 text-sm">Very close to the target</td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold">70-79%:</td>
+                <td className="py-1"><span className="font-bold">Hot! 🔥</span></td>
               </tr>
-              <tr className="border-t border-[#d8c4a5]/30 bg-white/30">
-                <td className="py-2 px-3 text-sm font-semibold">70-79%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold text-[#d67c24]">Hot/Warmer!</span>
-                </td>
-                <td className="py-2 px-3 text-sm">Getting much closer</td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold">60-69%:</td>
+                <td className="py-1"><span className="font-bold">Warm! 🌞</span></td>
               </tr>
-              <tr className="border-t border-[#d8c4a5]/30">
-                <td className="py-2 px-3 text-sm font-semibold">60-69%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold text-[#d67c24]">
-                    Warm/Lukewarm
-                  </span>
-                </td>
-                <td className="py-2 px-3 text-sm">On the right track</td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold">50-59%:</td>
+                <td className="py-1"><span className="font-bold">Lukewarm 👍</span></td>
               </tr>
-              <tr className="border-t border-[#d8c4a5]/30 bg-white/30">
-                <td className="py-2 px-3 text-sm font-semibold">50-59%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold text-[#15616d]">Cool</span>
-                </td>
-                <td className="py-2 px-3 text-sm">
-                  Some connection, but still far
-                </td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold">40-49%:</td>
+                <td className="py-1"><span className="font-bold">Cool 👀</span></td>
               </tr>
-              <tr className="border-t border-[#d8c4a5]/30">
-                <td className="py-2 px-3 text-sm font-semibold">Below 50%</td>
-                <td className="py-2 px-3">
-                  <span className="font-bold text-[#15616d]">
-                    Cold/Freezing
-                  </span>
-                </td>
-                <td className="py-2 px-3 text-sm">Try a different approach</td>
+              <tr className="border-b border-border/20">
+                <td className="py-1 font-bold">30-39%:</td>
+                <td className="py-1"><span className="font-bold">Cold ❄️</span></td>
+              </tr>
+              <tr>
+                <td className="py-1 font-bold">0-29%:</td>
+                <td className="py-1"><span className="font-bold">Freezing 🧊</span></td>
               </tr>
             </tbody>
           </table>
         </div>
-
-        <p className="text-sm italic mt-2">
-          The higher the percentage, the more semantically similar your guess is
-          to the target word. Use these labels to guide your next guesses!
-        </p>
       </div>
     </div>
   );

@@ -50,12 +50,12 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
       {guesses.length > 0 && !gameOver && (
         <>
           <div className="space-y-2">
-            <p className="text-gray-600">
+            <p className="text-text font-medium">
               <span>Guess </span>
               <strong>#{guesses.length}</strong>:
             </p>
             <div
-              className="p-2 rounded text-white flex items-center justify-between flex-wrap gap-2"
+              className="p-3 rounded-base text-white flex items-center justify-between flex-wrap gap-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               style={{
                 backgroundColor: interpolateColor(
                   guesses[guesses.length - 1].similarity
@@ -64,7 +64,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
             >
               <div className="flex items-center gap-2">
                 <GuessNumberLabel guessNumber={guesses.length} />
-                <strong>{guesses[guesses.length - 1].word}</strong>
+                <strong className="text-base sm:text-lg">{guesses[guesses.length - 1].word}</strong>
               </div>
               <div className="flex items-center gap-2">
                 {guesses[guesses.length - 1].isHint && <HintLabel />}
@@ -74,7 +74,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
               </div>
             </div>
           </div>
-          <hr className="border-gray-200 my-4" />
+          <hr className="border-2 border-border my-6" />
         </>
       )}
       <GuessList guesses={guesses} />
@@ -84,7 +84,7 @@ const GuessDisplay: React.FC<GuessDisplayProps> = ({
 
 function GuessNumberLabel({ guessNumber }: { guessNumber: number }) {
   return (
-    <span className={`text-nowrap px-2 py-1 rounded-md text-sm bg-white/20`}>
+    <span className={`text-nowrap px-2 py-1 rounded-base text-sm bg-white/20 border border-white/40`}>
       <span className="max-sm:hidden">Guess </span><strong>#{guessNumber}</strong>
     </span>
   );
@@ -92,7 +92,7 @@ function GuessNumberLabel({ guessNumber }: { guessNumber: number }) {
 
 function HintLabel() {
   return (
-    <span className={`text-nowrap px-2 py-1 rounded-md text-sm bg-white/20`}>
+    <span className={`text-nowrap px-2 py-1 rounded-base text-sm bg-white/20 border border-white/40`}>
       <span className="max-sm:hidden">Hint </span><strong>💡</strong>
     </span>
   );
@@ -118,7 +118,7 @@ function GuessClosenessLabel({ weight }: { weight: number }) {
     labels.find((l) => weight >= l.threshold) || labels[labels.length - 1];
 
   return (
-    <span className={`text-nowrap px-2 py-1 rounded-md text-sm bg-white/20`}>
+    <span className={`text-nowrap px-2 py-1 rounded-base text-sm bg-white/20 border border-white/40`}>
       <strong>{(weight * 100).toFixed(2)}%</strong> - {label.text}
     </span>
   );
@@ -130,22 +130,19 @@ function GuessList({ guesses }: { guesses: Guess[] }) {
     .sort((a, b) => b.similarity - a.similarity);
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       {sorted.map((g, i) => {
         const weight = getWeight(g.similarity);
         const bgColor = interpolateColor(g.similarity);
         return (
           <div
             key={i}
-            className="p-2 rounded text-white flex items-center justify-between flex-wrap gap-2"
+            className="p-3 rounded-base text-white flex items-center justify-between flex-wrap gap-2 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             style={{ backgroundColor: bgColor }}
           >
             <div className="flex items-center gap-2">
               <GuessNumberLabel guessNumber={g.originalIndex + 1} />
-              <strong className="">{g.word}</strong>
-              {/* {g.isHint && (
-                <span title="Hint"><LightbulbIcon className="w-4 h-4" /></span>
-              )} */}
+              <strong className="text-base sm:text-lg max-sm:text-sm">{g.word}</strong>
             </div>
             <div className="flex items-center gap-2">
               {g.isHint && <HintLabel />}

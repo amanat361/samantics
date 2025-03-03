@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Instructions from "./Instructions";
 import { CircleHelpIcon } from "lucide-react";
+import { Button } from "./ui/button";
 
 const HeaderWithInstructions: React.FC = () => {
   const [showInstructions, setShowInstructions] = useState(false);
@@ -9,18 +10,26 @@ const HeaderWithInstructions: React.FC = () => {
   return (
     <div className="w-full bg-bw rounded-lg shadow-shadow p-3 sm:py-4 sm:px-6 mb-2 border-2 border-border">
       <div className="flex flex-col sm:flex-row justify-between items-center">
-        <h1 className="text-3xl max-sm:text-center max-sm:w-full leading-tight">
-          <span className="text-mtext font-semibold">Samantics</span>{" "}
-          <span className="text-text font-normal text-2xl">
-            - Test your vocabulary
-          </span>
-        </h1>
-        <button
+        <div className="text-center sm:text-left max-sm:w-full">
+          <h1 className="inline-block relative mb-2">
+            <span className="text-4xl sm:text-5xl font-black text-mtext tracking-wide" 
+                  style={{ 
+                    fontFamily: "'Londrina Solid', sans-serif",
+                    letterSpacing: "0.05em" 
+                  }}>SAMANTICS</span>
+            <div className="absolute -bottom-1 left-0 w-full h-2 bg-pink rounded-full"></div>
+          </h1>
+          <div className="text-text text-sm max-w-[90%] mx-auto sm:mx-0">
+            Guess words based on their semantic similarity
+          </div>
+        </div>
+        <Button
           onClick={() => setShowInstructions(!showInstructions)}
-          className="flex items-center justify-between px-3 py-1 bg-main hover:bg-main/80 text-mtext rounded-base border-2 border-border mt-2 sm:mt-0 transition-colors text-sm gap-2"
+          className="mt-2 sm:mt-0 bg-blue"
+          variant="default"
         >
           <CircleHelpIcon className="w-4 h-4" />
-          <span className="font-medium">
+          <span style={{ fontFamily: 'var(--font-accent)' }}>
             {showInstructions ? "Hide" : "How to Play"}
           </span>
           <svg
@@ -36,11 +45,13 @@ const HeaderWithInstructions: React.FC = () => {
           >
             <path d="M19 9l-7 7-7-7"></path>
           </svg>
-        </button>
+        </Button>
       </div>
       {showInstructions && (
-        <div className="my-4 bg-bw rounded-lg p-4 space-y-4 border-2 border-border shadow-shadow">
-          <Instructions />
+        <div className="my-4 bg-bg rounded-lg border-2 border-border shadow-shadow relative">
+          <div className="max-h-[60vh] overflow-y-auto custom-scrollbar p-3">
+            <Instructions />
+          </div>
         </div>
       )}
     </div>
