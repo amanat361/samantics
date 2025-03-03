@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { ListRestart, Trophy, BarChart2, Keyboard } from "lucide-react";
+import { RefreshCw, Trophy, BarChart2, Keyboard } from "lucide-react";
 import { getEmoji } from "../utils/gameHelpers";
 import { GameStats } from "../types/stats";
 import { TOTAL_HINTS } from "../hooks/useSamanticsGame";
@@ -309,12 +309,12 @@ const GameResult: React.FC<GameResultProps> = ({
             className="w-full bg-[#B91C1C] hover:bg-[#991B1B] text-white"
             variant="default"
           >
-            <ListRestart className="w-5 h-5 mr-1" />
+            <RefreshCw className="w-5 h-5 mr-1" />
             <span>Play Again</span>
             {isDesktop && (
-              <div className="hidden md:flex items-center ml-2 px-1.5 py-0.5 bg-bw rounded-md border border-border text-xs font-semibold">
-                <Keyboard className="w-3 h-3 mr-1" />
-                r
+              <div className="hidden md:flex items-center ml-2 px-1.5 py-0.5 bg-white/20 rounded-md text-xs font-semibold">
+                <Keyboard className="w-3 h-3 mr-0.5" />
+                <span>R</span>
               </div>
             )}
           </Button>
