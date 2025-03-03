@@ -12,12 +12,23 @@ const HeaderWithInstructions: React.FC = () => {
       <div className="flex flex-col sm:flex-row justify-between items-center">
         <div className="text-center sm:text-left max-sm:w-full">
           <h1 className="inline-block relative mb-2">
-            <span className="text-4xl sm:text-5xl font-black text-mtext tracking-wide" 
-                  style={{ 
-                    fontFamily: "'Londrina Solid', sans-serif",
-                    letterSpacing: "0.05em" 
-                  }}>SAMANTICS</span>
-            <div className="absolute -bottom-1 left-0 w-full h-2 bg-pink rounded-full"></div>
+            <span
+              className="text-4xl sm:text-5xl font-black text-mtext tracking-wide"
+              style={{
+                fontFamily: "'Londrina Solid', sans-serif",
+                letterSpacing: "0.05em",
+              }}
+            >
+              SAMANTICS
+            </span>
+            {/* <div className="absolute -bottom-1 left-0 w-full h-2 bg-[#053469] rounded-xs"></div> */}
+            <div className="absolute -bottom-1 left-0 w-full h-2 flex rounded-xs overflow-hidden">
+              <div className="w-1/5 h-full bg-[#053469]"></div>
+              <div className="w-1/5 h-full bg-[#1a5cbf]"></div>
+              <div className="w-1/5 h-full bg-[#3984ff]"></div>
+              <div className="w-1/5 h-full bg-[#7db0ff]"></div>
+              <div className="w-1/5 h-full bg-[#c0d7ff]"></div>
+            </div>
           </h1>
           <div className="text-text text-sm max-w-[90%] mx-auto sm:mx-0">
             Guess words based on their semantic similarity
@@ -29,7 +40,7 @@ const HeaderWithInstructions: React.FC = () => {
           variant="default"
         >
           <CircleHelpIcon className="w-4 h-4" />
-          <span style={{ fontFamily: 'var(--font-accent)' }}>
+          <span style={{ fontFamily: "var(--font-accent)" }}>
             {showInstructions ? "Hide" : "How to Play"}
           </span>
           <svg
