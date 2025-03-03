@@ -102,14 +102,14 @@ const GameResult: React.FC<GameResultProps> = ({
   // Handle the share button click (uses the Web Share API if available)
   const handleShareClick = () => {
     const shareMessage = generateShareMessage();
-    const shareUrl = "https://play.qwertea.dev";
+    // const shareUrl = "https://play.qwertea.dev";
     
     if (navigator.share) {
       try {
         navigator.share({
           title: "Samantics",
           text: shareMessage,
-          url: shareUrl,
+          // url: shareUrl,
         }).catch(err => {
           console.error("Failed to share: ", err);
           handleCopyClick(); // Fall back to copying if sharing fails
